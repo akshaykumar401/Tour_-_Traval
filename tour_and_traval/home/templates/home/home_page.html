@@ -1,0 +1,404 @@
+{% extends 'layout/index.html' %} {% load static %}
+
+{% block page_title %}Home{% endblock %}
+
+{% block main_content %}
+<!-- Hero Section -->
+<section class="relative bg-cover bg-center py-24 sm:py-32 px-4 sm:px-6 lg:px-8 flex items-center min-h-[80vh]"
+  style="background-image: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)), url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=2000&q=80');">
+  <div class="max-w-7xl mx-auto w-full relative z-10 text-white">
+    <div class="max-w-3xl space-y-6">
+      <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight">
+        Discover the Horizon with <span class="block text-slate-100">NextStop</span>
+      </h1>
+      <p class="text-base sm:text-xl text-slate-100/90 leading-relaxed font-light max-w-xl">
+        Curated luxury experiences for the modern explorer. Experience the world's most remote destinations with a
+        premium car rental service.
+      </p>
+
+      <!-- Search Booking Widget -->
+      <div class="pt-6">
+        <form
+          class="bg-white/95 backdrop-blur-md p-4 sm:p-5 rounded-2xl shadow-xl border border-white/20 text-slate-800 flex flex-col md:flex-row gap-4 items-stretch max-w-3xl">
+          <!-- Field 1: Destination -->
+          <div
+            class="flex-grow flex items-center space-x-3 bg-slate-50 px-4 py-3 rounded-xl border border-slate-100 focus-within:ring-2 focus-within:ring-[#8c5a24] focus-within:border-transparent transition-all">
+            <i class="ri-map-pin-line text-lg text-slate-400 shrink-0"></i>
+            <input type="text" placeholder="Where to next?"
+              class="w-full bg-transparent border-none outline-none text-sm font-medium placeholder-slate-400 focus:ring-0 p-0" />
+          </div>
+
+          <!-- Field 2: Date -->
+          <div
+            class="flex-grow flex items-center space-x-3 bg-slate-50 px-4 py-3 rounded-xl border border-slate-100 focus-within:ring-2 focus-within:ring-[#8c5a24] focus-within:border-transparent transition-all">
+            <i class="ri-calendar-line text-lg text-slate-400 shrink-0"></i>
+            <input type="text" placeholder="When are you travel?"
+              class="w-full bg-transparent border-none outline-none text-sm font-medium placeholder-slate-400 focus:ring-0 p-0"
+              onfocus="(this.type='date')" onblur="(this.type='text')" />
+          </div>
+
+          <!-- Search Button -->
+          <button type="submit"
+            class="bg-[#0b1a2e] hover:bg-[#071120] text-white text-sm font-semibold px-8 py-3 rounded-xl transition-all shadow-md hover:shadow duration-200 shrink-0">
+            Search
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Popular Destinations Section -->
+<section class="py-20 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Section Header -->
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-12">
+      <div>
+        <span class="text-xs font-bold tracking-widest text-[#8c5a24] uppercase block mb-2">Global Escapes</span>
+        <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Popular Destinations</h2>
+      </div>
+      <a href="{% url 'packages_page' %}"
+        class="text-sm font-semibold text-[#8c5a24] hover:text-[#72491d] flex items-center gap-1 transition-colors mt-4 sm:mt-0">
+        View all Destinations
+        <i class="ri-arrow-right-line text-sm"></i>
+      </a>
+    </div>
+
+    <!-- Grid Layout -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+      <!-- Amalfi Coast (Large Left Card) -->
+      <div class="md:col-span-2 relative group overflow-hidden rounded-2xl shadow-md h-[420px]">
+        <img src="https://images.unsplash.com/photo-1533900298318-6b8da08a523e?auto=format&fit=crop&w=1000&q=80"
+          alt="Amalfi Coast"
+          class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-900/20 to-transparent"></div>
+        <div class="absolute bottom-6 left-6 right-6 text-white">
+          <h3 class="text-2xl font-bold mb-1">Amalfi Coast, Italy</h3>
+          <p class="text-sm text-slate-200/90 font-light">Mediterranean Elegance</p>
+        </div>
+      </div>
+
+      <!-- Nested Middle Column: Tokyo and Bora Bora Stack -->
+      <div class="md:col-span-1 flex flex-col gap-6">
+
+        <!-- Tokyo -->
+        <div class="relative group overflow-hidden rounded-2xl shadow-md h-[198px]">
+          <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=600&q=80"
+            alt="Tokyo"
+            class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-900/20 to-transparent"></div>
+          <div class="absolute bottom-4 left-4 right-4 text-white">
+            <h3 class="text-lg font-bold">Tokyo, Japan</h3>
+          </div>
+        </div>
+
+        <!-- Bora Bora -->
+        <div class="relative group overflow-hidden rounded-2xl shadow-md h-[198px]">
+          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80"
+            alt="Bora Bora"
+            class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-900/20 to-transparent"></div>
+          <div class="absolute bottom-4 left-4 right-4 text-white">
+            <h3 class="text-lg font-bold">Bora Bora</h3>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Reykjavik (Large Right Card) -->
+      <div class="md:col-span-1 relative group overflow-hidden rounded-2xl shadow-md h-[420px]">
+        <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1000&q=80"
+          alt="Reykjavik"
+          class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-900/20 to-transparent"></div>
+        <div class="absolute bottom-6 left-6 right-6 text-white">
+          <h3 class="text-2xl font-bold mb-1">Reykjavik, Iceland</h3>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Featured Tour Packages Section -->
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Section Header -->
+    <div class="text-center mb-16">
+      <span class="text-xs font-bold tracking-widest text-[#8c5a24] uppercase block mb-2">Handpicked For You</span>
+      <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Featured Tour Packages</h2>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      <!-- Package Card 1 -->
+      <div
+        class="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full">
+        <div class="relative h-60 w-full">
+          <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80"
+            alt="African Safari" class="w-full h-full object-cover" />
+          <span
+            class="absolute top-4 left-4 bg-orange-100 text-[#8c5a24] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Best
+            Seller</span>
+        </div>
+        <div class="p-6 flex-grow flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex justify-between items-start">
+              <h3 class="text-lg font-bold text-slate-900 leading-snug">African Safari Expedition</h3>
+              <span class="text-[#8c5a24] font-bold text-lg leading-none">$6,250</span>
+            </div>
+            <p class="text-sm text-slate-500 font-light leading-relaxed">
+              12 Days through Tanzania & Kenya with private guides and luxury lodge stays.
+            </p>
+          </div>
+          <div class="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+            <div class="flex items-center gap-1.5">
+              <i class="ri-time-line text-sm"></i>
+              <span>12 Days</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <i class="ri-group-line text-sm"></i>
+              <span>Max 8</span>
+            </div>
+          </div>
+          <div class="pt-6">
+            <a href="#"
+              class="block w-full text-center border border-slate-200 hover:border-[#8c5a24] hover:bg-[#8c5a24]/5 text-slate-700 hover:text-[#8c5a24] text-sm font-semibold py-2.5 rounded-lg transition-all">View
+              Packages</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Package Card 2 -->
+      <div
+        class="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full">
+        <div class="relative h-60 w-full">
+          <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80"
+            alt="Kyoto Cultural" class="w-full h-full object-cover" />
+          <span
+            class="absolute top-4 left-4 bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Adventure</span>
+        </div>
+        <div class="p-6 flex-grow flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex justify-between items-start">
+              <h3 class="text-lg font-bold text-slate-900 leading-snug">Kyoto Cultural Heritage</h3>
+              <span class="text-[#8c5a24] font-bold text-lg leading-none">$3,420</span>
+            </div>
+            <p class="text-sm text-slate-500 font-light leading-relaxed">
+              Immerse yourself in traditional Japan. Private tea ceremonies and forest retreats.
+            </p>
+          </div>
+          <div class="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+            <div class="flex items-center gap-1.5">
+              <i class="ri-time-line text-sm"></i>
+              <span>8 Days</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <i class="ri-group-line text-sm"></i>
+              <span>Max 6</span>
+            </div>
+          </div>
+          <div class="pt-6">
+            <a href="#"
+              class="block w-full text-center border border-slate-200 hover:border-[#8c5a24] hover:bg-[#8c5a24]/5 text-slate-700 hover:text-[#8c5a24] text-sm font-semibold py-2.5 rounded-lg transition-all">View
+              Packages</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Package Card 3 -->
+      <div
+        class="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full">
+        <div class="relative h-60 w-full">
+          <img src="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=800&q=80"
+            alt="Greek Isles Yacht" class="w-full h-full object-cover" />
+        </div>
+        <div class="p-6 flex-grow flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex justify-between items-start">
+              <h3 class="text-lg font-bold text-slate-900 leading-snug">Greek Isles Private Yacht</h3>
+              <span class="text-[#8c5a24] font-bold text-lg leading-none">$8,700</span>
+            </div>
+            <p class="text-sm text-slate-500 font-light leading-relaxed">
+              Sail the Aegean in absolute privacy. Custom menu and custom island itineraries.
+            </p>
+          </div>
+          <div class="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+            <div class="flex items-center gap-1.5">
+              <i class="ri-time-line text-sm"></i>
+              <span>10 Days</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <i class="ri-group-line text-sm"></i>
+              <span>Max 4</span>
+            </div>
+          </div>
+          <div class="pt-6">
+            <a href="#"
+              class="block w-full text-center border border-slate-200 hover:border-[#8c5a24] hover:bg-[#8c5a24]/5 text-slate-700 hover:text-[#8c5a24] text-sm font-semibold py-2.5 rounded-lg transition-all">View
+              Packages</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Value Proposition Section -->
+<section class="py-20 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Left Column: Details -->
+      <div class="space-y-6">
+        <span class="text-xs font-bold tracking-widest text-[#8c5a24] uppercase block">The NextStop Edge</span>
+        <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight leading-tight">Travel with Confidence
+        </h2>
+        <p class="text-slate-500 font-light leading-relaxed">
+          We believe every journey should be as unique as the explorer. Our team handles every detail, ensuring your
+          only responsibility is to enjoy the horizon.
+        </p>
+
+        <!-- Feature Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-6">
+
+          <!-- Feature 1 -->
+          <div class="space-y-3">
+            <div class="h-10 w-10 rounded-xl bg-orange-100 flex items-center justify-center text-[#8c5a24]">
+              <i class="ri-shield-check-line text-xl"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">Verified Excellence</h3>
+            <p class="text-xs text-slate-400 font-light leading-relaxed">
+              Every accommodation and guide is hand-vetted for safety and premium quality.
+            </p>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="space-y-3">
+            <div class="h-10 w-10 rounded-xl bg-orange-100 flex items-center justify-center text-[#8c5a24]">
+              <i class="ri-customer-service-2-line text-xl"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">24/7 Concierge</h3>
+            <p class="text-xs text-slate-400 font-light leading-relaxed">
+              Your personal travel assistant is just a message away, anywhere in the world.
+            </p>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="space-y-3">
+            <div class="h-10 w-10 rounded-xl bg-orange-100 flex items-center justify-center text-[#8c5a24]">
+              <i class="ri-leaf-line text-xl"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">Sustainable Luxury</h3>
+            <p class="text-xs text-slate-400 font-light leading-relaxed">
+              We partner with local communities to preserve the beauty we explore.
+            </p>
+          </div>
+
+          <!-- Feature 4 -->
+          <div class="space-y-3">
+            <div class="h-10 w-10 rounded-xl bg-orange-100 flex items-center justify-center text-[#8c5a24]">
+              <i class="ri-price-tag-3-line text-xl"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">Price Transparency</h3>
+            <p class="text-xs text-slate-400 font-light leading-relaxed">
+              No hidden fees. What you see is exactly what you pay for your adventure.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right Column: Image and Testimonial Card -->
+      <div class="relative w-full h-[520px]">
+        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1000&q=80"
+          alt="Sarah J. in mountains" class="w-full h-full object-cover rounded-2xl shadow-lg" />
+
+        <!-- Floating Card -->
+        <div
+          class="absolute bottom-6 left-6 right-6 sm:left-8 bg-white/95 backdrop-blur-md p-5 rounded-2xl shadow-xl border border-slate-100 max-w-[280px]">
+          <!-- 5 Stars -->
+          <div class="flex items-center gap-1 text-amber-500 mb-2">
+            <i class="ri-star-fill text-sm"></i>
+            <i class="ri-star-fill text-sm"></i>
+            <i class="ri-star-fill text-sm"></i>
+            <i class="ri-star-fill text-sm"></i>
+            <i class="ri-star-fill text-sm"></i>
+          </div>
+          <h4 class="text-sm font-semibold text-slate-850 mb-1">"Flawless logistics"</h4>
+          <p class="text-xs text-slate-500 font-light">- Sarah J., Elite Member</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Review / Testimonial Slider Section -->
+<section class="py-20 bg-[#071626] text-white">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+    <span class="text-xs font-bold tracking-widest text-[#8c5a24] uppercase block mb-2">Traveler Reviews</span>
+    <h2 class="text-3xl font-bold text-white tracking-tight mb-16">What Explorers Say</h2>
+
+    <!-- Testimonial card -->
+    <div class="space-y-8">
+      <p class="text-lg sm:text-2xl font-light text-slate-100 leading-relaxed italic max-w-2xl mx-auto">
+        "The attention to detail was beyond my expectations. From the moment we landed in Crete, everything was handled
+        with surgical precision."
+      </p>
+
+      <!-- Reviewer Profile -->
+      <div class="flex items-center justify-center gap-4">
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80"
+          alt="Mark Thompson" class="h-12 w-12 rounded-full object-cover border-2 border-[#8c5a24]/40" />
+        <div class="text-left">
+          <h4 class="text-sm font-semibold text-white">Mark Thompson</h4>
+          <p class="text-xs text-slate-400 font-light">Elite Member</p>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="flex justify-center gap-4 pt-6">
+        <button
+          class="h-10 w-10 rounded-full border border-slate-700 hover:border-white text-slate-400 hover:text-white flex items-center justify-center transition-all">
+          <i class="ri-arrow-left-s-line text-lg"></i>
+        </button>
+        <button
+          class="h-10 w-10 rounded-full border border-slate-700 hover:border-white text-slate-400 hover:text-white flex items-center justify-center transition-all">
+          <i class="ri-arrow-right-s-line text-lg"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="py-24 bg-white text-center">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+    <h2 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+      Ready to write your next chapter?
+    </h2>
+    <p class="text-slate-500 font-light text-base sm:text-lg max-w-xl mx-auto">
+      Join 15,000+ modern explorers who trust NextStop for their most precious memories.
+    </p>
+    <div class="flex flex-col sm:flex-row justify-center gap-4 pt-6">
+      <a href="#"
+        class="bg-[#8c5a24] hover:bg-[#72491d] text-white text-sm font-semibold px-8 py-3.5 rounded-xl transition-all shadow-md hover:shadow duration-200">
+        Book Your Journey
+      </a>
+      <a href="#"
+        class="border border-slate-200 hover:border-slate-800 text-slate-700 hover:text-slate-900 text-sm font-semibold px-8 py-3.5 rounded-xl transition-all duration-200">
+        Contact Our Experts
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

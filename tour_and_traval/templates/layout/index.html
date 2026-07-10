@@ -1,44 +1,157 @@
 {% load static %}
 {% load static tailwind_tags %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>
-        NextStop |
-        {% block page_title %} {% endblock %}
-    </title>
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NextStop | {% block page_title %}{% endblock %}</title>
     {% tailwind_css %}
-    <link rel="icon" type="image/png" href="{% static 'images/LOGO.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/LOGO.png' %}" />
+    <!-- Preconnect and import Outfit & Inter fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Remix Icon CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-
-        .heading {
-            font-family: "Lobster Two", sans-serif;
-            font-weight: 600;
-            font-style: italic;
-        }
+      body {
+        font-family: 'Outfit', 'Inter', sans-serif;
+      }
+      .font-inter {
+        font-family: 'Inter', sans-serif;
+      }
     </style>
-</head>
-<body class="bg-gray-900 w-full h-screen text-white">
-    <nav class="bg-red-500 flex justify-between items-center p-4 w-full ">
-        <h1 class="heading text-5xl">NextStop</h1>
+  </head>
+  <body class="bg-slate-50 min-h-screen flex flex-col text-slate-850 antialiased">
+    <!-- Header / Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-xs">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          
+          <!-- Logo -->
+          <div class="flex-shrink-0 flex items-center">
+            <a href="{% url 'home' %}" class="text-2xl font-bold tracking-tight text-slate-900">
+              Next<span class="font-normal text-slate-500">Stop</span>
+            </a>
+          </div>
 
-        <div>
-            <ul>
-                <li><a href=#">Home</a></li>
-                <li><a href="#">Explore</a></li>
-                <li><a href="#">Book</a></li>
-                <li><a href="#">Profile</a></li>
-                <li><a href="#">Settings</a></li>
-            </ul>
+          <!-- Middle Navigation Links (Desktop) -->
+          <nav class="hidden md:flex space-x-8">
+            <a href="#" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors py-2">Tours</a>
+            <a href="#" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors py-2">Gallery</a>
+            <a href="#" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors py-2">Reviews</a>
+            <a href="#" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors py-2">FAQ</a>
+            <a href="#" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors py-2">Contact</a>
+          </nav>
+
+          <!-- Right Action Buttons (Desktop) -->
+          <div class="hidden md:flex items-center space-x-6">
+            <a href="#" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Login</a>
+            <a href="#" class="bg-[#8c5a24] hover:bg-[#72491d] text-white text-sm font-medium px-5 py-2.5 rounded transition-all duration-200 shadow-xs hover:shadow-md">Book Now</a>
+          </div>
+
+          <!-- Hamburger Button (Mobile) -->
+          <div class="flex items-center md:hidden">
+            <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-slate-500 hover:text-slate-900 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#8c5a24] transition-colors" aria-controls="mobile-menu" aria-expanded="false">
+              <span class="sr-only">Open main menu</span>
+              <!-- Hamburger Icon -->
+              <i id="hamburger-icon" class="ri-menu-line text-2xl block"></i>
+              <!-- Close Icon -->
+              <i id="close-icon" class="ri-close-line text-2xl hidden"></i>
+            </button>
+          </div>
+
         </div>
-    </nav>
-    <main>
-        this is main area
+      </div>
+
+      <!-- Mobile Navigation Menu Drawer -->
+      <div id="mobile-menu" class="hidden md:hidden border-b border-slate-100 bg-white">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a href="#" class="block px-3 py-2.5 rounded-md text-base font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">Tours</a>
+          <a href="#" class="block px-3 py-2.5 rounded-md text-base font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">Gallery</a>
+          <a href="#" class="block px-3 py-2.5 rounded-md text-base font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">Reviews</a>
+          <a href="#" class="block px-3 py-2.5 rounded-md text-base font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">FAQ</a>
+          <a href="#" class="block px-3 py-2.5 rounded-md text-base font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">Contact</a>
+        </div>
+        <div class="pt-4 pb-4 border-t border-slate-100 px-5">
+          <div class="flex items-center justify-between">
+            <a href="#" class="text-base font-medium text-slate-600 hover:text-slate-900 transition-colors">Login</a>
+            <a href="#" class="bg-[#8c5a24] hover:bg-[#72491d] text-white text-base font-medium px-5 py-2.5 rounded transition-all duration-200 shadow-xs text-center">Book Now</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow flex flex-col justify-center">
+      {% block main_content %} {% endblock %}
     </main>
-    <footer>
-        this is footer area
+
+    <!-- Footer -->
+    <footer class="bg-[#051120] text-slate-400 py-12 border-t border-slate-900 font-inter">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Desktop Footer Layout -->
+        <div class="hidden md:grid grid-cols-2 gap-y-6 items-start">
+          <!-- Col 1, Row 1: Logo -->
+          <div>
+            <a href="{% url 'home' %}" class="text-2xl font-bold tracking-tight text-white">
+              Next<span class="font-normal text-slate-400">Stop</span>
+            </a>
+          </div>
+          
+          <!-- Col 2, Row 1: Links -->
+          <div class="flex justify-end space-x-6 text-sm">
+            <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+            <a href="#" class="hover:text-white transition-colors">Travel Insurance</a>
+            <a href="#" class="hover:text-white transition-colors">Sitemap</a>
+            <a href="#" class="hover:text-white transition-colors">Affiliates</a>
+          </div>
+          
+          <!-- Col 1, Row 2: Tagline -->
+          <div class="text-sm text-slate-400">
+            Creating extraordinary adventures since 2012.
+          </div>
+          
+          <!-- Col 2, Row 2: Copyright -->
+          <div class="flex justify-end items-center text-xs text-slate-500">
+            <p class="text-right">
+              &copy; 2026 NextStop. All rights reserved.
+            </p>
+          </div>
+        </div>
+
+        <!-- Mobile/Tablet Footer Layout -->
+        <div class="md:hidden space-y-8 text-center">
+          <div class="space-y-2">
+            <a href="/" class="text-2xl font-bold tracking-tight text-white">
+              Next<span class="font-normal text-slate-400">Stop</span>
+            </a>
+            <p class="text-sm text-slate-400">
+              Creating extraordinary adventures since 2012.
+            </p>
+          </div>
+          
+          <div class="flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm">
+            <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+            <a href="#" class="hover:text-white transition-colors">Travel Insurance</a>
+            <a href="#" class="hover:text-white transition-colors">Sitemap</a>
+            <a href="#" class="hover:text-white transition-colors">Affiliates</a>
+          </div>
+          
+          <div class="pt-6 border-t border-slate-800/60 text-xs text-slate-500">
+            &copy; 2026 NextStop. All rights reserved.
+          </div>
+        </div>
+
+      </div>
     </footer>
-</body>
+
+    <!-- Interactive script for mobile menu toggle -->
+    <script src="{% static 'scripts/index.js' %}"></script>
+    {% block script %}{% endblock %}
+  </body>
 </html>
