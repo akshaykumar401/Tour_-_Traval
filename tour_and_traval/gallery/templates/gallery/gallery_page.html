@@ -2,6 +2,172 @@
 {% load static %}
 {% block page_title %} Gallery {% endblock %}
 
-{% block main_content %} {% endblock %}
+{% block main_content %}
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 font-inter">
+    <!-- Page Header Section -->
+    <div class="text-center space-y-4 pb-4">
+      <h1 class="text-4xl sm:text-5xl font-bold text-[#051120] tracking-tight leading-tight">
+        World Through Our Lens
+      </h1>
+      <p class="text-slate-500 font-light max-w-2xl mx-auto leading-relaxed text-sm sm:text-base">
+        Discover the breathtaking destinations our travelers have explored. From sun-drenched coastlines to mist-covered peaks.
+      </p>
+    </div>
 
-{% block script %}{% endblock %}
+    <!-- Category Filter Pills -->
+    <div class="flex flex-wrap justify-center gap-2.5 sm:gap-3 py-6">
+      <button data-filter="all" class="filter-pill bg-[#051120] text-white text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md">
+        All Explorations
+      </button>
+      <button data-filter="mountains" class="filter-pill bg-white text-slate-600 border border-slate-200 hover:border-slate-350 hover:text-slate-900 text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-200 cursor-pointer shadow-xs">
+        Mountains
+      </button>
+      <button data-filter="beaches" class="filter-pill bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:text-slate-900 text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-200 cursor-pointer shadow-xs">
+        Beaches
+      </button>
+      <button data-filter="forest" class="filter-pill bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:text-slate-900 text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-200 cursor-pointer shadow-xs">
+        Forest
+      </button>
+      <button data-filter="adventure" class="filter-pill bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:text-slate-900 text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-200 cursor-pointer shadow-xs">
+        Adventure
+      </button>
+      <button data-filter="historical" class="filter-pill bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:text-slate-900 text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-200 cursor-pointer shadow-xs">
+        Historical Places
+      </button>
+    </div>
+
+    <!-- Gallery Grid (Masonry Columns Layout) -->
+    <div id="gallery-grid" class="columns-1 sm:columns-2 lg:columns-3 gap-6 [column-fill:_balance] py-6">
+      
+      <!-- Card 1: Mountains (Switzerland) -->
+      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="mountains">
+        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80" 
+             alt="The Alpenglow Summit" 
+             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
+        <!-- Hover Gradient & Text Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">Switzerland</span>
+          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">The Alpenglow Summit</h3>
+        </div>
+      </div>
+
+      <!-- Card 2: Beaches (Maldives) -->
+      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="beaches">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" 
+             alt="Turquoise Paradise" 
+             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">Maldives</span>
+          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">Turquoise Paradise</h3>
+        </div>
+      </div>
+
+      <!-- Card 3: Adventure (Paragliding Switzerland) -->
+      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="adventure">
+        <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80" 
+             alt="Skyward Drift" 
+             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">Switzerland</span>
+          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">Skyward Drift</h3>
+        </div>
+      </div>
+
+      <!-- Card 4: Forest (Kyoto Bamboo Sanctuary) -->
+      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="forest">
+        <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=120" 
+             alt="Kyoto Bamboo Sanctuary" 
+             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">Japan</span>
+          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">Kyoto Bamboo Sanctuary</h3>
+        </div>
+      </div>
+
+      <!-- Card 5: Historical Places (Angkor Wat) -->
+      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="historical">
+        <img src="https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80" 
+             alt="Silent Monoliths" 
+             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">Cambodia</span>
+          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">Silent Monoliths</h3>
+        </div>
+      </div>
+
+      <!-- Card 6: Adventure (Dune Runner Expedition) -->
+      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="adventure">
+        <img src="https://images.unsplash.com/photo-1528543606781-2f6e6857f318?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8QWR2ZW50dXJlfGVufDB8fDB8fHwy" 
+             alt="Dune Runner Expedition" 
+             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">Jordan</span>
+          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">Dune Runner Expedition</h3>
+        </div>
+      </div>
+
+      <!-- Card 7: Mountains (Peak Solitude) -->
+      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="mountains">
+        <img src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?auto=format&fit=crop&w=800&q=80" 
+             alt="Peak Solitude" 
+             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">Italy</span>
+          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">Peak Solitude</h3>
+        </div>
+      </div>
+
+      <!-- Card 8: Beaches (Emerald Cove) -->
+      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="beaches">
+        <img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=800&q=80" 
+             alt="Emerald Cove" 
+             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">Greece</span>
+          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">Emerald Cove</h3>
+        </div>
+      </div>
+
+      <!-- Card 9: Forest (Redwood Cathedral) -->
+      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="forest">
+        <img src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=800&q=80" 
+             alt="Redwood Cathedral" 
+             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">United States</span>
+          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">Redwood Cathedral</h3>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Empty State for Filtering -->
+    <div id="gallery-empty-state" class="hidden py-16 text-center space-y-3">
+      <i class="ri-image-line text-4xl text-slate-350"></i>
+      <h4 class="text-lg font-bold text-slate-800">No photos found</h4>
+      <p class="text-sm text-slate-500 font-light">Try selecting a different filter category.</p>
+    </div>
+
+    <!-- Newsletter / Call-To-Action Section -->
+    <div class="bg-[#051120] rounded-3xl py-12 px-6 sm:py-16 sm:px-12 mt-12 text-center text-white relative overflow-hidden">
+      <!-- Background pattern/accent -->
+      <div class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-300 via-transparent to-transparent"></div>
+      
+      <div class="relative z-10 max-w-2xl mx-auto space-y-6">
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Ready to create your own memories?</h2>
+        <p class="text-sm sm:text-base text-slate-350 font-light leading-relaxed max-w-lg mx-auto">
+          Our experts are waiting to craft your perfect itinerary. Let's start planning today.
+        </p>
+        <div class="pt-4">
+          <a href="{% url 'packages_page' %}" class="inline-block bg-[#8c5a24] hover:bg-[#72491d] text-white text-sm sm:text-base font-semibold px-8 py-3.5 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer">
+            Explore All Destinations
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{% static 'scripts/gallery_page.js' %}"></script>
+{% endblock %}
