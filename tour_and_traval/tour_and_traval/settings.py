@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'packages',
     'gallery',
     'help_center',
+    'contact',
 ]
 
 MIDDLEWARE = [
