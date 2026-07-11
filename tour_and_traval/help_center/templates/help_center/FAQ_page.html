@@ -3,7 +3,304 @@
 {% block page_title %} FAQ {% endblock %}
 
 {% block main_content %}
-  Hello This is FAQ
+<div class="bg-slate-50/50 min-h-screen py-12">
+  <!-- Hero Section -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-8 pb-12">
+    <h1 class="text-4xl md:text-5xl font-extrabold text-[#051120] tracking-tight mb-4">
+      How can we help you?
+    </h1>
+    <p class="text-slate-500 text-lg max-w-2xl mx-auto mb-8 font-inter">
+      Find answers to our most frequently asked questions about booking, cancellations, and travel logistics.
+    </p>
+    
+    <!-- Search Bar -->
+    <div class="max-w-xl mx-auto relative shadow-sm rounded-full bg-white border border-slate-200 focus-within:ring-2 focus-within:ring-[#8c5a24] focus-within:border-transparent transition-all">
+      <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+        <i class="ri-search-line text-slate-400 text-lg"></i>
+      </div>
+      <input type="text" id="faq-search" class="block w-full pl-12 pr-5 py-4 bg-transparent text-slate-800 placeholder-slate-400 focus:outline-none rounded-full text-base" placeholder="Search for a question...">
+      <button id="clear-search-btn" class="absolute inset-y-0 right-0 pr-5 flex items-center text-slate-400 hover:text-slate-600 hidden transition-colors">
+        <i class="ri-close-circle-fill text-lg"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Grid Layout -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      
+      <!-- Sidebar Navigation (Categories) -->
+      <div class="lg:col-span-1 lg:sticky lg:top-28 lg:self-start">
+        <h3 class="text-slate-800 font-bold text-xs uppercase tracking-wider mb-4 font-inter">Categories</h3>
+        <div id="category-list" class="space-y-1.5 flex flex-col">
+          <button data-category="booking" class="category-btn active flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-left w-full transition-all duration-200 bg-[#0f2440] text-white shadow-xs">
+            <i class="ri-calendar-line text-lg"></i>
+            <span>Booking</span>
+          </button>
+          <button data-category="cancellations" class="category-btn flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-left w-full transition-all duration-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900">
+            <i class="ri-calendar-close-line text-lg"></i>
+            <span>Cancellations</span>
+          </button>
+          <button data-category="payments" class="category-btn flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-left w-full transition-all duration-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900">
+            <i class="ri-wallet-3-line text-lg"></i>
+            <span>Payments</span>
+          </button>
+          <button data-category="travel-info" class="category-btn flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-left w-full transition-all duration-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900">
+            <i class="ri-plane-line text-lg"></i>
+            <span>Travel Info</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- FAQ Content Sections -->
+      <div id="faq-sections-container" class="lg:col-span-3 space-y-12">
+        
+        <!-- Booking Section -->
+        <div id="section-booking" class="faq-section space-y-4">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="bg-amber-50 text-[#8c5a24] w-10 h-10 rounded-xl flex items-center justify-center">
+              <i class="ri-calendar-line text-xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900">Booking</h2>
+          </div>
+
+          <div class="faq-item bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden transition-all duration-300 hover:shadow-sm">
+            <button class="faq-toggle w-full flex justify-between items-center py-4.5 px-6 text-left font-semibold text-slate-800 hover:text-slate-950 focus:outline-none transition-colors">
+              <span class="faq-question">How do I book a tour?</span>
+              <i class="ri-arrow-down-s-line text-xl text-slate-400 transition-transform duration-350"></i>
+            </button>
+            <div class="faq-answer-container max-h-0 overflow-hidden transition-all duration-350 ease-in-out">
+              <div class="faq-answer px-6 pb-5 pt-1 text-slate-600 text-sm leading-relaxed font-inter">
+                Booking is easy! Simply navigate to our Tours page, select your preferred itinerary, choose your travel dates and number of guests, and click 'Book Now'. Follow the checkout prompts to secure your spot.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden transition-all duration-300 hover:shadow-sm">
+            <button class="faq-toggle w-full flex justify-between items-center py-4.5 px-6 text-left font-semibold text-slate-800 hover:text-slate-950 focus:outline-none transition-colors">
+              <span class="faq-question">Can I make a booking for a large group?</span>
+              <i class="ri-arrow-down-s-line text-xl text-slate-400 transition-transform duration-350"></i>
+            </button>
+            <div class="faq-answer-container max-h-0 overflow-hidden transition-all duration-350 ease-in-out">
+              <div class="faq-answer px-6 pb-5 pt-1 text-slate-600 text-sm leading-relaxed font-inter">
+                Yes, we accommodate group bookings. For groups of 10 or more, please contact our group travel specialists through our Contact page or by emailing groups@nextstop.com for custom packages and discounts.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cancellations Section -->
+        <div id="section-cancellations" class="faq-section space-y-4">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="bg-amber-50 text-[#8c5a24] w-10 h-10 rounded-xl flex items-center justify-center">
+              <i class="ri-calendar-close-line text-xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900">Cancellations</h2>
+          </div>
+
+          <div class="faq-item bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden transition-all duration-300 hover:shadow-sm">
+            <button class="faq-toggle w-full flex justify-between items-center py-4.5 px-6 text-left font-semibold text-slate-800 hover:text-slate-950 focus:outline-none transition-colors">
+              <span class="faq-question">Can I cancel my tour?</span>
+              <i class="ri-arrow-down-s-line text-xl text-slate-400 transition-transform duration-350"></i>
+            </button>
+            <div class="faq-answer-container max-h-0 overflow-hidden transition-all duration-350 ease-in-out">
+              <div class="faq-answer px-6 pb-5 pt-1 text-slate-600 text-sm leading-relaxed font-inter">
+                Yes, cancellations made up to 30 days prior to the tour start date are eligible for a full refund. Cancellations made between 14-29 days will receive a 50% refund, while cancellations made less than 14 days in advance are non-refundable.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden transition-all duration-300 hover:shadow-sm">
+            <button class="faq-toggle w-full flex justify-between items-center py-4.5 px-6 text-left font-semibold text-slate-800 hover:text-slate-950 focus:outline-none transition-colors">
+              <span class="faq-question">What happens if NextStop cancels a tour?</span>
+              <i class="ri-arrow-down-s-line text-xl text-slate-400 transition-transform duration-350"></i>
+            </button>
+            <div class="faq-answer-container max-h-0 overflow-hidden transition-all duration-350 ease-in-out">
+              <div class="faq-answer px-6 pb-5 pt-1 text-slate-600 text-sm leading-relaxed font-inter">
+                In the rare event that we must cancel a tour due to weather, safety concerns, or low participation, you will be notified immediately and offered a full refund or the option to reschedule to another date or tour of equal value.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payments Section -->
+        <div id="section-payments" class="faq-section space-y-4">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="bg-amber-50 text-[#8c5a24] w-10 h-10 rounded-xl flex items-center justify-center">
+              <i class="ri-wallet-3-line text-xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900">Payments</h2>
+          </div>
+
+          <div class="faq-item bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden transition-all duration-300 hover:shadow-sm">
+            <button class="faq-toggle w-full flex justify-between items-center py-4.5 px-6 text-left font-semibold text-slate-800 hover:text-slate-950 focus:outline-none transition-colors">
+              <span class="faq-question">Which payment methods do you accept?</span>
+              <i class="ri-arrow-down-s-line text-xl text-slate-400 transition-transform duration-350"></i>
+            </button>
+            <div class="faq-answer-container max-h-0 overflow-hidden transition-all duration-350 ease-in-out">
+              <div class="faq-answer px-6 pb-5 pt-1 text-slate-600 text-sm leading-relaxed font-inter">
+                We accept all major credit cards (Visa, MasterCard, American Express, Discover), PayPal, Apple Pay, and Google Pay. Bank wire transfers are also accepted for group bookings and custom luxury itineraries.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden transition-all duration-300 hover:shadow-sm">
+            <button class="faq-toggle w-full flex justify-between items-center py-4.5 px-6 text-left font-semibold text-slate-800 hover:text-slate-950 focus:outline-none transition-colors">
+              <span class="faq-question">Is my payment information secure?</span>
+              <i class="ri-arrow-down-s-line text-xl text-slate-400 transition-transform duration-350"></i>
+            </button>
+            <div class="faq-answer-container max-h-0 overflow-hidden transition-all duration-350 ease-in-out">
+              <div class="faq-answer px-6 pb-5 pt-1 text-slate-600 text-sm leading-relaxed font-inter">
+                Absolutely. All transactions are processed through a secure, PCI-compliant payment gateway with 256-bit SSL encryption. We never store your full credit card details on our servers.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Travel Info Section -->
+        <div id="section-travel-info" class="faq-section space-y-4">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="bg-amber-50 text-[#8c5a24] w-10 h-10 rounded-xl flex items-center justify-center">
+              <i class="ri-plane-line text-xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900">Travel Info</h2>
+          </div>
+
+          <div class="faq-item bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden transition-all duration-300 hover:shadow-sm">
+            <button class="faq-toggle w-full flex justify-between items-center py-4.5 px-6 text-left font-semibold text-slate-800 hover:text-slate-950 focus:outline-none transition-colors">
+              <span class="faq-question">What should I pack for my tour?</span>
+              <i class="ri-arrow-down-s-line text-xl text-slate-400 transition-transform duration-350"></i>
+            </button>
+            <div class="faq-answer-container max-h-0 overflow-hidden transition-all duration-350 ease-in-out">
+              <div class="faq-answer px-6 pb-5 pt-1 text-slate-600 text-sm leading-relaxed font-inter">
+                Packing lists vary by destination and season. Once your booking is confirmed, we will email you a detailed pre-departure guide containing packing recommendations, weather insights, and travel tips specific to your tour.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden transition-all duration-300 hover:shadow-sm">
+            <button class="faq-toggle w-full flex justify-between items-center py-4.5 px-6 text-left font-semibold text-slate-800 hover:text-slate-950 focus:outline-none transition-colors">
+              <span class="faq-question">Do I need travel insurance?</span>
+              <i class="ri-arrow-down-s-line text-xl text-slate-400 transition-transform duration-350"></i>
+            </button>
+            <div class="faq-answer-container max-h-0 overflow-hidden transition-all duration-350 ease-in-out">
+              <div class="faq-answer px-6 pb-5 pt-1 text-slate-600 text-sm leading-relaxed font-inter">
+                We highly recommend purchasing comprehensive travel insurance for all bookings. This helps cover unexpected medical expenses, trip cancellations, lost luggage, and other travel emergencies.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- No Results Search Fallback -->
+        <div id="no-results" class="hidden text-center py-16 bg-white border border-slate-100 rounded-2xl shadow-xs">
+          <div class="w-16 h-16 bg-slate-50 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="ri-question-line text-3xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-800 mb-1">No matches found</h3>
+          <p class="text-slate-500 text-sm max-w-sm mx-auto font-inter">We couldn't find any FAQs matching your search query. Please try searching for another topic or click below to chat with support.</p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Contact Support Card -->
+    <div class="bg-[#051120] text-center py-12 px-6 rounded-2xl shadow-xl mt-20 relative overflow-hidden">
+      <div class="absolute -top-24 -left-24 w-48 h-48 bg-blue-900/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="relative z-10 max-w-2xl mx-auto">
+        <h3 class="text-2xl md:text-3xl font-bold text-white mb-2 font-outfit">Still have questions?</h3>
+        <p class="text-slate-300 text-sm md:text-base mb-8 max-w-lg mx-auto font-inter leading-relaxed">
+          Our concierge team is available 24/7 to help you plan the perfect journey.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+          <button id="open-chat-btn" class="bg-[#8c5a24] hover:bg-[#72491d] text-white px-8 py-3.5 rounded-full font-semibold transition-all shadow-md hover:shadow-lg flex items-center gap-2 w-full sm:w-auto justify-center">
+            <i class="ri-chat-3-line text-lg"></i>
+            <span>Chat with Support</span>
+          </button>
+          <a href="mailto:support@nextstop.com" class="border border-slate-700 hover:border-slate-500 text-white hover:bg-white/5 px-8 py-3.5 rounded-full font-semibold transition-all w-full sm:w-auto inline-flex items-center justify-center font-inter">
+            Email Us
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Chat Trigger Button -->
+<div id="chat-bubble-container" class="fixed bottom-6 right-6 z-50">
+  <button id="chat-bubble-trigger" class="bg-[#8c5a24] hover:bg-[#72491d] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl focus:outline-none transition-all duration-300 transform hover:scale-105 relative">
+    <i class="ri-customer-service-2-fill text-2xl"></i>
+    <span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span>
+  </button>
+</div>
+
+<!-- AI Chat Agent Widget Window -->
+<div id="ai-chat-widget" class="fixed bottom-24 right-6 w-96 max-w-[calc(100vw-2rem)] h-[520px] bg-white rounded-2xl shadow-2xl border border-slate-100 z-50 flex flex-col overflow-hidden transition-all duration-300 opacity-0 pointer-events-none translate-y-4">
+  <!-- Header -->
+  <div class="bg-[#051120] text-white px-5 py-4.5 flex justify-between items-center border-b border-slate-800">
+    <div class="flex items-center gap-3">
+      <div class="relative">
+        <div class="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center border border-slate-700">
+          <i class="ri-robot-2-line text-xl text-amber-500"></i>
+        </div>
+        <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-[#051120]"></span>
+      </div>
+      <div>
+        <h4 class="font-bold text-sm tracking-wide font-outfit">NextStop AI Agent</h4>
+        <span class="text-xs text-slate-400 font-inter">Online &amp; Active</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button id="clear-chat-history" title="Clear Chat" class="text-slate-400 hover:text-white transition-colors focus:outline-none p-1.5 rounded-lg hover:bg-slate-800/50">
+        <i class="ri-refresh-line text-lg"></i>
+      </button>
+      <button id="close-chat-widget" class="text-slate-400 hover:text-white transition-colors focus:outline-none p-1">
+        <i class="ri-close-line text-2xl"></i>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Message History Area -->
+  <div id="chat-conversation" class="flex-grow overflow-y-auto p-5 space-y-4 bg-slate-50/50">
+    <!-- Initial welcome message from AI -->
+    <div class="flex items-start gap-2.5 max-w-[85%]">
+      <div class="w-8 h-8 bg-slate-200 text-slate-600 rounded-full flex items-center justify-center flex-shrink-0 text-sm">
+        <i class="ri-robot-line"></i>
+      </div>
+      <div class="bg-white border border-slate-200/60 text-slate-800 p-3.5 rounded-2xl rounded-tl-none shadow-xs text-sm font-inter leading-relaxed">
+        Hello! I am NextStop AI Agent. How can I help you plan your next journey or answer questions about your booking today?
+      </div>
+    </div>
+  </div>
+  
+  <!-- Quick Replies/Suggestions List -->
+  <div class="px-4 py-2 border-t border-slate-100 bg-white flex items-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-none" id="suggestions-container">
+    <button class="suggestion-btn text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 px-3 py-1.5 rounded-full transition-all border border-slate-200/30 flex-shrink-0">
+      How to book?
+    </button>
+    <button class="suggestion-btn text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 px-3 py-1.5 rounded-full transition-all border border-slate-200/30 flex-shrink-0">
+      Cancellation policy
+    </button>
+    <button class="suggestion-btn text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 px-3 py-1.5 rounded-full transition-all border border-slate-200/30 flex-shrink-0">
+      Payment secure?
+    </button>
+    <button class="suggestion-btn text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 px-3 py-1.5 rounded-full transition-all border border-slate-200/30 flex-shrink-0">
+      Do I need insurance?
+    </button>
+  </div>
+  
+  <!-- Input Form -->
+  <form id="chat-input-form" class="p-4 border-t border-slate-150 bg-white flex items-center gap-2">
+    <input type="text" id="chat-message-input" class="flex-grow bg-slate-50 border border-slate-200 rounded-full py-2.5 px-4 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24]" placeholder="Ask me something..." autocomplete="off">
+    <button type="submit" class="bg-[#8c5a24] hover:bg-[#72491d] text-white w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-colors shadow-xs hover:shadow-sm focus:outline-none">
+      <i class="ri-send-plane-fill text-lg"></i>
+    </button>
+  </form>
+</div>
 {% endblock %}
 
-{% block script %}{% endblock %}
+{% block script %}
+<script src="{% static 'scripts/FAQ_page.js' %}"></script>
+{% endblock %}

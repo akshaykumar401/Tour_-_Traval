@@ -21,7 +21,18 @@
       .font-inter {
         font-family: 'Inter', sans-serif;
       }
+      ::selection {
+        background-color: #F6AD55; /* Custom highlight background */
+        color: #000000;            /* Custom text color */
+      }
+
+      /* For Firefox compatibility */
+      ::-moz-selection {
+        background-color: #F6AD55;
+        color: #000000;
+      }
     </style>
+    {% block extra_cdn %}{% endblock extra_cdn %}
   </head>
   <body class="bg-slate-50 min-h-screen flex flex-col text-slate-850 antialiased">
     <!-- Header / Navigation Bar -->

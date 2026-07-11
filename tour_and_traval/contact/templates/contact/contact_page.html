@@ -1,7 +1,264 @@
-{% extends 'layout/index.html' %}
+{% extends 'layout/index.html' %} 
 {% load static %}
-{% block page_title %} Contact Us {% endblock %}
 
-{% block main_content %} {% endblock %}
+{% block page_title %}
+Contact Us 
+{% endblock %} 
 
-{% block script %}{% endblock %}
+{% block extra_cdn %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+{% endblock extra_cdn %}
+
+{% block main_content %}
+<div class="bg-slate-50/50 min-h-screen py-12 md:py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Title & Header Section -->
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <span
+        class="text-xs font-bold uppercase tracking-widest text-[#8c5a24] block mb-2 font-inter"
+      >
+        Get In Touch
+      </span>
+      <h1
+        class="text-4xl md:text-5xl font-extrabold text-[#051120] tracking-tight mb-4 font-outfit"
+      >
+        Let's Plan Your Next Adventure
+      </h1>
+      <p
+        class="text-slate-500 text-sm md:text-base font-inter leading-relaxed max-w-xl mx-auto"
+      >
+        Whether you have questions about our premium tours or want to curate a
+        bespoke travel experience, our concierge team is ready to assist you.
+      </p>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Left Column: Contact Form -->
+      <div
+        class="lg:col-span-7 bg-white rounded-3xl p-8 md:p-10 shadow-xs border border-slate-200/60"
+      >
+        <h2 class="text-2xl font-bold text-slate-900 mb-6 font-outfit">
+          Send Us a Message
+        </h2>
+
+        <form class="space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Full Name -->
+            <div class="space-y-2">
+              <label
+                for="full_name"
+                class="block text-xs font-bold uppercase tracking-wider text-slate-400 font-inter"
+              >
+                Full Name
+              </label>
+              <input
+                type="text"
+                id="full_name"
+                name="full_name"
+                required
+                placeholder="John Doe"
+                class="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] transition-all"
+              />
+            </div>
+
+            <!-- Email Address -->
+            <div class="space-y-2">
+              <label
+                for="email"
+                class="block text-xs font-bold uppercase tracking-wider text-slate-400 font-inter"
+              >
+                Email Address
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="john@example.com"
+                class="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] transition-all"
+              />
+            </div>
+          </div>
+
+          <!-- Subject -->
+          <div class="space-y-2">
+            <label
+              for="subject"
+              class="block text-xs font-bold uppercase tracking-wider text-slate-400 font-inter"
+            >
+              Subject
+            </label>
+            <div class="relative">
+              <select
+                id="subject"
+                name="subject"
+                class="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 appearance-none focus:outline-none focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] transition-all"
+              >
+                <option value="general">General Inquiry</option>
+                <option value="booking">Booking Questions</option>
+                <option value="custom">Custom Itinerary Request</option>
+                <option value="partner">Partnership Opportunities</option>
+              </select>
+              <div
+                class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400"
+              >
+                <i class="ri-arrow-down-s-line text-lg"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Your Message -->
+          <div class="space-y-2">
+            <label
+              for="message"
+              class="block text-xs font-bold uppercase tracking-wider text-slate-400 font-inter"
+            >
+              Your Message
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows="5"
+              required
+              placeholder="How can we help you explore the world?"
+              class="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] transition-all resize-none"
+            ></textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="w-full bg-[#051120] hover:bg-[#0c223c] text-white py-3.5 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 shadow-xs hover:shadow-md focus:outline-none font-inter text-sm tracking-wide"
+          >
+            <span>Send Message</span>
+            <i class="ri-send-plane-fill text-base"></i>
+          </button>
+        </form>
+      </div>
+
+      <!-- Right Column: Contact Info -->
+      <div class="lg:col-span-5 flex flex-col gap-6 w-full">
+        <!-- Contact Info Card -->
+        <div class="bg-[#132c4d] rounded-3xl p-8 text-white shadow-xs">
+          <h2 class="text-2xl font-bold mb-8 font-outfit">
+            Contact Information
+          </h2>
+
+          <div class="space-y-8">
+            <!-- Phone -->
+            <div class="flex items-start gap-4">
+              <div
+                class="bg-[#e69b24] text-white w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+              >
+                <i class="ri-phone-fill text-lg"></i>
+              </div>
+              <div class="space-y-0.5">
+                <span
+                  class="block text-[10px] font-bold uppercase tracking-wider text-slate-300 font-inter"
+                  >Phone Number</span
+                >
+                <p class="text-lg font-semibold tracking-wide font-outfit">
+                  +91 12345 67890
+                </p>
+                <p class="text-xs text-slate-400 font-inter">
+                  Mon - Fri: 9AM - 6PM
+                </p>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="flex items-start gap-4">
+              <div
+                class="bg-[#e69b24] text-white w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+              >
+                <i class="ri-mail-fill text-lg"></i>
+              </div>
+              <div class="space-y-0.5">
+                <span
+                  class="block text-[10px] font-bold uppercase tracking-wider text-slate-300 font-inter"
+                  >Email Address</span
+                >
+                <p class="text-lg font-semibold font-outfit break-all">
+                  concierge@nextstop.com
+                </p>
+                <p class="text-xs text-slate-400 font-inter">
+                  Average response: 2 hours
+                </p>
+              </div>
+            </div>
+
+            <!-- Address -->
+            <div class="flex items-start gap-4">
+              <div
+                class="bg-[#e69b24] text-white w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+              >
+                <i class="ri-map-pin-2-fill text-lg"></i>
+              </div>
+              <div class="space-y-0.5">
+                <span
+                  class="block text-[10px] font-bold uppercase tracking-wider text-slate-300 font-inter"
+                  >Global Headquarters</span
+                >
+                <p class="text-lg font-semibold tracking-wide font-outfit">
+                  123 Ranchi
+                </p>
+                <p class="text-xs text-slate-400 font-inter">
+                  Tatisilway, Ranchi, Jharkhand 835103
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Divider line -->
+          <div class="border-t border-slate-700/60 my-8"></div>
+
+          <!-- Social Buttons -->
+          <div class="flex items-center gap-3">
+            <a
+              href="#"
+              class="bg-white/10 hover:bg-white/20 transition-all text-white p-3 rounded-xl flex items-center justify-center"
+              title="Share"
+            >
+              <i class="ri-share-forward-line text-lg"></i>
+            </a>
+            <a
+              href="#"
+              class="bg-white/10 hover:bg-white/20 transition-all text-white p-3 rounded-xl flex items-center justify-center"
+              title="Website"
+            >
+              <i class="ri-global-line text-lg"></i>
+            </a>
+            <a
+              href="#"
+              class="bg-white/10 hover:bg-white/20 transition-all text-white p-3 rounded-xl flex items-center justify-center"
+              title="Chat"
+            >
+              <i class="ri-chat-3-line text-lg"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Map Card -->
+        <div class="bg-[#faf5f0] border border-[#f0e5da] rounded-3xl p-4 shadow-xs flex flex-col gap-4 mt-6">
+          <!-- Stylized map viewport -->
+          <div id="map" class="h-64 w-full rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 z-10 shadow-inner"></div>
+          
+          <!-- Open Maps Button -->
+          <a href="https://maps.google.com/?q=Ranchi,+Jharkhand,+India" target="_blank" rel="noopener noreferrer"
+            class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-xs font-semibold py-2.5 px-4 rounded-xl transition-all shadow-xs hover:shadow-sm flex items-center justify-center gap-2 self-end">
+            <span>Open in Google Maps</span>
+            <i class="ri-external-link-line text-sm text-slate-400"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<!-- Leaflet Map JS library -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{% static 'scripts/contact_page.js' %}"></script>
+{% endblock %}

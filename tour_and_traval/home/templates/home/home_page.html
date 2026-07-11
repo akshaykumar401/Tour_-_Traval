@@ -5,7 +5,7 @@
 {% block main_content %}
 <!-- Hero Section -->
 <section class="relative bg-cover bg-center py-24 sm:py-32 px-4 sm:px-6 lg:px-8 flex items-center min-h-[80vh]"
-  style="background-image: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)), url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=2000&q=80');">
+  style="background-image: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)), url({% static 'images/Hero_Image.png' %});">
   <div class="max-w-7xl mx-auto w-full relative z-10 text-white">
     <div class="max-w-3xl space-y-6">
       <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight">
@@ -316,7 +316,7 @@
 
       <!-- Right Column: Image and Testimonial Card -->
       <div class="relative w-full h-[520px]">
-        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1000&q=80"
+        <img src="{% static 'images/Home_Page_image.png' %}"
           alt="Sarah J. in mountains" class="w-full h-full object-cover rounded-2xl shadow-lg" />
 
         <!-- Floating Card -->
