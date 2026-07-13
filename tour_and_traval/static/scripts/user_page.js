@@ -49,22 +49,6 @@ function togglePasswordVisibility(id) {
   }
 }
 
-let tfaEnabled = false;
-function toggle2FA() {
-  tfaEnabled = !tfaEnabled;
-  const toggle = document.getElementById("tfa-toggle");
-  const handle = document.getElementById("tfa-handle");
-  if (tfaEnabled) {
-    toggle.classList.remove("bg-slate-200");
-    toggle.classList.add("bg-emerald-500");
-    handle.classList.add("translate-x-6");
-  } else {
-    toggle.classList.remove("bg-emerald-500");
-    toggle.classList.add("bg-slate-200");
-    handle.classList.remove("translate-x-6");
-  }
-}
-
 function saveProfileChanges() {
   alert("Profile changes saved successfully!");
 }

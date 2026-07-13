@@ -1,7 +1,7 @@
 {% extends 'layout/index.html' %}
 {% load static %}
 
-{% block page_title %} {{ user }} {% endblock %}
+{% block page_title %} {{ request.user.username }} {% endblock %}
 
 {% block main_content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -36,10 +36,13 @@
           <hr class="border-slate-100 my-4">
           
           <!-- Logout Link -->
-          <a href="{% url 'home' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-rose-600 hover:bg-rose-50 transition-colors">
-            <i class="ri-logout-box-r-line text-lg"></i>
-            <span>Logout</span>
-          </a>
+          <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer text-left">
+              <i class="ri-logout-box-r-line text-lg"></i>
+              <span>Logout</span>
+            </button>
+          </form>
         </nav>
       </div>
     </div>
@@ -61,7 +64,7 @@
             <div class="relative w-32 h-32 flex-shrink-0">
               <div class="w-full h-full rounded-2xl border-4 border-white shadow-lg overflow-hidden bg-slate-100">
                 <img 
-                  src="{% static 'images/user_profile_avatar.png' %}" 
+                  src="{% if request.user.profile.image %}{{ request.user.profile.image.url }}{% else %}{% static 'images/user_profile_avatar.png' %}{% endif %}" 
                   alt="User Avatar" 
                   class="w-full h-full object-cover"
                 />
@@ -76,7 +79,7 @@
             </div>
             
             <div class="text-center sm:text-left pb-2 space-y-0.5">
-              <h2 class="text-2xl font-extrabold text-slate-900 leading-snug">Alex Montgomery</h2>
+              <h2 class="text-2xl font-extrabold text-slate-900 leading-snug">{{ request.user.profile.full_name|default:request.user.username }}</h2>
               <p class="text-sm text-slate-500 font-light">Elite NextStop Member since 2022</p>
             </div>
           </div>
@@ -94,7 +97,7 @@
                   <input 
                     type="text" 
                     id="profile-name" 
-                    value="Alex Montgomery" 
+                    value="{{ request.user.profile.full_name|default:request.user.username }}" 
                     class="w-full bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-800 rounded-xl px-4 py-3.5 text-sm outline-none transition-all"
                   />
                 </div>
@@ -104,9 +107,9 @@
                   <input 
                     type="email" 
                     id="profile-email" 
-                    value="alex.montgomery@voyager.com" 
+                    value="{{ request.user.email }}" 
                     disabled 
-                    class="w-full bg-slate-50 border border-slate-200/60 text-slate-450 rounded-xl px-4 py-3.5 text-sm outline-none cursor-not-allowed"
+                    class="w-full bg-slate-50 border border-slate-200/60 text-slate-455 rounded-xl px-4 py-3.5 text-sm outline-none cursor-not-allowed"
                   />
                 </div>
                 <!-- Phone Number -->
@@ -116,7 +119,7 @@
                     <input 
                       type="tel" 
                       id="profile-phone" 
-                      value="+1 (555) 234-8901" 
+                      value="{{ request.user.profile.phone|default:'' }}" 
                       class="w-full bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-800 rounded-xl pl-10 pr-4 py-3.5 text-sm outline-none transition-all"
                     />
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">

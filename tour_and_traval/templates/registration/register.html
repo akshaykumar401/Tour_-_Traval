@@ -1,0 +1,248 @@
+{% extends 'layout/index.html' %}
+{% load static %}
+
+{% block page_title %} Register {% endblock %}
+
+{% block main_content %}
+<div class="min-h-[85vh] flex items-center justify-center py-12 px-4 bg-slate-50">
+  <div class="w-full max-w-5xl bg-white rounded-3xl border border-slate-100 shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[600px]">
+    
+    <!-- Left Column: Backdrop Image & Overlay (col-span-5) -->
+    <div class="hidden lg:block lg:col-span-5 relative overflow-hidden bg-slate-900">
+      <img 
+        src="{% static 'images/register_banner_bg.png' %}" 
+        alt="Mountain view" 
+        class="absolute inset-0 w-full h-full object-cover opacity-80"
+      />
+      <!-- Dark overlay gradient -->
+      <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/30 to-transparent"></div>
+      
+      <!-- Overlay Content -->
+      <div class="absolute inset-0 p-10 flex flex-col justify-between text-white z-10">
+        <div></div> <!-- Empty top space -->
+        <div class="space-y-6">
+          <h2 class="text-4xl font-extrabold leading-tight tracking-tight">The world is waiting for you.</h2>
+          <p class="text-sm text-slate-200 font-light leading-relaxed">Join our community of elite explorers and unlock exclusive travel itineraries tailored to your unique spirit.</p>
+          
+          <!-- Avatar List -->
+          <div class="flex items-center gap-3 pt-2">
+            <div class="flex -space-x-3">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80" alt="Explorer 1" class="w-8 h-8 rounded-full border-2 border-slate-900 object-cover">
+              <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=80&q=80" alt="Explorer 2" class="w-8 h-8 rounded-full border-2 border-slate-900 object-cover">
+              <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=80&q=80" alt="Explorer 3" class="w-8 h-8 rounded-full border-2 border-slate-900 object-cover">
+            </div>
+            <span class="text-xs font-semibold text-slate-200">10k+ Explorers Joined</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Registration Form (col-span-7) -->
+    <div class="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-center bg-white">
+      <div class="max-w-md mx-auto w-full space-y-8">
+        
+        <!-- Header -->
+        <div class="space-y-2">
+          <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Create Account</h1>
+          <p class="text-sm text-slate-500 font-light">Fill in the details below to begin your journey.</p>
+        </div>
+
+        <!-- Form content -->
+        <form method="post" class="space-y-5">
+          {% csrf_token %}
+          
+          <!-- Form Validation Errors -->
+          {% if form.errors %}
+            <div class="bg-rose-50 border border-rose-200 text-rose-600 rounded-xl p-4 text-xs space-y-1">
+              <p class="font-bold">Please correct the following errors:</p>
+              <ul class="list-disc pl-4 space-y-0.5">
+                {% for field, errors in form.errors.items %}
+                  {% for error in errors %}
+                    <li><strong>{{ field|title }}:</strong> {{ error }}</li>
+                  {% endfor %}
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Full Name -->
+            <div class="space-y-1.5">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Full Name</label>
+              <div class="relative">
+                <input 
+                  type="text" 
+                  name="full_name" 
+                  value="{{ form.full_name.value|default:'' }}" 
+                  required 
+                  placeholder="John Doe" 
+                  class="w-full bg-slate-50 focus:bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-805 rounded-xl pl-10 pr-4 py-3 text-sm outline-none transition-all"
+                />
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                  <i class="ri-user-line"></i>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Username -->
+            <div class="space-y-1.5">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Username</label>
+              <div class="relative">
+                <input 
+                  type="text" 
+                  name="username" 
+                  value="{{ form.username.value|default:'' }}" 
+                  required 
+                  placeholder="johndoe_explorer" 
+                  class="w-full bg-slate-50 focus:bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-805 rounded-xl pl-10 pr-4 py-3 text-sm outline-none transition-all"
+                />
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                  <i class="ri-user-smile-line"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Email -->
+            <div class="space-y-1.5">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Email Address</label>
+              <div class="relative">
+                <input 
+                  type="email" 
+                  name="email" 
+                  value="{{ form.email.value|default:'' }}" 
+                  required 
+                  placeholder="john@example.com" 
+                  class="w-full bg-slate-50 focus:bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-805 rounded-xl pl-10 pr-4 py-3 text-sm outline-none transition-all"
+                />
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                  <i class="ri-mail-line"></i>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Phone Number -->
+            <div class="space-y-1.5">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Phone Number</label>
+              <div class="relative">
+                <input 
+                  type="text" 
+                  name="phone_number" 
+                  value="{{ form.phone_number.value|default:'' }}" 
+                  required 
+                  placeholder="+1 (555) 000-0000" 
+                  class="w-full bg-slate-50 focus:bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-805 rounded-xl pl-10 pr-4 py-3 text-sm outline-none transition-all"
+                />
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                  <i class="ri-phone-line"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Password -->
+            <div class="space-y-1.5">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Password</label>
+              <div class="relative">
+                <input 
+                  type="password" 
+                  id="reg-password" 
+                  name="password1" 
+                  required 
+                  placeholder="••••••••" 
+                  class="w-full bg-slate-50 focus:bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-805 rounded-xl pl-10 pr-10 py-3 text-sm outline-none transition-all"
+                />
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                  <i class="ri-lock-line"></i>
+                </div>
+                <button 
+                  type="button" 
+                  onclick="togglePasswordVisibility('reg-password')" 
+                  class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 hover:text-slate-600 cursor-pointer"
+                >
+                  <i class="ri-eye-line text-lg" id="eye-reg-password"></i>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Confirm Password -->
+            <div class="space-y-1.5">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Confirm Password</label>
+              <div class="relative">
+                <input 
+                  type="password" 
+                  id="reg-password-confirm" 
+                  name="password2" 
+                  required 
+                  placeholder="••••••••" 
+                  class="w-full bg-slate-50 focus:bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-805 rounded-xl pl-10 pr-10 py-3 text-sm outline-none transition-all"
+                />
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                  <i class="ri-lock-line"></i>
+                </div>
+                <button 
+                  type="button" 
+                  onclick="togglePasswordVisibility('reg-password-confirm')" 
+                  class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 hover:text-slate-650 cursor-pointer"
+                >
+                  <i class="ri-eye-line text-lg" id="eye-reg-password-confirm"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Terms of Service Checkbox -->
+          <div class="flex items-start gap-2.5 pt-1">
+            <input 
+              type="checkbox" 
+              required 
+              id="agree-terms" 
+              class="mt-1 w-4 h-4 text-[#8c5a24] border-slate-300 rounded focus:ring-[#8c5a24] focus:ring-opacity-25 accent-[#8c5a24] cursor-pointer"
+            />
+            <label for="agree-terms" class="text-xs text-slate-500 leading-normal cursor-pointer select-none">
+              I agree to the <a href="#" class="text-[#8c5a24] font-bold hover:underline">Terms of Service</a> and <a href="#" class="text-[#8c5a24] font-bold hover:underline">Privacy Policy</a>.
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <button 
+            type="submit" 
+            class="w-full bg-[#8c5a24] hover:bg-[#72491d] text-white py-3.5 rounded-xl font-bold transition-all shadow-md flex items-center justify-center gap-2 mt-4 cursor-pointer"
+          >
+            <span>Register</span>
+            <i class="ri-arrow-right-line"></i>
+          </button>
+        </form>
+        
+        <!-- Footer Login Link -->
+        <div class="text-center pt-2 text-sm text-slate-500">
+          Already have an account? 
+          <a href="{% url 'login' %}" class="text-[#8c5a24] font-bold hover:underline">Login</a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  function togglePasswordVisibility(id) {
+    const input = document.getElementById(id);
+    const eye = document.getElementById(`eye-${id}`);
+    if (input.type === 'password') {
+      input.type = 'text';
+      eye.classList.remove('ri-eye-line');
+      eye.classList.add('ri-eye-off-line');
+    } else {
+      input.type = 'password';
+      eye.classList.remove('ri-eye-off-line');
+      eye.classList.add('ri-eye-line');
+    }
+  }
+</script>
+{% endblock %}

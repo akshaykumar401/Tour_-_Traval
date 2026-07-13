@@ -135,3 +135,7 @@ STATICFILES_DIRS = [
 
 TAILWIND_APP_NAME = 'theme' # This is the name of the app that will be used to generate the tailwind files
 INTERNAL_IPS = ['127.0.0.1']
+
+LOGIN_URL = '/accounts/login'
+LOGIN_REDIRECT_URL = '/packages/'
+LOGOUT_REDIRECT_URL = '/user/'

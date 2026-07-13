@@ -27,6 +27,7 @@ urlpatterns = [
     path("contact/", include("contact.urls")),
     path("booking/", include("booking.urls")),
     path("user/", include("user.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),
 
     path("__reload__/", include("django_browser_reload.urls")),
 ]

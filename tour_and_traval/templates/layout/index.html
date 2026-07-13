@@ -58,7 +58,22 @@
 
           <!-- Right Action Buttons (Desktop) -->
           <div class="hidden md:flex items-center space-x-6">
-            <a href="#" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Login</a>
+            {% if user.is_authenticated %}
+              <a href="{% url 'user_page' %}" class="flex items-center gap-2 group focus:outline-none">
+                <div class="w-8 h-8 rounded-full border border-slate-200 overflow-hidden bg-slate-100 ring-2 ring-transparent group-hover:ring-[#8c5a24] transition-all flex-shrink-0">
+                  {% if user.profile.image %}
+                    <img src="{{ user.profile.image.url }}" alt="Profile" class="w-full h-full object-cover">
+                  {% else %}
+                    <img src="{% static 'images/default_user.jpeg' %}" alt="Profile" class="w-full h-full object-cover">
+                  {% endif %}
+                </div>
+                <span class="text-sm font-semibold text-slate-650 group-hover:text-slate-900 transition-colors">
+                  {{ user.profile.full_name|default:user.username }}
+                </span>
+              </a>
+            {% else %}
+              <a href="{% url 'login' %}" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Login</a>
+            {% endif %}
             <a href="{% url 'booking_page' %}" class="bg-[#8c5a24] hover:bg-[#72491d] text-white text-sm font-medium px-5 py-2.5 rounded transition-all duration-200 shadow-xs hover:shadow-md">Book Now</a>
           </div>
 
@@ -87,7 +102,20 @@
         </div>
         <div class="pt-4 pb-4 border-t border-slate-100 px-5">
           <div class="flex items-center justify-between">
-            <a href="#" class="text-base font-medium text-slate-600 hover:text-slate-900 transition-colors">Login</a>
+            {% if user.is_authenticated %}
+              <a href="{% url 'user_page' %}" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-full border border-slate-200 overflow-hidden bg-slate-100 flex-shrink-0">
+                  {% if user.profile.image %}
+                    <img src="{{ user.profile.image.url }}" alt="Profile" class="w-full h-full object-cover">
+                  {% else %}
+                    <img src="{% static 'images/user_profile_avatar.png' %}" alt="Profile" class="w-full h-full object-cover">
+                  {% endif %}
+                </div>
+                <span class="text-sm font-semibold text-slate-650">{{ user.profile.full_name|default:user.username }}</span>
+              </a>
+            {% else %}
+              <a href="{% url 'login' %}" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Login</a>
+            {% endif %}
             <a href="{% url 'booking_page' %}" class="bg-[#8c5a24] hover:bg-[#72491d] text-white text-base font-medium px-5 py-2.5 rounded transition-all duration-200 shadow-xs text-center">Book Now</a>
           </div>
         </div>
