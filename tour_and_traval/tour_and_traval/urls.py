@@ -25,6 +25,8 @@ urlpatterns = [
     path("gallery/", include("gallery.urls")),
     path("help_center/", include("help_center.urls")),
     path("contact/", include("contact.urls")),
+    path("booking/", include("booking.urls")),
+    path("user/", include("user.urls")),
 
     path("__reload__/", include("django_browser_reload.urls")),
 ]

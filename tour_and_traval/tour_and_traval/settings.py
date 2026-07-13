@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'gallery',
     'help_center',
     'contact',
+    'booking',
+    'user',
 ]
 
 MIDDLEWARE = [
