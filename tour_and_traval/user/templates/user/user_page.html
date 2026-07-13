@@ -1,1 +1,324 @@
-test
+{% extends 'layout/index.html' %}
+{% load static %}
+
+{% block page_title %} {{ user }} {% endblock %}
+
+{% block main_content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    
+    <!-- Left Sidebar (lg:col-span-3) -->
+    <div class="lg:col-span-3">
+      <div class="bg-white rounded-3xl border border-slate-100 shadow-md p-6 space-y-6">
+        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block px-3">User Menu</span>
+        <nav class="space-y-1.5" id="user-sidebar-menu">
+          <!-- Bookings Link -->
+          <button 
+            type="button"
+            onclick="switchTab('bookings')"
+            id="tab-btn-bookings"
+            class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors text-left cursor-pointer"
+          >
+            <i class="ri-compass-3-line text-lg"></i>
+            <span>My Bookings</span>
+          </button>
+          <!-- Profile Settings -->
+          <button 
+            type="button"
+            onclick="switchTab('profile')"
+            id="tab-btn-profile"
+            class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-white bg-[#0f2942] transition-colors text-left cursor-pointer shadow-sm"
+          >
+            <i class="ri-user-settings-line text-lg"></i>
+            <span>Profile Settings</span>
+          </button>
+          
+          <hr class="border-slate-100 my-4">
+          
+          <!-- Logout Link -->
+          <a href="{% url 'home' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-rose-600 hover:bg-rose-50 transition-colors">
+            <i class="ri-logout-box-r-line text-lg"></i>
+            <span>Logout</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Right Content Area (lg:col-span-9) -->
+    <div class="lg:col-span-9 space-y-6">
+      
+      <!-- Tab Content: Profile Settings -->
+      <div id="tab-content-profile" class="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden">
+        <!-- Banner Header -->
+        <div class="h-32 bg-[#05162b] relative"></div>
+
+        <!-- Overlapping Profile Details -->
+        <div class="px-6 sm:px-8 pb-8 relative">
+          
+          <!-- Avatar & Header Text -->
+          <div class="flex flex-col sm:flex-row items-center sm:items-end gap-6 -mt-16">
+            <!-- Square rounded avatar matching mockup -->
+            <div class="relative w-32 h-32 flex-shrink-0">
+              <div class="w-full h-full rounded-2xl border-4 border-white shadow-lg overflow-hidden bg-slate-100">
+                <img 
+                  src="{% static 'images/user_profile_avatar.png' %}" 
+                  alt="User Avatar" 
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <!-- Pencil edit badge -->
+              <button 
+                type="button" 
+                class="absolute bottom-1 right-1 w-8 h-8 rounded-lg bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center shadow-md transition-colors border-2 border-white cursor-pointer"
+              >
+                <i class="ri-pencil-line text-sm"></i>
+              </button>
+            </div>
+            
+            <div class="text-center sm:text-left pb-2 space-y-0.5">
+              <h2 class="text-2xl font-extrabold text-slate-900 leading-snug">Alex Montgomery</h2>
+              <p class="text-sm text-slate-500 font-light">Elite NextStop Member since 2022</p>
+            </div>
+          </div>
+
+          <!-- Forms -->
+          <form class="mt-10 space-y-8" onsubmit="event.preventDefault();">
+            
+            <!-- Personal Information Section -->
+            <div class="space-y-6">
+              <h3 class="text-lg font-bold text-[#05162b] border-b border-slate-100 pb-3">Personal Information</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Full Name -->
+                <div class="space-y-2">
+                  <label for="profile-name" class="text-xs font-bold text-slate-400 uppercase tracking-wider">Full Name</label>
+                  <input 
+                    type="text" 
+                    id="profile-name" 
+                    value="Alex Montgomery" 
+                    class="w-full bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-800 rounded-xl px-4 py-3.5 text-sm outline-none transition-all"
+                  />
+                </div>
+                <!-- Email Address (Disabled) -->
+                <div class="space-y-2">
+                  <label for="profile-email" class="text-xs font-bold text-slate-400 uppercase tracking-wider">Email Address</label>
+                  <input 
+                    type="email" 
+                    id="profile-email" 
+                    value="alex.montgomery@voyager.com" 
+                    disabled 
+                    class="w-full bg-slate-50 border border-slate-200/60 text-slate-450 rounded-xl px-4 py-3.5 text-sm outline-none cursor-not-allowed"
+                  />
+                </div>
+                <!-- Phone Number -->
+                <div class="space-y-2">
+                  <label for="profile-phone" class="text-xs font-bold text-slate-400 uppercase tracking-wider">Phone Number</label>
+                  <div class="relative">
+                    <input 
+                      type="tel" 
+                      id="profile-phone" 
+                      value="+1 (555) 234-8901" 
+                      class="w-full bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-800 rounded-xl pl-10 pr-4 py-3.5 text-sm outline-none transition-all"
+                    />
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                      <i class="ri-phone-line text-base"></i>
+                    </div>
+                  </div>
+                </div>
+                <!-- Mailing Address -->
+                <div class="space-y-2">
+                  <label for="profile-address" class="text-xs font-bold text-slate-400 uppercase tracking-wider">Mailing Address</label>
+                  <div class="relative">
+                    <input 
+                      type="text" 
+                      id="profile-address" 
+                      value="742 Evergreen Terrace, Springfield, IL" 
+                      class="w-full bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-800 rounded-xl pl-10 pr-4 py-3.5 text-sm outline-none transition-all"
+                    />
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                      <i class="ri-map-pin-line text-base"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Security Section -->
+            <div class="space-y-6">
+              <h3 class="text-lg font-bold text-[#05162b] border-b border-slate-100 pb-3">Security</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- New Password -->
+                <div class="space-y-2">
+                  <label for="profile-password" class="text-xs font-bold text-slate-400 uppercase tracking-wider">New Password</label>
+                  <div class="relative">
+                    <input 
+                      type="password" 
+                      id="profile-password" 
+                      value="mypassword123" 
+                      class="w-full bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-800 rounded-xl pl-4 pr-10 py-3.5 text-sm outline-none transition-all"
+                    />
+                    <button 
+                      type="button" 
+                      onclick="togglePasswordVisibility('profile-password')" 
+                      class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 hover:text-slate-650 cursor-pointer"
+                    >
+                      <i class="ri-eye-line text-lg" id="eye-profile-password"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- Confirm Password -->
+                <div class="space-y-2">
+                  <label for="profile-password-confirm" class="text-xs font-bold text-slate-400 uppercase tracking-wider">Confirm New Password</label>
+                  <div class="relative">
+                    <input 
+                      type="password" 
+                      id="profile-password-confirm" 
+                      value="mypassword123" 
+                      class="w-full bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-800 rounded-xl pl-4 pr-10 py-3.5 text-sm outline-none transition-all"
+                    />
+                    <button 
+                      type="button" 
+                      onclick="togglePasswordVisibility('profile-password-confirm')" 
+                      class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 hover:text-slate-655 cursor-pointer"
+                    >
+                      <i class="ri-eye-line text-lg" id="eye-profile-password-confirm"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex justify-end gap-4 pt-6 border-t border-slate-100">
+              <button 
+                type="button" 
+                class="px-6 py-3 rounded-xl text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button 
+                type="button" 
+                onclick="saveProfileChanges()" 
+                class="bg-[#8c5a24] hover:bg-[#72491d] text-white px-8 py-3 rounded-xl text-sm font-semibold transition-all shadow-md hover:shadow-lg cursor-pointer"
+              >
+                Save Changes
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- Tab Content: My Bookings -->
+      <div id="tab-content-bookings" class="hidden bg-white rounded-3xl border border-slate-100 shadow-xl p-6 sm:p-8 space-y-6">
+        <div class="space-y-1">
+          <h3 class="text-xl font-bold text-[#05162b]">My Bookings</h3>
+          <p class="text-sm text-slate-500 font-light">Manage and view your upcoming and past travel bookings.</p>
+        </div>
+        
+        <!-- Bookings List -->
+        <div class="space-y-6 pt-2">
+          
+          <!-- Booking Item 1 -->
+          <div class="flex flex-col md:flex-row gap-6 p-5 bg-slate-50/50 border border-slate-100 rounded-2xl hover:shadow-md transition-all">
+            <!-- Image -->
+            <div class="w-full md:w-44 h-32 rounded-xl overflow-hidden flex-shrink-0 bg-slate-100">
+              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=300&q=80" alt="Goa beach" class="w-full h-full object-cover">
+            </div>
+            <!-- Info -->
+            <div class="flex-grow flex flex-col justify-between">
+              <div class="space-y-2">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <h4 class="text-lg font-bold text-slate-900">Goa Beach Tour</h4>
+                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    Confirmed
+                  </span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs text-slate-500 mt-2">
+                  <div>
+                    <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Booking ID</p>
+                    <p class="font-semibold text-slate-800 mt-0.5">#TR37969</p>
+                  </div>
+                  <div>
+                    <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Travel Date</p>
+                    <p class="font-semibold text-slate-800 mt-0.5">Oct 12, 2026</p>
+                  </div>
+                  <div>
+                    <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Travelers</p>
+                    <p class="font-semibold text-slate-800 mt-0.5">2 Adults</p>
+                  </div>
+                  <div>
+                    <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Price Paid</p>
+                    <p class="font-semibold text-slate-800 mt-0.5">₹16,000</p>
+                  </div>
+                </div>
+              </div>
+              <div class="flex gap-3 justify-end mt-4">
+                <button type="button" onclick="window.print()" class="px-4 py-2 border border-slate-200 hover:border-slate-350 text-slate-705 hover:text-slate-900 rounded-lg text-xs font-semibold transition-colors cursor-pointer">
+                  Download Ticket
+                </button>
+                <a href="/packages/" class="px-4 py-2 bg-[#8c5a24] hover:bg-[#72491d] text-white rounded-lg text-xs font-semibold transition-colors text-center">
+                  View Details
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Booking Item 2 -->
+          <div class="flex flex-col md:flex-row gap-6 p-5 bg-slate-50/50 border border-slate-100 rounded-2xl hover:shadow-md transition-all">
+            <!-- Image -->
+            <div class="w-full md:w-44 h-32 rounded-xl overflow-hidden flex-shrink-0 bg-slate-100">
+              <img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=300&q=80" alt="Himachal hills" class="w-full h-full object-cover">
+            </div>
+            <!-- Info -->
+            <div class="flex-grow flex flex-col justify-between">
+              <div class="space-y-2">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <h4 class="text-lg font-bold text-slate-900">Misty Peaks Trek</h4>
+                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                    Pending Payment
+                  </span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs text-slate-500 mt-2">
+                  <div>
+                    <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Booking ID</p>
+                    <p class="font-semibold text-slate-800 mt-0.5">#TR88128</p>
+                  </div>
+                  <div>
+                    <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Travel Date</p>
+                    <p class="font-semibold text-slate-800 mt-0.5">Nov 05, 2026</p>
+                  </div>
+                  <div>
+                    <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Travelers</p>
+                    <p class="font-semibold text-slate-800 mt-0.5">3 Adults</p>
+                  </div>
+                  <div>
+                    <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Total Amount</p>
+                    <p class="font-semibold text-slate-800 mt-0.5">₹25,975</p>
+                  </div>
+                </div>
+              </div>
+              <div class="flex gap-3 justify-end mt-4">
+                <button type="button" onclick="alert('Booking cancellation request sent.')" class="px-4 py-2 border border-rose-200 hover:bg-rose-50 text-rose-600 rounded-lg text-xs font-semibold transition-colors cursor-pointer">
+                  Cancel Booking
+                </button>
+                <a href="/booking/payment/2/" class="px-4 py-2 bg-[#8c5a24] hover:bg-[#72491d] text-white rounded-lg text-xs font-semibold transition-colors text-center">
+                  Pay Now
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'scripts/user_page.js' %}"></script>
+{% endblock %}

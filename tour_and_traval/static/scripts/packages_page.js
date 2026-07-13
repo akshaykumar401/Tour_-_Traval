@@ -168,4 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
       sortDropdown.classList.add('hidden');
     });
   });
+  
 });
+
