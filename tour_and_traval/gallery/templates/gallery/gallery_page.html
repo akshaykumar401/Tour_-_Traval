@@ -19,126 +19,26 @@
       <button data-filter="all" class="filter-pill bg-[#051120] text-white text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md">
         All Explorations
       </button>
-      <button data-filter="mountains" class="filter-pill bg-white text-slate-600 border border-slate-200 hover:border-slate-350 hover:text-slate-900 text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-200 cursor-pointer shadow-xs">
-        Mountains
-      </button>
-      <button data-filter="beaches" class="filter-pill bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:text-slate-900 text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-200 cursor-pointer shadow-xs">
-        Beaches
-      </button>
-      <button data-filter="forest" class="filter-pill bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:text-slate-900 text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-200 cursor-pointer shadow-xs">
-        Forest
-      </button>
-      <button data-filter="adventure" class="filter-pill bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:text-slate-900 text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-200 cursor-pointer shadow-xs">
-        Adventure
-      </button>
-      <button data-filter="historical" class="filter-pill bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:text-slate-900 text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-200 cursor-pointer shadow-xs">
-        Historical Places
-      </button>
+      {% for category in categories %}
+        <button data-filter="{{ category.0 }}" class="filter-pill bg-white text-slate-600 border border-slate-200 hover:border-slate-350 hover:text-slate-900 text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-200 cursor-pointer shadow-xs">
+          {{ category.1 }}
+        </button>
+      {% endfor %}
     </div>
 
     <!-- Gallery Grid (Masonry Columns Layout) -->
     <div id="gallery-grid" class="columns-1 sm:columns-2 lg:columns-3 gap-6 [column-fill:_balance] py-6">
-      
-      <!-- Card 1: Mountains (Switzerland) -->
-      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="mountains">
-        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80" 
-             alt="The Alpenglow Summit" 
-             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
-        <!-- Hover Gradient & Text Overlay -->
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">Switzerland</span>
-          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">The Alpenglow Summit</h3>
+      {% for image in gallery %}
+        <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="{{ image.type }}">
+          <img src="{{ image.image.url }}" 
+               alt="{{ image.title }}" 
+               class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+            <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">{{ image.place }}</span>
+            <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">{{ image.description }}</h3>
+          </div>
         </div>
-      </div>
-
-      <!-- Card 2: Beaches (Maldives) -->
-      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="beaches">
-        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" 
-             alt="Turquoise Paradise" 
-             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">Maldives</span>
-          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">Turquoise Paradise</h3>
-        </div>
-      </div>
-
-      <!-- Card 3: Adventure (Paragliding Switzerland) -->
-      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="adventure">
-        <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80" 
-             alt="Skyward Drift" 
-             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">Switzerland</span>
-          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">Skyward Drift</h3>
-        </div>
-      </div>
-
-      <!-- Card 4: Forest (Kyoto Bamboo Sanctuary) -->
-      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="forest">
-        <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=120" 
-             alt="Kyoto Bamboo Sanctuary" 
-             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">Japan</span>
-          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">Kyoto Bamboo Sanctuary</h3>
-        </div>
-      </div>
-
-      <!-- Card 5: Historical Places (Angkor Wat) -->
-      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="historical">
-        <img src="https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80" 
-             alt="Silent Monoliths" 
-             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">Cambodia</span>
-          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">Silent Monoliths</h3>
-        </div>
-      </div>
-
-      <!-- Card 6: Adventure (Dune Runner Expedition) -->
-      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="adventure">
-        <img src="https://images.unsplash.com/photo-1528543606781-2f6e6857f318?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8QWR2ZW50dXJlfGVufDB8fDB8fHwy" 
-             alt="Dune Runner Expedition" 
-             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">Jordan</span>
-          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">Dune Runner Expedition</h3>
-        </div>
-      </div>
-
-      <!-- Card 7: Mountains (Peak Solitude) -->
-      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="mountains">
-        <img src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?auto=format&fit=crop&w=800&q=80" 
-             alt="Peak Solitude" 
-             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">Italy</span>
-          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">Peak Solitude</h3>
-        </div>
-      </div>
-
-      <!-- Card 8: Beaches (Emerald Cove) -->
-      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="beaches">
-        <img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=800&q=80" 
-             alt="Emerald Cove" 
-             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">Greece</span>
-          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">Emerald Cove</h3>
-        </div>
-      </div>
-
-      <!-- Card 9: Forest (Redwood Cathedral) -->
-      <div class="gallery-item break-inside-avoid mb-6 relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer" data-category="forest">
-        <img src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=800&q=80" 
-             alt="Redwood Cathedral" 
-             class="w-full object-cover rounded-3xl group-hover:scale-103 transition-transform duration-500" />
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-          <span class="text-[#e2b47e] text-[10px] font-bold uppercase tracking-widest mb-1.5 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-75">United States</span>
-          <h3 class="text-white text-base sm:text-lg font-bold transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 delay-100">Redwood Cathedral</h3>
-        </div>
-      </div>
-
+      {% endfor %}
     </div>
 
     <!-- Empty State for Filtering -->

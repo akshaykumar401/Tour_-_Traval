@@ -24,5 +24,8 @@ class UserProfileForm(forms.Form):
     model = User_Profile
     fields = ['full_name', 'phone_number', 'address']
 
+class UpdateUserProfilePhotoForm(forms.Form):
+  image = forms.ImageField(required=True, label='Profile Photo')
+
 
 

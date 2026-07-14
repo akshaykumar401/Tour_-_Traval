@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm, UserProfileForm
+from .forms import UserRegistrationForm, UserProfileForm, UpdateUserProfilePhotoForm
 from django.contrib.auth import login
 from .models import User_Profile
 from django.contrib.auth.decorators import login_required
@@ -28,28 +28,39 @@ def user_page(request):
   
   user_profile = User_Profile.objects.get(user=request.user)
   
-  if request.method == 'POST':
-    # Handle form submission for updating user profile
-    form = UserProfileForm(request.POST)
-    if form.is_valid():
-      user_profile.full_name = form.cleaned_data['full_name']
-      user_profile.phone = form.cleaned_data['phone_number']
-      user_profile.address = form.cleaned_data['address']
+  photo_form = UpdateUserProfilePhotoForm()
+  profile_form = UserProfileForm(initial={
+    'full_name': user_profile.full_name,
+    'phone_number': user_profile.phone,
+    'address': user_profile.address
+  })
+  
+  # Handle form submission for updating user profile photo
+  if request.method == 'POST' and 'image' in request.FILES:
+    photo_form = UpdateUserProfilePhotoForm(request.POST, request.FILES)
+    if photo_form.is_valid():
+      user_profile.image = photo_form.cleaned_data['image']
+      user_profile.save()
+      messages.success(request, 'Profile photo updated successfully!')
+      return redirect('user_page')
+  
+  # Handle form submission for updating user profile
+  elif request.method == 'POST':
+    profile_form = UserProfileForm(request.POST)
+    if profile_form.is_valid():
+      user_profile.full_name = profile_form.cleaned_data['full_name']
+      user_profile.phone = profile_form.cleaned_data['phone_number']
+      user_profile.address = profile_form.cleaned_data['address']
       user_profile.save()
       messages.success(request, 'Profile updated successfully!')
       return redirect('user_page')
-  else:
-    form = UserProfileForm(initial={
-      'full_name': user_profile.full_name,
-      'phone_number': user_profile.phone,
-      'address': user_profile.address
-    })
   
   # Get the formatted user data to pass to the template
   formatted_user_data = user_data_dict(request)
   return render(request, "user/user_page.html", {
     'user_data': formatted_user_data,
-    'form': form
+    'form': profile_form,
+    'form_photo': photo_form
   })
 
 def register(request):

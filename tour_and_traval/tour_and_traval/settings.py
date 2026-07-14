@@ -139,3 +139,6 @@ INTERNAL_IPS = ['127.0.0.1']
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/packages/'
 LOGOUT_REDIRECT_URL = '/user/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
