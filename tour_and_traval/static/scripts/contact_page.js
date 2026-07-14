@@ -50,10 +50,4 @@ document.addEventListener("DOMContentLoaded", () => {
     )
     .openPopup();
 
-  // Form feedback
-  document.querySelector("form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    alert("Thank you for reaching out! Our team will contact you shortly.");
-    e.target.reset();
-  });
 });
