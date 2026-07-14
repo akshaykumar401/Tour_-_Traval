@@ -48,7 +48,3 @@ function togglePasswordVisibility(id) {
     eye.classList.add("ri-eye-line");
   }
 }
-
-function saveProfileChanges() {
-  alert("Profile changes saved successfully!");
-}

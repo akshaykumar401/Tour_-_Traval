@@ -124,6 +124,28 @@
 
     <!-- Main Content Area -->
     <main class="flex-grow">
+      {% if messages %}
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 space-y-4">
+          {% for message in messages %}
+            <div class="p-4 rounded-xl text-sm font-semibold flex items-center justify-between {% if message.tags == 'success' %}bg-emerald-50 text-emerald-800 border border-emerald-100{% elif message.tags == 'error' %}bg-rose-50 text-rose-800 border border-rose-100{% else %}bg-blue-50 text-blue-800 border border-blue-100{% endif %}" role="alert">
+              <div class="flex items-center gap-3">
+                {% if message.tags == 'success' %}
+                  <i class="ri-checkbox-circle-line text-lg text-emerald-600"></i>
+                {% elif message.tags == 'error' %}
+                  <i class="ri-error-warning-line text-lg text-rose-600"></i>
+                {% else %}
+                  <i class="ri-information-line text-lg text-blue-600"></i>
+                {% endif %}
+                <span>{{ message }}</span>
+              </div>
+              <button type="button" class="text-slate-400 hover:text-slate-650 transition-colors cursor-pointer" onclick="this.parentElement.remove();">
+                <i class="ri-close-line text-lg"></i>
+              </button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
       {% block main_content %} {% endblock %}
     </main>
 

@@ -64,7 +64,7 @@
             <div class="relative w-32 h-32 flex-shrink-0">
               <div class="w-full h-full rounded-2xl border-4 border-white shadow-lg overflow-hidden bg-slate-100">
                 <img 
-                  src="{% if request.user.profile.image %}{{ request.user.profile.image.url }}{% else %}{% static 'images/user_profile_avatar.png' %}{% endif %}" 
+                  src="{% if user_data.image %}{{ user_data.image }}{% else %}{% static 'images/default_user.jpeg' %}{% endif %}" 
                   alt="User Avatar" 
                   class="w-full h-full object-cover"
                 />
@@ -79,14 +79,14 @@
             </div>
             
             <div class="text-center sm:text-left pb-2 space-y-0.5">
-              <h2 class="text-2xl font-extrabold text-slate-900 leading-snug">{{ request.user.profile.full_name|default:request.user.username }}</h2>
-              <p class="text-sm text-slate-500 font-light">Elite NextStop Member since 2022</p>
+              <h2 class="text-2xl font-extrabold text-slate-900 leading-snug">{{ user_data.full_name }}</h2>
+              <p class="text-sm text-slate-500 font-light">Elite NextStop Member since {{ user_data.date_joined|date:"F Y" }}</p>
             </div>
           </div>
 
           <!-- Forms -->
-          <form class="mt-10 space-y-8" onsubmit="event.preventDefault();">
-            
+          <form method="post" action="{% url 'user_page' %}" class="mt-10 space-y-8">
+            {% csrf_token %}
             <!-- Personal Information Section -->
             <div class="space-y-6">
               <h3 class="text-lg font-bold text-[#05162b] border-b border-slate-100 pb-3">Personal Information</h3>
@@ -96,10 +96,14 @@
                   <label for="profile-name" class="text-xs font-bold text-slate-400 uppercase tracking-wider">Full Name</label>
                   <input 
                     type="text" 
+                    name="full_name"
                     id="profile-name" 
-                    value="{{ request.user.profile.full_name|default:request.user.username }}" 
-                    class="w-full bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-800 rounded-xl px-4 py-3.5 text-sm outline-none transition-all"
+                    value="{{ form.full_name.value|default:'' }}" 
+                    class="w-full bg-white border border-slate-200/80 {% if form.full_name.errors %}border-rose-500 focus:border-rose-500 focus:ring-rose-500{% else %}focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24]{% endif %} text-slate-800 rounded-xl px-4 py-3.5 text-sm outline-none transition-all"
                   />
+                  {% if form.full_name.errors %}
+                    <span class="text-rose-500 text-xs font-semibold mt-1 block">{{ form.full_name.errors.0 }}</span>
+                  {% endif %}
                 </div>
                 <!-- Email Address (Disabled) -->
                 <div class="space-y-2">
@@ -107,9 +111,9 @@
                   <input 
                     type="email" 
                     id="profile-email" 
-                    value="{{ request.user.email }}" 
+                    value="{{ user_data.email }}" 
                     disabled 
-                    class="w-full bg-slate-50 border border-slate-200/60 text-slate-455 rounded-xl px-4 py-3.5 text-sm outline-none cursor-not-allowed"
+                    class="w-full bg-slate-50 border border-slate-200/60 text-slate-400 rounded-xl px-4 py-3.5 text-sm outline-none cursor-not-allowed"
                   />
                 </div>
                 <!-- Phone Number -->
@@ -117,15 +121,19 @@
                   <label for="profile-phone" class="text-xs font-bold text-slate-400 uppercase tracking-wider">Phone Number</label>
                   <div class="relative">
                     <input 
-                      type="tel" 
+                      type="number" 
+                      name="phone_number"
                       id="profile-phone" 
-                      value="{{ request.user.profile.phone|default:'' }}" 
-                      class="w-full bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-800 rounded-xl pl-10 pr-4 py-3.5 text-sm outline-none transition-all"
+                      value="{{ form.phone_number.value|default:'' }}" 
+                      class="w-full bg-white border border-slate-200/80 {% if form.phone_number.errors %}border-rose-500 focus:border-rose-500 focus:ring-rose-500{% else %}focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24]{% endif %} text-slate-800 rounded-xl pl-10 pr-4 py-3.5 text-sm outline-none transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
                       <i class="ri-phone-line text-base"></i>
                     </div>
                   </div>
+                  {% if form.phone_number.errors %}
+                    <span class="text-rose-500 text-xs font-semibold mt-1 block">{{ form.phone_number.errors.0 }}</span>
+                  {% endif %}
                 </div>
                 <!-- Mailing Address -->
                 <div class="space-y-2">
@@ -133,74 +141,32 @@
                   <div class="relative">
                     <input 
                       type="text" 
+                      name="address"
                       id="profile-address" 
-                      value="742 Evergreen Terrace, Springfield, IL" 
-                      class="w-full bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-800 rounded-xl pl-10 pr-4 py-3.5 text-sm outline-none transition-all"
+                      value="{{ form.address.value|default:'' }}" 
+                      class="w-full bg-white border border-slate-200/80 {% if form.address.errors %}border-rose-500 focus:border-rose-500 focus:ring-rose-500{% else %}focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24]{% endif %} text-slate-800 rounded-xl pl-10 pr-4 py-3.5 text-sm outline-none transition-all"
                     />
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
                       <i class="ri-map-pin-line text-base"></i>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Security Section -->
-            <div class="space-y-6">
-              <h3 class="text-lg font-bold text-[#05162b] border-b border-slate-100 pb-3">Security</h3>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <!-- New Password -->
-                <div class="space-y-2">
-                  <label for="profile-password" class="text-xs font-bold text-slate-400 uppercase tracking-wider">New Password</label>
-                  <div class="relative">
-                    <input 
-                      type="password" 
-                      id="profile-password" 
-                      value="mypassword123" 
-                      class="w-full bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-800 rounded-xl pl-4 pr-10 py-3.5 text-sm outline-none transition-all"
-                    />
-                    <button 
-                      type="button" 
-                      onclick="togglePasswordVisibility('profile-password')" 
-                      class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 hover:text-slate-650 cursor-pointer"
-                    >
-                      <i class="ri-eye-line text-lg" id="eye-profile-password"></i>
-                    </button>
-                  </div>
-                </div>
-                <!-- Confirm Password -->
-                <div class="space-y-2">
-                  <label for="profile-password-confirm" class="text-xs font-bold text-slate-400 uppercase tracking-wider">Confirm New Password</label>
-                  <div class="relative">
-                    <input 
-                      type="password" 
-                      id="profile-password-confirm" 
-                      value="mypassword123" 
-                      class="w-full bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-800 rounded-xl pl-4 pr-10 py-3.5 text-sm outline-none transition-all"
-                    />
-                    <button 
-                      type="button" 
-                      onclick="togglePasswordVisibility('profile-password-confirm')" 
-                      class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 hover:text-slate-655 cursor-pointer"
-                    >
-                      <i class="ri-eye-line text-lg" id="eye-profile-password-confirm"></i>
-                    </button>
-                  </div>
+                  {% if form.address.errors %}
+                    <span class="text-rose-500 text-xs font-semibold mt-1 block">{{ form.address.errors.0 }}</span>
+                  {% endif %}
                 </div>
               </div>
             </div>
 
             <!-- Action Buttons -->
             <div class="flex justify-end gap-4 pt-6 border-t border-slate-100">
-              <button 
-                type="button" 
-                class="px-6 py-3 rounded-xl text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
+              <a 
+                href="{% url 'user_page' %}"
+                class="px-6 py-3 rounded-xl text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors cursor-pointer flex items-center justify-center"
               >
                 Cancel
-              </button>
+              </a>
               <button 
-                type="button" 
-                onclick="saveProfileChanges()" 
+                type="submit" 
                 class="bg-[#8c5a24] hover:bg-[#72491d] text-white px-8 py-3 rounded-xl text-sm font-semibold transition-all shadow-md hover:shadow-lg cursor-pointer"
               >
                 Save Changes
