@@ -41,20 +41,35 @@
 
     <!-- Feedback Form Card -->
     <div class="bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-100/50 p-6 sm:p-10">
-      <form id="review-form" class="space-y-6" onsubmit="event.preventDefault(); showSuccessToast();">
+      <form id="review-form" class="space-y-6" method="POST" action="{% url 'review_page' %}">
+        {% csrf_token %}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Full Name -->
           <div>
             <label for="full-name" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Full Name</label>
-            <input type="text" id="full-name" required placeholder="John Doe"
-              class="w-full bg-slate-50 border border-transparent focus:border-slate-200 rounded-xl px-4 py-3.5 text-sm text-slate-850 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-[#8c5a24] focus:ring-offset-0 transition-all duration-200 outline-none" />
+            <input 
+              type="text" 
+              id="full-name" 
+              name="full_name"
+              required 
+              placeholder="John Doe"
+              class="w-full bg-slate-50 border border-transparent focus:border-slate-200 rounded-xl px-4 py-3.5 text-sm text-slate-850 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-[#8c5a24] focus:ring-offset-0 transition-all duration-200 outline-none" 
+              value="{{ form.full_name.value|default:'' }}" 
+            />
           </div>
 
           <!-- Email Address -->
           <div>
             <label for="email" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Email Address</label>
-            <input type="email" id="email" required placeholder="john@example.com"
-              class="w-full bg-slate-50 border border-transparent focus:border-slate-200 rounded-xl px-4 py-3.5 text-sm text-slate-850 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-[#8c5a24] focus:ring-offset-0 transition-all duration-200 outline-none" />
+            <input 
+              type="email" 
+              id="email" 
+              name="email"
+              required 
+              placeholder="john@example.com"
+              class="w-full bg-slate-50 border border-transparent focus:border-slate-200 rounded-xl px-4 py-3.5 text-sm text-slate-850 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-[#8c5a24] focus:ring-offset-0 transition-all duration-200 outline-none" 
+              value="{{ form.email.value|default:'' }}" 
+            />
           </div>
         </div>
 
@@ -62,20 +77,64 @@
         <div class="text-center">
           <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Your Rating</label>
           <div class="flex justify-center items-center gap-2 py-2">
-            <input type="hidden" id="rating-input" required value="0" />
-            <button type="button" data-value="1" class="star-btn text-3xl text-slate-200 hover:scale-110 transition-transform duration-150"><i class="ri-star-fill"></i></button>
-            <button type="button" data-value="2" class="star-btn text-3xl text-slate-200 hover:scale-110 transition-transform duration-150"><i class="ri-star-fill"></i></button>
-            <button type="button" data-value="3" class="star-btn text-3xl text-slate-200 hover:scale-110 transition-transform duration-150"><i class="ri-star-fill"></i></button>
-            <button type="button" data-value="4" class="star-btn text-3xl text-slate-200 hover:scale-110 transition-transform duration-150"><i class="ri-star-fill"></i></button>
-            <button type="button" data-value="5" class="star-btn text-3xl text-slate-200 hover:scale-110 transition-transform duration-150"><i class="ri-star-fill"></i></button>
+            <input 
+              type="hidden" 
+              id="rating-input" 
+              name="reating"
+              required 
+              value="{{ form.reating.value|default:'' }}" 
+            />
+            <button 
+              type="button" 
+              data-value="1" 
+              class="star-btn text-3xl text-slate-200 hover:scale-110 transition-transform duration-150"
+            >
+              <i class="ri-star-fill"></i>
+            </button>
+            <button 
+              type="button" 
+              data-value="2" 
+              class="star-btn text-3xl text-slate-200 hover:scale-110 transition-transform duration-150"
+            >
+              <i class="ri-star-fill"></i>
+            </button>
+            <button 
+              type="button" 
+              data-value="3" 
+              class="star-btn text-3xl text-slate-200 hover:scale-110 transition-transform duration-150"
+            >
+              <i class="ri-star-fill"></i>
+            </button>
+            <button 
+              type="button" 
+              data-value="4" 
+              class="star-btn text-3xl text-slate-200 hover:scale-110 transition-transform duration-150"
+            >
+              <i class="ri-star-fill"></i>
+            </button>
+            <button 
+              type="button" 
+              data-value="5" 
+              class="star-btn text-3xl text-slate-200 hover:scale-110 transition-transform duration-150"
+            >
+              <i class="ri-star-fill"></i>
+            </button>
           </div>
         </div>
 
         <!-- Testimonial -->
         <div>
           <label for="testimonial" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Your Testimonial</label>
-          <textarea id="testimonial" required rows="4" placeholder="Tell us about your adventure..."
-            class="w-full bg-slate-50 border border-transparent focus:border-slate-200 rounded-xl px-4 py-3.5 text-sm text-slate-855 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-[#8c5a24] focus:ring-offset-0 transition-all duration-200 outline-none resize-none"></textarea>
+          <textarea 
+            id="testimonial" 
+            name="message"
+            required 
+            rows="4" 
+            placeholder="Tell us about your adventure..."
+            class="w-full bg-slate-50 border border-transparent focus:border-slate-200 rounded-xl px-4 py-3.5 text-sm text-slate-855 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-[#8c5a24] focus:ring-offset-0 transition-all duration-200 outline-none resize-none"
+          >
+            {{ form.message.value|default:'' }}
+          </textarea>
         </div>
 
         <!-- Submit Button -->
@@ -98,16 +157,22 @@
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 border-b border-slate-100 pb-8">
       <div>
         <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight mb-3">All Customer Reviews</h2>
-        <div class="flex items-center gap-2">
-          <div class="flex items-center gap-0.5 text-amber-400">
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
+          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-0.5" aria-label="Overall rating: {{ average_rating }} out of 5 stars">
+            <i class="ri-star-fill {% if average_rating_rounded >= 1 %}text-amber-400{% else %}text-slate-200{% endif %}"></i>
+            <i class="ri-star-fill {% if average_rating_rounded >= 2 %}text-amber-400{% else %}text-slate-200{% endif %}"></i>
+            <i class="ri-star-fill {% if average_rating_rounded >= 3 %}text-amber-400{% else %}text-slate-200{% endif %}"></i>
+            <i class="ri-star-fill {% if average_rating_rounded >= 4 %}text-amber-400{% else %}text-slate-200{% endif %}"></i>
+            <i class="ri-star-fill {% if average_rating_rounded >= 5 %}text-amber-400{% else %}text-slate-200{% endif %}"></i>
           </div>
-          <span class="text-sm font-bold text-slate-900">4.8 / 5.0</span>
-          <span class="text-xs text-slate-450">(1,240 Reviews)</span>
+          <span class="text-sm font-bold text-slate-900">{{ average_rating }} / 5.0</span>
+          <span class="text-xs text-slate-450">
+            {% if all_reviews %}
+              {{ all_reviews|length }} 
+            {% else %}
+              0 
+            {% endif %} Reviews
+          </span>
         </div>
       </div>
       
@@ -124,192 +189,39 @@
 
     <!-- Reviews Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
-      
-      <!-- Card 1 -->
-      <div class="bg-white rounded-3xl border border-slate-100/80 shadow-xs hover:shadow-md transition-all duration-300 p-6 flex flex-col justify-between">
-        <div>
-          <!-- Reviewer Info -->
-          <div class="flex items-center mb-4">
-            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&h=150&q=80"
-              alt="Elena Rodriguez" class="w-12 h-12 rounded-full object-cover mr-4" />
-            <div>
-              <h3 class="font-bold text-slate-900 text-base leading-snug">Elena Rodriguez</h3>
-              <p class="text-xs text-slate-400 font-medium">Verified Explorer</p>
+      {% for review in all_reviews %}
+        <div class="bg-white rounded-3xl border border-slate-100/80 shadow-xs hover:shadow-md transition-all duration-300 p-6 flex flex-col justify-between">
+          <div>
+            <!-- Reviewer Info -->
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 rounded-full bg-[#8c5a24] text-white font-bold flex items-center justify-center mr-4 shrink-0" aria-hidden="true">
+                {{ review.full_name|slice:":1"|upper }}
+              </div>
+              <div class="min-w-0">
+                <h3 class="font-bold text-slate-900 text-base leading-snug">{{ review.full_name }}</h3>
+                <p class="text-xs text-slate-400 font-medium">Verified Explorer</p>
+              </div>
             </div>
-          </div>
-          <!-- Stars -->
-          <div class="flex items-center gap-0.5 text-amber-400 mb-3.5">
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-          </div>
-          <!-- Testimonial -->
-          <p class="text-sm text-slate-650 leading-relaxed font-light italic mb-6">
-            "The attention to detail was staggering. From the private helicopter transfers to the hidden local bistros, NextStop delivered a masterclass in luxury travel. Truly an unforgettable experience!"
-          </p>
-        </div>
-        <!-- Footer Meta -->
-        <div class="text-xs text-slate-400 font-medium pt-4 border-t border-slate-50 flex items-center gap-1">
-          <span>2 days ago</span>
-          <span>•</span>
-          <span>Iceland Expedition</span>
-        </div>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="bg-white rounded-3xl border border-slate-100/80 shadow-xs hover:shadow-md transition-all duration-300 p-6 flex flex-col justify-between">
-        <div>
-          <!-- Reviewer Info -->
-          <div class="flex items-center mb-4">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80"
-              alt="Marcus Chen" class="w-12 h-12 rounded-full object-cover mr-4" />
-            <div>
-              <h3 class="font-bold text-slate-900 text-base leading-snug">Marcus Chen</h3>
-              <p class="text-xs text-slate-400 font-medium">Verified Explorer</p>
+            <!-- Stars -->
+            <div class="flex items-center gap-0.5 mb-3.5" aria-label="{{ review.reating }} out of 5 stars">
+              <i class="ri-star-fill {% if review.reating >= 1 %}text-amber-400{% else %}text-slate-200{% endif %}"></i>
+              <i class="ri-star-fill {% if review.reating >= 2 %}text-amber-400{% else %}text-slate-200{% endif %}"></i>
+              <i class="ri-star-fill {% if review.reating >= 3 %}text-amber-400{% else %}text-slate-200{% endif %}"></i>
+              <i class="ri-star-fill {% if review.reating >= 4 %}text-amber-400{% else %}text-slate-200{% endif %}"></i>
+              <i class="ri-star-fill {% if review.reating >= 5 %}text-amber-400{% else %}text-slate-200{% endif %}"></i>
             </div>
+            <!-- Testimonial -->
+            <p class="text-sm text-slate-650 leading-relaxed font-light italic mb-6">
+              {{ review.message }}
+            </p>
           </div>
-          <!-- Stars -->
-          <div class="flex items-center gap-0.5 text-amber-400 mb-3.5">
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
+          <!-- Footer Meta -->
+          <div class="text-xs text-slate-400 font-medium pt-4 border-t border-slate-50 flex items-center gap-1">
+            <span>{{ review.created_at|timesince }} ago</span>
           </div>
-          <!-- Testimonial -->
-          <p class="text-sm text-slate-650 leading-relaxed font-light italic mb-6">
-            "NextStop doesn't just book trips; they craft narratives. My safari in Tanzania felt like being in a National Geographic documentary, but with 5-star service every step of the way."
-          </p>
         </div>
-        <!-- Footer Meta -->
-        <div class="text-xs text-slate-400 font-medium pt-4 border-t border-slate-50 flex items-center gap-1">
-          <span>1 week ago</span>
-          <span>•</span>
-          <span>Serengeti Safari</span>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="bg-white rounded-3xl border border-slate-100/80 shadow-xs hover:shadow-md transition-all duration-300 p-6 flex flex-col justify-between">
-        <div>
-          <!-- Reviewer Info -->
-          <div class="flex items-center mb-4">
-            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D"
-              alt="The Sandersons" class="w-12 h-12 rounded-full object-cover mr-4" />
-            <div>
-              <h3 class="font-bold text-slate-900 text-base leading-snug">The Sandersons</h3>
-              <p class="text-xs text-slate-400 font-medium">Verified Explorers</p>
-            </div>
-          </div>
-          <!-- Stars -->
-          <div class="flex items-center gap-0.5 text-amber-400 mb-3.5">
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-          </div>
-          <!-- Testimonial -->
-          <p class="text-sm text-slate-650 leading-relaxed font-light italic mb-6">
-            "Our honeymoon in Greece was flawless. The itinerary was perfectly balanced between adventure and relaxation. We especially loved the private vineyard tour they arranged in Santorini!"
-          </p>
-        </div>
-        <!-- Footer Meta -->
-        <div class="text-xs text-slate-400 font-medium pt-4 border-t border-slate-50 flex items-center gap-1">
-          <span>2 weeks ago</span>
-          <span>•</span>
-          <span>Greek Isles Cruise</span>
-        </div>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="bg-white rounded-3xl border border-slate-100/80 shadow-xs hover:shadow-md transition-all duration-300 p-6 flex flex-col justify-between">
-        <div>
-          <!-- Reviewer Info -->
-          <div class="flex items-center mb-4">
-            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&h=150&q=80"
-              alt="David Wright" class="w-12 h-12 rounded-full object-cover mr-4" />
-            <div>
-              <h3 class="font-bold text-slate-900 text-base leading-snug">David Wright</h3>
-              <p class="text-xs text-slate-400 font-medium">Verified Explorer</p>
-            </div>
-          </div>
-          <!-- Stars -->
-          <div class="flex items-center gap-0.5 text-amber-400 mb-3.5">
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-          </div>
-          <!-- Testimonial -->
-          <p class="text-sm text-slate-650 leading-relaxed font-light italic mb-6">
-            "I've traveled the world for 40 years, and I've rarely encountered a concierge service as knowledgeable and proactive as the NextStop team. They handle the details so you can enjoy the horizon."
-          </p>
-        </div>
-        <!-- Footer Meta -->
-        <div class="text-xs text-slate-400 font-medium pt-4 border-t border-slate-50 flex items-center gap-1">
-          <span>3 weeks ago</span>
-          <span>•</span>
-          <span>Kyoto Cultural Tour</span>
-        </div>
-      </div>
-
-      <!-- Card 5 -->
-      <div class="bg-white rounded-3xl border border-slate-100/80 shadow-xs hover:shadow-md transition-all duration-300 p-6 flex flex-col justify-between">
-        <div>
-          <!-- Reviewer Info -->
-          <div class="flex items-center mb-4">
-            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&h=150&q=80"
-              alt="Sarah Jenkins" class="w-12 h-12 rounded-full object-cover mr-4" />
-            <div>
-              <h3 class="font-bold text-slate-900 text-base leading-snug">Sarah Jenkins</h3>
-              <p class="text-xs text-slate-400 font-medium">Verified Explorer</p>
-            </div>
-          </div>
-          <!-- Stars -->
-          <div class="flex items-center gap-0.5 text-amber-400 mb-3.5">
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-            <i class="ri-star-fill"></i>
-          </div>
-          <!-- Testimonial -->
-          <p class="text-sm text-slate-650 leading-relaxed font-light italic mb-6">
-            "Safety and luxury were my top priorities as a solo traveler, and NextStop exceeded both. The local guides were experts and made me feel like an insider, not a tourist."
-          </p>
-        </div>
-        <!-- Footer Meta -->
-        <div class="text-xs text-slate-400 font-medium pt-4 border-t border-slate-50 flex items-center gap-1">
-          <span>1 month ago</span>
-          <span>•</span>
-          <span>Costa Rica Retreat</span>
-        </div>
-      </div>
+      {% endfor %}
     </div>
-
-    <!-- Pagination -->
-    <div class="flex justify-center items-center gap-2 mt-12">
-      <button class="w-10 h-10 flex items-center justify-center bg-white text-slate-500 hover:text-slate-800 hover:bg-slate-50 border border-slate-100 rounded-xl text-sm transition-all duration-150">
-        <i class="ri-arrow-left-s-line text-lg"></i>
-      </button>
-      <button class="w-10 h-10 flex items-center justify-center bg-[#051120] text-white font-bold rounded-xl text-sm shadow-md">
-        1
-      </button>
-      <button class="w-10 h-10 flex items-center justify-center bg-white text-slate-650 hover:bg-slate-50 border border-slate-100 rounded-xl text-sm transition-all duration-150">
-        2
-      </button>
-      <button class="w-10 h-10 flex items-center justify-center bg-white text-slate-650 hover:bg-slate-50 border border-slate-100 rounded-xl text-sm transition-all duration-150">
-        3
-      </button>
-      <button class="w-10 h-10 flex items-center justify-center bg-white text-slate-500 hover:text-slate-800 hover:bg-slate-50 border border-slate-100 rounded-xl text-sm transition-all duration-150">
-        <i class="ri-arrow-right-s-line text-lg"></i>
-      </button>
-    </div>
-
   </div>
 </section>
 {% endblock %}
@@ -317,4 +229,3 @@
 {% block script %}
 <script src="{% static 'scripts/review_page.js' %}"></script>
 {% endblock %}
-

@@ -1,26 +1,3 @@
-// Global functions
-function showSuccessToast() {
-  const toast = document.getElementById("toast-success");
-  toast.classList.remove("translate-x-80", "opacity-0");
-  toast.classList.add("translate-x-0", "opacity-100");
-
-  // Clear form
-  document.getElementById("review-form").reset();
-  document.getElementById("rating-input").value = "0";
-
-  // Trigger hover-out to reset stars to empty
-  const stars = document.querySelectorAll(".star-btn");
-  stars.forEach((s) => {
-    s.classList.remove("text-amber-400");
-    s.classList.add("text-slate-200");
-  });
-
-  setTimeout(() => {
-    toast.classList.add("translate-x-80", "opacity-0");
-    toast.classList.remove("translate-x-0", "opacity-100");
-  }, 4000);
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   // 1. Star Rating Interactive Logic
   const stars = document.querySelectorAll(".star-btn");
@@ -45,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ratingInput.value = value;
       highlightStars(value);
     });
+    console.log(`Star button event listeners attached. ${star.getAttribute("data-value")}`);
   });
 
   function highlightStars(count) {
