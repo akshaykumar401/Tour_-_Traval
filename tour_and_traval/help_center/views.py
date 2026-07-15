@@ -1,5 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.core.paginator import Paginator
+from django.template.loader import render_to_string
 from .forms import FeedbackForm, AIAgentForm
 from .models import Feedback
 import os
@@ -62,21 +64,26 @@ def review_page(request):
     form = FeedbackForm(request.POST)
     if form.is_valid():
       form.save()
+      form = FeedbackForm()
       all_reviews = Feedback.objects.order_by('-created_at')
       average_rating = sum(review.reating for review in all_reviews)
       average_rating_rounded = round(average_rating / len(all_reviews)) if all_reviews else 0
-      return render(request, 'help_center/review_page.html', {
-        'form': FeedbackForm(), 
-        'success': True,
-        'all_reviews': all_reviews,
-        'average_rating': f"{average_rating / len(all_reviews):.1f}" if len(all_reviews) > 0 else 0,
-        'average_rating_rounded': average_rating_rounded,
-      })
   else:
     form = FeedbackForm()
+  paginator = Paginator(all_reviews, 6)
+  reviews_page = paginator.get_page(request.GET.get('page', 1))
+
+  if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+    return JsonResponse({
+      'html': render_to_string('help_center/_review_cards.html', {'reviews_page': reviews_page}, request=request),
+      'has_next': reviews_page.has_next(),
+      'next_page': reviews_page.next_page_number() if reviews_page.has_next() else None,
+    })
+
   return render(request, 'help_center/review_page.html', {
     'form': form, 
     'all_reviews': all_reviews,
+    'reviews_page': reviews_page,
     'average_rating': f"{average_rating / len(all_reviews):.1f}" if len(all_reviews) > 0 else 0,
     'average_rating_rounded': average_rating_rounded,
   })

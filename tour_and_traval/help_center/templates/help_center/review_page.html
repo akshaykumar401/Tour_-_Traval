@@ -168,59 +168,23 @@
           <span class="text-sm font-bold text-slate-900">{{ average_rating }} / 5.0</span>
           <span class="text-xs text-slate-450">
             {% if all_reviews %}
-              {{ all_reviews|length }} 
+              {{ all_reviews|length }}
             {% else %}
               0 
             {% endif %} Reviews
           </span>
         </div>
       </div>
-      
-      <!-- Filters -->
-      <div class="flex items-center gap-3">
-        <button class="bg-[#f1f3f7] text-slate-800 text-xs font-semibold px-5 py-2.5 rounded-full shadow-xs border border-transparent transition-colors">
-          Latest
-        </button>
-        <button class="bg-transparent text-slate-500 hover:text-slate-850 hover:bg-slate-50 text-xs font-medium px-5 py-2.5 rounded-full border border-slate-200 transition-all">
-          Highest Rated
-        </button>
-      </div>
     </div>
 
     <!-- Reviews Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
-      {% for review in all_reviews %}
-        <div class="bg-white rounded-3xl border border-slate-100/80 shadow-xs hover:shadow-md transition-all duration-300 p-6 flex flex-col justify-between">
-          <div>
-            <!-- Reviewer Info -->
-            <div class="flex items-center mb-4">
-              <div class="w-12 h-12 rounded-full bg-[#8c5a24] text-white font-bold flex items-center justify-center mr-4 shrink-0" aria-hidden="true">
-                {{ review.full_name|slice:":1"|upper }}
-              </div>
-              <div class="min-w-0">
-                <h3 class="font-bold text-slate-900 text-base leading-snug">{{ review.full_name }}</h3>
-                <p class="text-xs text-slate-400 font-medium">Verified Explorer</p>
-              </div>
-            </div>
-            <!-- Stars -->
-            <div class="flex items-center gap-0.5 mb-3.5" aria-label="{{ review.reating }} out of 5 stars">
-              <i class="ri-star-fill {% if review.reating >= 1 %}text-amber-400{% else %}text-slate-200{% endif %}"></i>
-              <i class="ri-star-fill {% if review.reating >= 2 %}text-amber-400{% else %}text-slate-200{% endif %}"></i>
-              <i class="ri-star-fill {% if review.reating >= 3 %}text-amber-400{% else %}text-slate-200{% endif %}"></i>
-              <i class="ri-star-fill {% if review.reating >= 4 %}text-amber-400{% else %}text-slate-200{% endif %}"></i>
-              <i class="ri-star-fill {% if review.reating >= 5 %}text-amber-400{% else %}text-slate-200{% endif %}"></i>
-            </div>
-            <!-- Testimonial -->
-            <p class="text-sm text-slate-650 leading-relaxed font-light italic mb-6">
-              {{ review.message }}
-            </p>
-          </div>
-          <!-- Footer Meta -->
-          <div class="text-xs text-slate-400 font-medium pt-4 border-t border-slate-50 flex items-center gap-1">
-            <span>{{ review.created_at|timesince }} ago</span>
-          </div>
-        </div>
-      {% endfor %}
+    <div id="reviews-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+      {% include 'help_center/_review_cards.html' %}
+    </div>
+    <div id="reviews-loader" data-url="{% url 'review_page' %}" data-next-page="{% if reviews_page.has_next %}{{ reviews_page.next_page_number }}{% endif %}" class="h-12 mt-8 flex justify-center items-center" aria-live="polite">
+      {% if reviews_page.has_next %}
+        <span class="text-sm text-slate-500">Loading more reviews…</span>
+      {% endif %}
     </div>
   </div>
 </section>

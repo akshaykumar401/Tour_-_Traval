@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
       ratingInput.value = value;
       highlightStars(value);
     });
-    console.log(`Star button event listeners attached. ${star.getAttribute("data-value")}`);
   });
 
   function highlightStars(count) {
@@ -36,5 +35,40 @@ document.addEventListener("DOMContentLoaded", () => {
         star.classList.add("text-slate-200");
       }
     });
+  }
+
+  const reviewsGrid = document.getElementById("reviews-grid");
+  const reviewsLoader = document.getElementById("reviews-loader");
+  let isLoadingReviews = false;
+
+  async function loadMoreReviews() {
+    const nextPage = reviewsLoader?.dataset.nextPage;
+    if (!nextPage || isLoadingReviews) return;
+
+    isLoadingReviews = true;
+    reviewsLoader.innerHTML = '<span class="text-sm text-slate-500">Loading more reviews…</span>';
+
+    try {
+      const url = new URL(reviewsLoader.dataset.url, window.location.origin);
+      url.searchParams.set("page", nextPage);
+      const response = await fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } });
+      if (!response.ok) throw new Error("Could not load reviews");
+
+      const data = await response.json();
+      reviewsGrid.insertAdjacentHTML("beforeend", data.html);
+      reviewsLoader.dataset.nextPage = data.next_page || "";
+      reviewsLoader.innerHTML = data.has_next ? '<span class="text-sm text-slate-500">Loading more reviews…</span>' : "";
+    } catch (error) {
+      reviewsLoader.innerHTML = '<span class="text-sm text-red-600">Unable to load more reviews.</span>';
+    } finally {
+      isLoadingReviews = false;
+    }
+  }
+
+  if (reviewsLoader && reviewsLoader.dataset.nextPage && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) loadMoreReviews();
+    }, { rootMargin: "200px" });
+    observer.observe(reviewsLoader);
   }
 });

@@ -1,0 +1,18 @@
+{% for review in reviews_page %}
+  <article class="bg-white rounded-3xl border border-slate-100/80 shadow-xs hover:shadow-md transition-all duration-300 p-6 flex flex-col justify-between">
+    <div>
+      <div class="flex items-center mb-4">
+        <div class="w-12 h-12 rounded-full bg-[#8c5a24] text-white font-bold flex items-center justify-center mr-4 shrink-0" aria-hidden="true">{{ review.full_name|slice:":1"|upper }}</div>
+        <div class="min-w-0">
+          <h3 class="font-bold text-slate-900 text-base leading-snug">{{ review.full_name }}</h3>
+          <p class="text-xs text-slate-400 font-medium">Verified Explorer</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-0.5 mb-3.5" aria-label="{{ review.reating }} out of 5 stars">
+        <i class="ri-star-fill {% if review.reating >= 1 %}text-amber-400{% else %}text-slate-200{% endif %}"></i><i class="ri-star-fill {% if review.reating >= 2 %}text-amber-400{% else %}text-slate-200{% endif %}"></i><i class="ri-star-fill {% if review.reating >= 3 %}text-amber-400{% else %}text-slate-200{% endif %}"></i><i class="ri-star-fill {% if review.reating >= 4 %}text-amber-400{% else %}text-slate-200{% endif %}"></i><i class="ri-star-fill {% if review.reating >= 5 %}text-amber-400{% else %}text-slate-200{% endif %}"></i>
+      </div>
+      <p class="text-sm text-slate-650 leading-relaxed font-light italic mb-6">{{ review.message }}</p>
+    </div>
+    <div class="text-xs text-slate-400 font-medium pt-4 border-t border-slate-50"><span>{{ review.created_at|timesince }} ago</span></div>
+  </article>
+{% endfor %}
