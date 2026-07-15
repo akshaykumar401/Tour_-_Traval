@@ -14,11 +14,13 @@ from .models import (
 class PackagesImageInline(admin.TabularInline):
   model = PackagesImage
   extra = 1
+  max_num = 4
+  validate_max = True
   fields = ("image", "thumbnail_preview", "created_at")
   readonly_fields = ("thumbnail_preview", "created_at")
   show_change_link = True
   verbose_name = "Gallery image"
-  verbose_name_plural = "Gallery"
+  verbose_name_plural = "Gallery (maximum 4 images)"
 
   @admin.display(description="Preview")
   def thumbnail_preview(self, obj):
@@ -33,10 +35,12 @@ class PackagesImageInline(admin.TabularInline):
 class PackagesFeaturesInline(admin.TabularInline):
   model = PackagesFeatures
   extra = 1
+  max_num = 4
+  validate_max = True
   fields = ("feature", "created_at")
   readonly_fields = ("created_at",)
   verbose_name = "Package feature"
-  verbose_name_plural = "Included features"
+  verbose_name_plural = "Included features (maximum 4)"
 
 
 class PackagesItineraryInline(admin.StackedInline):
@@ -62,6 +66,7 @@ class PackagesAdmin(admin.ModelAdmin):
   list_display = (
     "package_name",
     "location_badge",
+    "category",
     "tag_badge",
     "duration",
     "formatted_price",
@@ -69,8 +74,8 @@ class PackagesAdmin(admin.ModelAdmin):
     "image_count",
     "created_at",
   )
-  list_filter = ("tag_line", "created_at")
-  search_fields = ("main_title", "mini_title", "location", "description")
+  list_filter = ("category", "tag_line", "created_at")
+  search_fields = ("main_title", "mini_title", "category", "location", "description")
   ordering = ("-created_at",)
   date_hierarchy = "created_at"
   list_per_page = 25
@@ -86,7 +91,7 @@ class PackagesAdmin(admin.ModelAdmin):
   )
   fieldsets = (
     ("Package identity", {
-      "fields": ("main_title", "mini_title", "tag_line", "location"),
+      "fields": ("main_title", "mini_title", "category", "tag_line", "location"),
       "description": "The details travellers see when browsing your tours.",
     }),
     ("Trip details", {
@@ -102,31 +107,30 @@ class PackagesAdmin(admin.ModelAdmin):
   @admin.display(description="Package", ordering="main_title")
   def package_name(self, obj):
     return format_html(
-      '<span class="package-admin-title">{}</span><span class="package-admin-subtitle">{}</span>',
+      '<span>{}</span><br><small>{}</small>',
       obj.main_title,
       obj.mini_title,
     )
 
   @admin.display(description="Destination", ordering="location")
   def location_badge(self, obj):
-    return format_html('<span class="package-admin-location">⌖ {}</span>', obj.location)
+    return obj.location
 
   @admin.display(description="Style", ordering="tag_line")
   def tag_badge(self, obj):
-    return format_html('<span class="package-admin-tag">{}</span>', obj.get_tag_line_display())
+    return obj.get_tag_line_display()
 
   @admin.display(description="Duration", ordering="total_days")
   def duration(self, obj):
-    return format_html('<strong>{}</strong> days <span class="package-admin-muted">/ {} nights</span>', obj.total_days, obj.total_nights)
+    return f"{obj.total_days} days / {obj.total_nights} nights"
 
   @admin.display(description="Starting price", ordering="starting_price")
   def formatted_price(self, obj):
-    price = f"₹{obj.starting_price:,.2f}"
-    return format_html('<span class="package-admin-price">{}</span>', price)
+    return f"₹{obj.starting_price:,.2f}"
 
   @admin.display(description="Images", ordering="_image_count")
   def image_count(self, obj):
-    return format_html('<span class="package-admin-count">{}</span>', obj._image_count)
+    return obj._image_count
 
 
 @admin.register(PackagesImage)
@@ -154,8 +158,5 @@ class PackagesImageAdmin(admin.ModelAdmin):
   @admin.display(description="Image preview")
   def image_preview(self, obj):
     if obj and obj.image:
-      return format_html(
-        '<img src="{}" alt="Package image" width="420">',
-        obj.image.url,
-      )
+      return format_html('<img src="{}" alt="Package image" width="420">', obj.image.url)
     return "—"
