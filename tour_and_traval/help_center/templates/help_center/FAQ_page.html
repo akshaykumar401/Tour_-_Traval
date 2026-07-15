@@ -273,6 +273,21 @@
         Hello! I am NextStop AI Agent. How can I help you plan your next journey or answer questions about your booking today?
       </div>
     </div>
+    {% if response %}
+      <div class="flex justify-end w-full">
+        <div class="bg-[#051120] text-white p-3.5 rounded-2xl rounded-tr-none shadow-xs text-sm max-w-[85%] font-inter leading-relaxed">
+          {{ query }}
+        </div>
+      </div>
+      <div class="flex items-start gap-2.5 max-w-[85%]">
+        <div class="w-8 h-8 bg-slate-200 text-slate-600 rounded-full flex items-center justify-center flex-shrink-0 text-sm">
+          <i class="ri-robot-line"></i>
+        </div>
+        <div id="server-response" class="bg-white border border-slate-200/60 text-slate-800 p-3.5 rounded-2xl rounded-tl-none shadow-xs text-sm font-inter leading-relaxed">
+          {{ response }}
+        </div>
+      </div>
+    {% endif %}
   </div>
   
   <!-- Quick Replies/Suggestions List -->
@@ -292,8 +307,9 @@
   </div>
   
   <!-- Input Form -->
-  <form id="chat-input-form" class="p-4 border-t border-slate-150 bg-white flex items-center gap-2">
-    <input type="text" id="chat-message-input" class="flex-grow bg-slate-50 border border-slate-200 rounded-full py-2.5 px-4 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24]" placeholder="Ask me something..." autocomplete="off">
+  <form id="chat-input-form" method="post" action="{% url 'FAQ_page' %}" class="p-4 border-t border-slate-150 bg-white flex items-center gap-2">
+    {% csrf_token %}
+    <input type="text" id="chat-message-input" name="query" required maxlength="500" class="flex-grow bg-slate-50 border border-slate-200 rounded-full py-2.5 px-4 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24]" placeholder="Ask me something..." autocomplete="off">
     <button type="submit" class="bg-[#8c5a24] hover:bg-[#72491d] text-white w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-colors shadow-xs hover:shadow-sm focus:outline-none">
       <i class="ri-send-plane-fill text-lg"></i>
     </button>

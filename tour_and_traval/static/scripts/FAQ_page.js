@@ -208,6 +208,10 @@ document.addEventListener("DOMContentLoaded", () => {
   openChatBtn.addEventListener("click", openChat);
   closeChatWidget.addEventListener("click", closeChat);
 
+  if (document.getElementById("server-response")) {
+    openChat();
+  }
+
   // Clear chat history
   clearChatHistoryBtn.addEventListener("click", () => {
     chatConversation.innerHTML = `
@@ -226,135 +230,74 @@ document.addEventListener("DOMContentLoaded", () => {
   suggestionsContainer.addEventListener("click", (e) => {
     const btn = e.target.closest(".suggestion-btn");
     if (btn) {
-      const text = btn.innerText.trim();
-      submitUserMessage(text);
+      chatMessageInput.value = btn.innerText.trim();
+      chatInputForm.requestSubmit();
     }
   });
 
   // Handle Chat Input Form submission
-  chatInputForm.addEventListener("submit", (e) => {
+  chatInputForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const text = chatMessageInput.value.trim();
-    if (text) {
-      submitUserMessage(text);
-      chatMessageInput.value = "";
+    if (!text) {
+      return;
     }
-  });
 
-  // Send message and get AI answer
-  function submitUserMessage(messageText) {
-    // Append User Message
-    const userMsgHTML = `
+    const submitButton = chatInputForm.querySelector('button[type="submit"]');
+    const loadingId = `chat-loading-${Date.now()}`;
+    const formData = new FormData(chatInputForm);
+    submitButton.disabled = true;
+    chatMessageInput.value = "";
+    chatConversation.insertAdjacentHTML("beforeend", `
       <div class="flex justify-end w-full">
-        <div class="bg-[#051120] text-white p-3.5 rounded-2xl rounded-tr-none shadow-xs text-sm max-w-[85%] font-inter leading-relaxed">
-          ${escapeHTML(messageText)}
-        </div>
+        <div class="bg-[#051120] text-white p-3.5 rounded-2xl rounded-tr-none shadow-xs text-sm max-w-[85%] font-inter leading-relaxed">${escapeHTML(text)}</div>
       </div>
-    `;
-    chatConversation.insertAdjacentHTML("beforeend", userMsgHTML);
-    chatConversation.scrollTop = chatConversation.scrollHeight;
-
-    // Show Typing Indicator
-    const typingIndicatorId = "typing-indicator-" + Date.now();
-    const typingIndicatorHTML = `
-      <div id="${typingIndicatorId}" class="flex items-start gap-2.5 max-w-[85%]">
-        <div class="w-8 h-8 bg-slate-200 text-slate-600 rounded-full flex items-center justify-center flex-shrink-0 text-sm">
-          <i class="ri-robot-line"></i>
-        </div>
-        <div class="bg-white border border-slate-200/60 text-slate-800 p-3.5 px-5 rounded-2xl rounded-tl-none shadow-xs text-sm flex items-center justify-center">
-          <div class="flex items-center gap-1 py-1">
-            <span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0ms"></span>
+      <div id="${loadingId}" class="flex items-start gap-2.5 max-w-[85%]" aria-label="Assistant is typing">
+        <div class="w-8 h-8 bg-slate-200 text-slate-600 rounded-full flex items-center justify-center flex-shrink-0 text-sm"><i class="ri-robot-line"></i></div>
+        <div class="bg-white border border-slate-200/60 text-slate-800 p-3.5 px-5 rounded-2xl rounded-tl-none shadow-xs">
+          <div class="flex items-center gap-1" aria-hidden="true">
+            <span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
             <span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 150ms"></span>
             <span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 300ms"></span>
           </div>
         </div>
       </div>
-    `;
-    chatConversation.insertAdjacentHTML("beforeend", typingIndicatorHTML);
+    `);
     chatConversation.scrollTop = chatConversation.scrollHeight;
 
-    // Simulate Network Latency
-    setTimeout(() => {
-      // Remove Typing Indicator
-      const indicatorEl = document.getElementById(typingIndicatorId);
-      if (indicatorEl) indicatorEl.remove();
+    try {
+      const response = await fetch(chatInputForm.action, {
+        method: "POST",
+        body: formData,
+        headers: { "X-Requested-With": "XMLHttpRequest" },
+      });
+      const data = await response.json();
 
-      // Generate Agent Response
-      const reply = getAIResponse(messageText);
-      
-      const aiMsgHTML = `
+      if (!response.ok) {
+        throw new Error("Unable to get a response.");
+      }
+
+      chatConversation.insertAdjacentHTML("beforeend", `
         <div class="flex items-start gap-2.5 max-w-[85%]">
-          <div class="w-8 h-8 bg-slate-200 text-slate-600 rounded-full flex items-center justify-center flex-shrink-0 text-sm">
-            <i class="ri-robot-line"></i>
-          </div>
-          <div class="bg-white border border-slate-200/60 text-slate-800 p-3.5 rounded-2xl rounded-tl-none shadow-xs text-sm font-inter leading-relaxed">
-            ${reply}
-          </div>
+          <div class="w-8 h-8 bg-slate-200 text-slate-600 rounded-full flex items-center justify-center flex-shrink-0 text-sm"><i class="ri-robot-line"></i></div>
+          <div class="bg-white border border-slate-200/60 text-slate-800 p-3.5 rounded-2xl rounded-tl-none shadow-xs text-sm font-inter leading-relaxed">${escapeHTML(data.response)}</div>
         </div>
-      `;
-      chatConversation.insertAdjacentHTML("beforeend", aiMsgHTML);
+      `);
       chatConversation.scrollTop = chatConversation.scrollHeight;
-    }, 1000);
-  }
-
-  // Smart Context-Aware Mock AI Response Parser
-  function getAIResponse(query) {
-    const lower = query.toLowerCase();
-    
-    // Booking
-    if (lower.includes("book") || lower.includes("reserve") || lower.includes("ticket") || lower.includes("how to")) {
-      return "To book a tour with NextStop, follow these easy steps:<br><br>1. Browse our catalog on the <strong>Tours</strong> page.<br>2. Select your desired tour package.<br>3. Pick your dates and number of guests.<br>4. Click the 'Book Now' button and follow checkout.<br><br>Let me know if you need help finding specific packages!";
+    } catch (error) {
+      chatConversation.insertAdjacentHTML("beforeend", `
+        <div class="text-sm text-red-600">Sorry, we could not send your question. Please try again.</div>
+      `);
+    } finally {
+      document.getElementById(loadingId)?.remove();
+      submitButton.disabled = false;
     }
-    
-    // Cancellations
-    if (lower.includes("cancel") || lower.includes("refund") || lower.includes("policy") || lower.includes("reimburse")) {
-      return "Here is our official Cancellation Policy:<br><br>• <strong>30+ days in advance:</strong> Eligible for a full 100% refund.<br>• <strong>14–29 days in advance:</strong> Eligible for a 50% refund.<br>• <strong>Less than 14 days:</strong> Non-refundable.<br><br>If NextStop cancels a tour due to weather or safety concerns, you will receive a full refund or free rescheduling.";
-    }
+  });
 
-    // Payments
-    if (lower.includes("pay") || lower.includes("card") || lower.includes("method") || lower.includes("secure") || lower.includes("price")) {
-      return "We accept all major credit cards (Visa, MasterCard, Amex, Discover), PayPal, Apple Pay, and Google Pay.<br><br>Our checkout is fully PCI-compliant with secure 256-bit SSL encryption to protect your billing details. We do not store credit card numbers on our database.";
-    }
-
-    // Packing / Travel info
-    if (lower.includes("pack") || lower.includes("weather") || lower.includes("luggage") || lower.includes("wear")) {
-      return "Packing recommendations depend on your destination! Once your tour booking is completed and confirmed, we will automatically email you a comprehensive pre-departure guide outlining packing tips, typical weather patterns, and local guidelines.";
-    }
-
-    // Travel Insurance
-    if (lower.includes("insurance") || lower.includes("medical") || lower.includes("safety") || lower.includes("health")) {
-      return "We highly recommend purchasing comprehensive travel insurance for any tour. This helps protect you against unexpected medical expenses, luggage delays, travel emergencies, or trip cancellations.";
-    }
-
-    // Greetings
-    if (lower.includes("hello") || lower.includes("hi") || lower.includes("hey") || lower.includes("greetings") || lower.includes("sup")) {
-      return "Hello! I am your NextStop AI Assistant. How can I help you plan your travel or answer questions about bookings today?";
-    }
-
-    // Speak to human/Agent
-    if (lower.includes("human") || lower.includes("agent") || lower.includes("person") || lower.includes("speak") || lower.includes("support")) {
-      return "I can easily connect you to our 24/7 concierge support team. Please enter your email address or phone number, and one of our human agents will reach out to you within 15 minutes!";
-    }
-
-    // Email
-    if (lower.includes("@") && (lower.includes(".com") || lower.includes(".net") || lower.includes(".org"))) {
-      return "Thank you! I have passed your email to our team. A customer concierge agent will contact you shortly to follow up.";
-    }
-
-    // Default Fallback
-    return "I'm here to assist you with booking details, cancellation queries, secure payments, and travel prep. Feel free to ask more specifically, or click one of our quick suggestions below.";
-  }
-
-  // Escape HTML helper to prevent XSS
   function escapeHTML(str) {
-    return str.replace(/[&<>'"]/g, 
-      tag => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        "'": '&#39;',
-        '"': '&quot;'
-      }[tag] || tag)
-    );
+    return String(str).replace(/[&<>'"]/g, tag => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+    }[tag]));
   }
+
 });
