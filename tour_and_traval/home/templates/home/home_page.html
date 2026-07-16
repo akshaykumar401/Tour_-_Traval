@@ -56,11 +56,11 @@
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-12">
       <div>
         <span class="text-xs font-bold tracking-widest text-[#8c5a24] uppercase block mb-2">Global Escapes</span>
-        <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Popular Destinations</h2>
+        <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Our Gallery</h2>
       </div>
-      <a href="{% url 'packages_page' %}"
+      <a href="{% url 'gallery_page' %}"
         class="text-sm font-semibold text-[#8c5a24] hover:text-[#72491d] flex items-center gap-1 transition-colors mt-4 sm:mt-0">
-        View all Destinations
+        View Gallery
         <i class="ri-arrow-right-line text-sm"></i>
       </a>
     </div>
@@ -68,55 +68,63 @@
     <!-- Grid Layout -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 
-      <!-- Amalfi Coast (Large Left Card) -->
+      <!-- Gallery Card 1 (Large Left Card) -->
+      {% if gallery_data.0 %}
       <div class="md:col-span-2 relative group overflow-hidden rounded-2xl shadow-md h-[420px]">
-        <img src="https://images.unsplash.com/photo-1533900298318-6b8da08a523e?auto=format&fit=crop&w=1000&q=80"
-          alt="Amalfi Coast"
+        <img src="{{ gallery_data.0.image.url }}"
+          alt="{{ gallery_data.0.place }}"
           class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-900/20 to-transparent"></div>
         <div class="absolute bottom-6 left-6 right-6 text-white">
-          <h3 class="text-2xl font-bold mb-1">Amalfi Coast, Italy</h3>
-          <p class="text-sm text-slate-200/90 font-light">Mediterranean Elegance</p>
+          <h3 class="text-2xl font-bold mb-1">{{ gallery_data.0.place }}</h3>
+          <p class="text-sm text-slate-200/90 font-light">{{ gallery_data.0.description }}</p>
         </div>
       </div>
+      {% endif %}
 
-      <!-- Nested Middle Column: Tokyo and Bora Bora Stack -->
+      <!-- Nested Middle Column: Card 2 and Card 3 Stack -->
       <div class="md:col-span-1 flex flex-col gap-6">
 
-        <!-- Tokyo -->
+        <!-- Card 2 -->
+        {% if gallery_data.1 %}
         <div class="relative group overflow-hidden rounded-2xl shadow-md h-[198px]">
-          <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=600&q=80"
-            alt="Tokyo"
+          <img src="{{ gallery_data.1.image.url }}"
+            alt="{{ gallery_data.1.place }}"
             class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-900/20 to-transparent"></div>
           <div class="absolute bottom-4 left-4 right-4 text-white">
-            <h3 class="text-lg font-bold">Tokyo, Japan</h3>
+            <h3 class="text-lg font-bold">{{ gallery_data.1.place }}</h3>
           </div>
         </div>
+        {% endif %}
 
-        <!-- Bora Bora -->
+        <!-- Card 3 -->
+        {% if gallery_data.2 %}
         <div class="relative group overflow-hidden rounded-2xl shadow-md h-[198px]">
-          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80"
-            alt="Bora Bora"
+          <img src="{{ gallery_data.2.image.url }}"
+            alt="{{ gallery_data.2.place }}"
             class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-900/20 to-transparent"></div>
           <div class="absolute bottom-4 left-4 right-4 text-white">
-            <h3 class="text-lg font-bold">Bora Bora</h3>
+            <h3 class="text-lg font-bold">{{ gallery_data.2.place }}</h3>
           </div>
         </div>
+        {% endif %}
 
       </div>
 
-      <!-- Reykjavik (Large Right Card) -->
+      <!-- Card 4 (Large Right Card) -->
+      {% if gallery_data.3 %}
       <div class="md:col-span-1 relative group overflow-hidden rounded-2xl shadow-md h-[420px]">
-        <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1000&q=80"
-          alt="Reykjavik"
+        <img src="{{ gallery_data.3.image.url }}"
+          alt="{{ gallery_data.3.place }}"
           class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-900/20 to-transparent"></div>
         <div class="absolute bottom-6 left-6 right-6 text-white">
-          <h3 class="text-2xl font-bold mb-1">Reykjavik, Iceland</h3>
+          <h3 class="text-2xl font-bold mb-1">{{ gallery_data.3.place }}</h3>
         </div>
       </div>
+      {% endif %}
 
     </div>
   </div>
