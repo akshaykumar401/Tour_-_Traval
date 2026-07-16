@@ -55,10 +55,12 @@ class PackagesItineraryInline(admin.StackedInline):
 class PackagesDepartureDateInline(admin.TabularInline):
   model = PackagesDepartureDate
   extra = 1
+  max_num = 2
+  validate_max = True
   fields = ("departure_date", "total_seats", "available_seats", "created_at")
   readonly_fields = ("created_at",)
   verbose_name = "Departure"
-  verbose_name_plural = "Available departures"
+  verbose_name_plural = "Available departures (maximum 2)"
 
 
 @admin.register(Packages)

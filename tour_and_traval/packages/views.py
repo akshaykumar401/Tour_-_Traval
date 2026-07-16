@@ -26,9 +26,40 @@ def packages_page_data_inJSON(request):
     })
   return data
 
+def package_detail_data_inJSON(request, package_id):
+  package = Packages.objects.prefetch_related('images', 'features', 'itineraries', 'departure_dates').get(id=package_id)
+  
+  images = [img.image.url for img in package.images.all() if img.image]
+  features = [{'id': f.id, 'feature': f.feature} for f in package.features.all()]
+  itineraries = [{'id': i.id, 'day_number': i.day_number, 'title': i.title, 'description': i.description} for i in package.itineraries.all()]
+  departure_dates = [{'id': d.id, 'departure_date': d.departure_date, 'total_seats': d.total_seats, 'available_seats': d.available_seats} for d in package.departure_dates.all()]
+
+  data = {
+    'id': package.id,
+    'tag_line': package.tag_line,
+    'category': package.category,
+    'location': package.location,
+    'mini_title': package.mini_title,
+    'total_days': package.total_days,
+    'total_nights': package.total_nights,
+    'starting_price': package.starting_price,
+    'max_people': package.max_people,
+    'main_title': package.main_title,
+    'description': package.description,
+    'created_at': package.created_at,
+    'images': images,
+    'features': features,
+    'itineraries': itineraries,
+    'departure_dates': departure_dates
+  }
+  return data
+
 def packages_page(request):
   data = packages_page_data_inJSON(request)
   return render(request, 'packages/packages_page.html', {'package_data': data})
 
 def packages_detail_page(request, packages_id):
-  return render(request, 'packages/packages_detail_page.html', {'packages_id': packages_id})
+  data = package_detail_data_inJSON(request, packages_id)
+  return render(request, 'packages/packages_detail_page.html', {
+    'packages_data': data,
+  })
