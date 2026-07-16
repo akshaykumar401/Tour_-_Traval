@@ -1,6 +1,6 @@
 {% extends 'layout/index.html' %} {% load static %}
 
-{% block page_title %}Payment{% endblock %}
+{% block page_title %}Payment - Review Booking{% endblock %}
 
 {% block main_content %}
 <!-- Payment Processing Overlay -->
@@ -12,7 +12,7 @@
     </div>
     <div class="space-y-2">
       <h3 class="text-xl font-bold text-slate-900">Processing Payment</h3>
-      <p class="text-sm text-slate-500 font-light">Please do not close this window or refresh the page. We are securing your transaction...</p>
+      <p class="text-sm text-slate-500 font-light">Please do not close this window or refresh the page. We are securely communicating with Razorpay...</p>
     </div>
   </div>
 </div>
@@ -20,211 +20,97 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
   <!-- Title and Subtitle -->
   <div class="mb-10">
-    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Complete Your Booking</h1>
-    <p class="text-slate-500 font-light mt-2">Your adventure is just one step away. All transactions are encrypted and secure.</p>
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Review Your Booking</h1>
+    <p class="text-slate-500 font-light mt-2">Please confirm your trip details before proceeding to our secure payment gateway.</p>
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
     
-    <!-- Left Column: Payment Methods and Forms -->
-    <div class="lg:col-span-8 space-y-8">
+    <!-- Left Column: Review Details -->
+    <div class="lg:col-span-7 space-y-8">
       
-      <!-- Payment Method Container -->
-      <div class="bg-white rounded-3xl border border-slate-100 shadow-xl p-6 sm:p-8 space-y-8">
-        
-        <!-- Header -->
-        <div class="flex items-center gap-3">
+      <!-- Traveler Details Card -->
+      <div class="bg-white rounded-3xl border border-slate-100 shadow-xl p-6 sm:p-8 space-y-6">
+        <div class="flex items-center gap-3 border-b border-slate-100 pb-4">
           <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-[#8c5a24]">
-            <i class="ri-wallet-3-line text-xl"></i>
+            <i class="ri-user-line text-xl"></i>
           </div>
-          <h2 class="text-xl font-bold text-slate-900">Payment Method</h2>
+          <h2 class="text-xl font-bold text-slate-900">Primary Traveler</h2>
         </div>
-
-        <!-- Methods Selector Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          
-          <!-- Method 1: Credit Card (Selected by default) -->
-          <button 
-            type="button" 
-            onclick="selectPaymentMethod('card')" 
-            id="method-card"
-            class="flex items-center gap-4 p-4 rounded-2xl border text-left transition-all outline-none border-[#8c5a24] bg-amber-500/[0.03] cursor-pointer"
-          >
-            <div class="w-10 h-10 rounded-xl bg-[#8c5a24]/10 flex items-center justify-center text-[#8c5a24]">
-              <i class="ri-bank-card-line text-xl"></i>
-            </div>
-            <div>
-              <h4 class="font-bold text-slate-900 text-sm">Credit Card</h4>
-              <p class="text-xs text-slate-500 mt-0.5">Visa, Mastercard, AMEX</p>
-            </div>
-          </button>
-
-          <!-- Method 2: UPI -->
-          <button 
-            type="button" 
-            onclick="selectPaymentMethod('upi')" 
-            id="method-upi"
-            class="flex items-center gap-4 p-4 rounded-2xl border text-left transition-all outline-none border-slate-200 hover:border-slate-300 cursor-pointer"
-          >
-            <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
-              <i class="ri-qr-code-line text-xl"></i>
-            </div>
-            <div>
-              <h4 class="font-bold text-slate-900 text-sm">UPI</h4>
-              <p class="text-xs text-slate-500 mt-0.5">Google Pay, PhonePe, Paytm</p>
-            </div>
-          </button>
-
-          <!-- Method 3: Debit Card -->
-          <button 
-            type="button" 
-            onclick="selectPaymentMethod('debit')" 
-            id="method-debit"
-            class="flex items-center gap-4 p-4 rounded-2xl border text-left transition-all outline-none border-slate-200 hover:border-slate-300 cursor-pointer"
-          >
-            <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
-              <i class="ri-bank-card-2-line text-xl"></i>
-            </div>
-            <div>
-              <h4 class="font-bold text-slate-900 text-sm">Debit Card</h4>
-              <p class="text-xs text-slate-500 mt-0.5">Direct bank transfer cards</p>
-            </div>
-          </button>
-
-          <!-- Method 4: Cash -->
-          <button 
-            type="button" 
-            onclick="selectPaymentMethod('cash')" 
-            id="method-cash"
-            class="flex items-center gap-4 p-4 rounded-2xl border text-left transition-all outline-none border-slate-200 hover:border-slate-300 cursor-pointer"
-          >
-            <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
-              <i class="ri-hand-coin-line text-xl"></i>
-            </div>
-            <div>
-              <h4 class="font-bold text-slate-900 text-sm">Cash (Demo)</h4>
-              <p class="text-xs text-slate-500 mt-0.5">Pay at the check-in desk</p>
-            </div>
-          </button>
-
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Full Name</span>
+            <p class="text-slate-900 font-medium">{{ request.user.get_full_name|default:request.user.username }}</p>
+          </div>
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Email Address</span>
+            <p class="text-slate-900 font-medium">{{ request.user.email }}</p>
+          </div>
         </div>
+      </div>
 
-        <!-- Dynamic Form Fields -->
-        <div class="pt-4 border-t border-slate-100">
-          
-          <!-- Card Form (Visible for Card & Debit) -->
-          <div id="form-card" class="space-y-6">
-            <!-- Cardholder Name -->
-            <div class="space-y-2">
-              <label for="cardholder-name" class="text-xs font-bold text-slate-400 uppercase tracking-wider">Cardholder Name</label>
-              <input 
-                type="text" 
-                id="cardholder-name" 
-                placeholder="Johnathan Doe" 
-                class="w-full bg-slate-50/50 border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-800 rounded-xl px-4 py-3.5 text-sm outline-none transition-all"
-              />
-            </div>
-
-            <!-- Card Number -->
-            <div class="space-y-2">
-              <label for="card-number" class="text-xs font-bold text-slate-400 uppercase tracking-wider">Card Number</label>
-              <div class="relative">
-                <input 
-                  type="text" 
-                  id="card-number" 
-                  maxlength="19"
-                  placeholder="XXXX XXXX XXXX XXXX" 
-                  class="w-full bg-slate-50/50 border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-800 rounded-xl pl-4 pr-12 py-3.5 text-sm outline-none transition-all"
-                />
-                <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
-                  <i class="ri-credit-card-line text-lg"></i>
-                </div>
-              </div>
-            </div>
-
-            <!-- Expiry & CVV -->
-            <div class="grid grid-cols-2 gap-6">
-              <!-- Expiry -->
-              <div class="space-y-2">
-                <label for="card-expiry" class="text-xs font-bold text-slate-400 uppercase tracking-wider">Expiry Date</label>
-                <input 
-                  type="text" 
-                  id="card-expiry" 
-                  maxlength="5"
-                  placeholder="MM/YY" 
-                  class="w-full bg-slate-50/50 border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-800 rounded-xl px-4 py-3.5 text-sm outline-none transition-all"
-                />
-              </div>
-              <!-- CVV -->
-              <div class="space-y-2">
-                <label for="card-cvv" class="text-xs font-bold text-slate-400 uppercase tracking-wider">CVV</label>
-                <input 
-                  type="password" 
-                  id="card-cvv" 
-                  maxlength="3"
-                  placeholder="***" 
-                  class="w-full bg-slate-50/50 border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-800 rounded-xl px-4 py-3.5 text-sm outline-none transition-all"
-                />
-              </div>
-            </div>
+      <!-- Trip Summary Card -->
+      <div class="bg-white rounded-3xl border border-slate-100 shadow-xl p-6 sm:p-8 space-y-6">
+        <div class="flex items-center gap-3 border-b border-slate-100 pb-4">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-[#8c5a24]">
+            <i class="ri-map-pin-line text-xl"></i>
           </div>
-
-          <!-- UPI Form (Hidden initially) -->
-          <div id="form-upi" class="space-y-6 hidden">
-            <div class="flex flex-col sm:flex-row items-center gap-6 bg-slate-50 p-6 rounded-2xl border border-slate-100">
-              <!-- QR Code Mock -->
-              <div class="flex-shrink-0 bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center gap-2">
-                <div class="w-32 h-32 bg-slate-100 flex items-center justify-center rounded-lg border border-slate-200">
-                  <i class="ri-qr-code-fill text-6xl text-slate-800"></i>
-                </div>
-                <span class="text-[10px] font-bold text-slate-400 tracking-wider">SCAN TO PAY</span>
-              </div>
-              <!-- UPI ID Entry -->
-              <div class="flex-grow space-y-4 w-full">
-                <div class="space-y-2">
-                  <label for="upi-id" class="text-xs font-bold text-slate-400 uppercase tracking-wider">Enter UPI ID</label>
-                  <input 
-                    type="text" 
-                    id="upi-id" 
-                    placeholder="john@okaxis" 
-                    class="w-full bg-white border border-slate-200/80 focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] text-slate-800 rounded-xl px-4 py-3.5 text-sm outline-none transition-all"
-                  />
-                </div>
-                <p class="text-xs text-slate-500 font-light leading-relaxed">
-                  Pay securely using any UPI app (BHIM, Google Pay, PhonePe, Paytm, or your bank app). Simply enter your UPI ID or scan the QR code.
-                </p>
-              </div>
-            </div>
+          <h2 class="text-xl font-bold text-slate-900">Trip Summary</h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Package</span>
+            <p class="text-slate-900 font-medium">{{ package.name }}</p>
           </div>
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Departure Date</span>
+            <p class="text-slate-900 font-medium">{{ start_date }}</p>
+          </div>
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Duration</span>
+            <p class="text-slate-900 font-medium">{{ package.duration }}</p>
+          </div>
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Travelers</span>
+            <p class="text-slate-900 font-medium">{{ persons }} Adults</p>
+          </div>
+        </div>
+      </div>
 
-          <!-- Cash Form (Hidden initially) -->
-          <div id="form-cash" class="p-6 bg-amber-500/[0.02] border border-dashed border-amber-500/20 rounded-2xl text-center space-y-3 hidden">
-            <div class="w-12 h-12 rounded-full bg-amber-500/10 flex items-center justify-center text-[#8c5a24] mx-auto">
-              <i class="ri-information-line text-2xl"></i>
-            </div>
-            <h4 class="font-bold text-slate-900 text-sm">Pay at check-in desk</h4>
-            <p class="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
-              No immediate online transaction is required. You can confirm your booking now and pay directly at the hospitality counter using cash, cards, or mobile wallets when checking in.
+      <!-- Security Disclaimer & Trust -->
+      <div class="bg-slate-50 border border-slate-100 rounded-3xl p-6 sm:p-8 space-y-6">
+        <div class="flex gap-4">
+          <div class="flex-shrink-0 text-[#8c5a24]">
+            <i class="ri-shield-check-fill text-3xl"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-900 text-base mb-1">100% Secure Payment</h4>
+            <p class="text-sm text-slate-500 font-light leading-relaxed">
+              Your payment is processed securely by Razorpay. We support all major Credit/Debit Cards, UPI, Netbanking, and Wallets. We never store your sensitive payment details.
             </p>
           </div>
-
         </div>
-
-        <!-- Security Disclaimer Alert -->
-        <div class="flex gap-4 p-5 bg-slate-50 border border-slate-100 rounded-2xl">
-          <div class="flex-shrink-0 text-slate-600">
-            <i class="ri-shield-check-line text-2xl"></i>
+        
+        <div class="flex justify-around items-center pt-6 border-t border-slate-200/60">
+          <div class="flex flex-col items-center gap-1">
+            <i class="ri-lock-2-line text-2xl text-slate-400"></i>
+            <span class="text-[10px] font-bold text-slate-400 tracking-wider">256-BIT SSL</span>
           </div>
-          <p class="text-xs text-slate-500 font-light leading-relaxed">
-            Your payment is secured by 256-bit SSL encryption. We do not store your CVV or sensitive banking passwords.
-          </p>
+          <div class="flex flex-col items-center gap-1">
+            <i class="ri-verified-badge-line text-2xl text-slate-400"></i>
+            <span class="text-[10px] font-bold text-slate-400 tracking-wider">VERIFIED</span>
+          </div>
+          <div class="flex flex-col items-center gap-1">
+            <i class="ri-customer-service-2-line text-2xl text-slate-400"></i>
+            <span class="text-[10px] font-bold text-slate-400 tracking-wider">24/7 SUPPORT</span>
+          </div>
         </div>
-
       </div>
+
     </div>
 
     <!-- Right Column: Package Preview and Price Summary Card -->
-    <div class="lg:col-span-4 lg:sticky lg:top-8">
+    <div class="lg:col-span-5 lg:sticky lg:top-8">
       <div class="bg-slate-950 rounded-3xl overflow-hidden shadow-2xl flex flex-col">
         
         <!-- Package Hero Image -->
@@ -242,24 +128,14 @@
           <div class="space-y-6">
             <!-- Title -->
             <div class="space-y-1">
-              <span class="text-[10px] font-bold text-[#e29d4c] uppercase tracking-wider">Package Name</span>
+              <span class="text-[10px] font-bold text-[#e29d4c] uppercase tracking-wider">Order Summary</span>
               <h3 class="text-xl font-bold text-white tracking-tight leading-snug">{{ package.name }}</h3>
             </div>
 
             <!-- Info List -->
             <div class="space-y-3 text-sm">
               <div class="flex justify-between items-center text-slate-400">
-                <span class="font-light">Duration</span>
-                <span class="font-semibold text-white">{{ package.duration }}</span>
-              </div>
-              <div class="flex justify-between items-center text-slate-400">
-                <span class="font-light">Travelers</span>
-                <span class="font-semibold text-white">
-                  {% if request.GET.travelers %}{{ request.GET.travelers }}{% else %}2{% endif %} Adults
-                </span>
-              </div>
-              <div class="flex justify-between items-center text-slate-400">
-                <span class="font-light">Base Fare</span>
+                <span class="font-light">Base Fare ({{ persons }} Travelers)</span>
                 <span class="font-semibold text-white">₹{{ package.price }}</span>
               </div>
               <div class="flex justify-between items-center text-slate-400">
@@ -274,7 +150,7 @@
             <!-- Total -->
             <div class="flex justify-between items-baseline">
               <span class="text-sm text-slate-400 font-light">Total Price</span>
-              <span class="text-2xl font-extrabold text-[#e29d4c]">₹{{ total }}</span>
+              <span class="text-3xl font-extrabold text-[#e29d4c]">₹{{ total }}</span>
             </div>
           </div>
 
@@ -283,39 +159,19 @@
             <button 
               type="button" 
               onclick="processPayment()"
-              class="w-full bg-[#8c5a24] hover:bg-[#72491d] text-white text-base font-bold py-4 rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white text-base font-bold py-4 rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>Pay Now</span>
-              <i class="ri-lock-line text-lg"></i>
+              <span>Pay with Razorpay</span>
+              <i class="ri-secure-payment-line text-lg"></i>
             </button>
             <p class="text-center text-[10px] text-slate-500 font-light leading-normal">
-              By clicking 'Pay Now', you agree to our Terms of Service and Cancellation Policy.
+              By clicking 'Pay with Razorpay', you agree to our Terms of Service and Cancellation Policy.
             </p>
           </div>
 
         </div>
 
       </div>
-
-      <!-- Trust Badges -->
-      <div class="flex justify-around items-center mt-6 py-2 px-4 bg-slate-50 rounded-2xl border border-slate-100">
-        <!-- Badge 1 -->
-        <div class="flex flex-col items-center gap-1">
-          <i class="ri-shield-keyhole-line text-lg text-slate-500"></i>
-          <span class="text-[9px] font-bold text-slate-400 tracking-wider">SECURE PAY</span>
-        </div>
-        <!-- Badge 2 -->
-        <div class="flex flex-col items-center gap-1">
-          <i class="ri-verified-badge-line text-lg text-slate-500"></i>
-          <span class="text-[9px] font-bold text-slate-400 tracking-wider">VERIFIED</span>
-        </div>
-        <!-- Badge 3 -->
-        <div class="flex flex-col items-center gap-1">
-          <i class="ri-customer-service-2-line text-lg text-slate-500"></i>
-          <span class="text-[9px] font-bold text-slate-400 tracking-wider">24/7 HELP</span>
-        </div>
-      </div>
-
     </div>
 
   </div>
@@ -323,107 +179,46 @@
 {% endblock %}
 
 {% block script %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<form id="razorpay-form" method="POST" action="{% url 'payment_verify' %}" class="hidden">
+  <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+  <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
+  <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+  <input type="hidden" name="booking_id" value="{{ booking_id }}">
+</form>
 <script>
-  let activeMethod = 'card';
-
-  function selectPaymentMethod(method) {
-    activeMethod = method;
-
-    // Reset button designs
-    const buttons = ['card', 'upi', 'debit', 'cash'];
-    buttons.forEach(btn => {
-      const el = document.getElementById(`method-${btn}`);
-      const iconContainer = el.querySelector('div');
-      
-      if (btn === method) {
-        // Highlighted State
-        el.classList.remove('border-slate-200', 'hover:border-slate-300');
-        el.classList.add('border-[#8c5a24]', 'bg-amber-500/[0.03]');
-        iconContainer.classList.remove('bg-slate-100', 'text-slate-600');
-        iconContainer.classList.add('bg-[#8c5a24]/10', 'text-[#8c5a24]');
-      } else {
-        // Normal State
-        el.classList.remove('border-[#8c5a24]', 'bg-amber-500/[0.03]');
-        el.classList.add('border-slate-200', 'hover:border-slate-300');
-        iconContainer.classList.remove('bg-[#8c5a24]/10', 'text-[#8c5a24]');
-        iconContainer.classList.add('bg-slate-100', 'text-slate-600');
-      }
-    });
-
-    // Toggle Forms
-    const showCard = (method === 'card' || method === 'debit');
-    const showUpi = (method === 'upi');
-    const showCash = (method === 'cash');
-
-    document.getElementById('form-card').classList.toggle('hidden', !showCard);
-    document.getElementById('form-upi').classList.toggle('hidden', !showUpi);
-    document.getElementById('form-cash').classList.toggle('hidden', !showCash);
-  }
-
-  // Auto-format card number
-  document.getElementById('card-number').addEventListener('input', function (e) {
-    let target = e.target;
-    let position = target.selectionEnd;
-    let length = target.value.length;
-    
-    let value = target.value.replace(/\D/g, '');
-    let formatted = '';
-    
-    for (let i = 0; i < value.length; i++) {
-      if (i > 0 && i % 4 === 0) {
-        formatted += ' ';
-      }
-      formatted += value[i];
-    }
-    
-    target.value = formatted;
-  });
-
-  // Auto-format card expiry (MM/YY)
-  document.getElementById('card-expiry').addEventListener('input', function (e) {
-    let value = e.target.value.replace(/\D/g, '');
-    if (value.length > 2) {
-      e.target.value = value.slice(0, 2) + '/' + value.slice(2, 4);
-    } else {
-      e.target.value = value;
-    }
-  });
-
   function processPayment() {
-    // Basic frontend verification depending on selected method
-    if (activeMethod === 'card' || activeMethod === 'debit') {
-      const name = document.getElementById('cardholder-name').value.trim();
-      const number = document.getElementById('card-number').value.replace(/\s/g, '');
-      const expiry = document.getElementById('card-expiry').value.trim();
-      const cvv = document.getElementById('card-cvv').value.trim();
-
-      if (!name || number.length < 16 || expiry.length < 5 || cvv.length < 3) {
-        alert('Please fill out all card details correctly.');
-        return;
+    var options = {
+      "key": "{{ razorpay_key_id }}",
+      "amount": "{{ razorpay_amount }}",
+      "currency": "INR",
+      "name": "Tour & Travel",
+      "description": "Booking for {{ package.name }}",
+      "image": "{{ package.image }}",
+      "order_id": "{{ razorpay_order_id }}",
+      "handler": function (response){
+        document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+        document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+        document.getElementById('razorpay_signature').value = response.razorpay_signature;
+        
+        const overlay = document.getElementById('payment-overlay');
+        overlay.classList.remove('hidden');
+        
+        document.getElementById('razorpay-form').submit();
+      },
+      "prefill": {
+        "name": "{{ request.user.get_full_name|default:request.user.username }}",
+        "email": "{{ request.user.email }}",
+      },
+      "theme": {
+        "color": "#2563eb"
       }
-    } else if (activeMethod === 'upi') {
-      const upiId = document.getElementById('upi-id').value.trim();
-      if (!upiId.includes('@')) {
-        alert('Please enter a valid UPI ID (e.g. user@bank).');
-        return;
-      }
-    }
-
-    // Show processing screen
-    const overlay = document.getElementById('payment-overlay');
-    overlay.classList.remove('hidden');
-
-    // Simulate payment transaction delays
-    setTimeout(() => {
-      // Generate random mock IDs
-      const bookingId = Math.floor(Math.random() * 90000) + 10000;
-      const paymentId = Math.floor(Math.random() * 90000) + 20000;
-      const txnId = 'TXN' + Math.random().toString(36).substring(2, 10).toUpperCase();
-      const packageId = "{{ package_id }}";
-
-      // Redirect to booking success page
-      window.location.href = `/booking/payment/success/${bookingId}/${paymentId}/${txnId}/${packageId}/`;
-    }, 1800);
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.on('payment.failed', function (response){
+      alert("Payment failed! Reason: " + response.error.description);
+    });
+    rzp1.open();
   }
 </script>
 {% endblock %}

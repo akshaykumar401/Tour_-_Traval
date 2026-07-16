@@ -22,7 +22,8 @@ def packages_page_data_inJSON(request):
       'main_title': p.main_title,
       'description': p.description,
       'created_at': p.created_at,
-      'image': image_url
+      'image': image_url,
+      'departure_date': p.departure_dates.all().first().departure_date,
     })
   return data
 

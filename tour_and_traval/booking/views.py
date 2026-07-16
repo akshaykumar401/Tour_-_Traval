@@ -1,69 +1,139 @@
-from django.shortcuts import render
+import razorpay
+from django.conf import settings
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseBadRequest
+from datetime import datetime, timedelta
 
-# Mock Packages Data
-PACKAGES = {
-  1: {
-    "name": "Goa Beach Tour",
-    "price": 15000,
-    "duration": "4 Days, 3 Nights",
-    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
-  },
-  2: {
-    "name": "Misty Peaks Trek",
-    "price": 24500,
-    "duration": "6 Days, 5 Nights",
-    "image": "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=800&q=80",
-  },
-  3: {
-    "name": "Backwater Bliss",
-    "price": 18900,
-    "duration": "5 Days, 4 Nights",
-    "image": "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80",
-  },
-  4: {
-    "name": "Royal Rajasthan",
-    "price": 32000,
-    "duration": "7 Days, 6 Nights",
-    "image": "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80",
-  },
-  5: {
-    "name": "Spiritual Ganges",
-    "price": 12500,
-    "duration": "3 Days, 2 Nights",
-    "image": "https://images.unsplash.com/photo-1762513907666-29901bf5899a?w=600&auto=format&fit=crop&q=60",
-  },
-  6: {
-    "name": "Azure Deep Diving",
-    "price": 45000,
-    "duration": "8 Days, 7 Nights",
-    "image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80",
-  }
-}
+from .models import Booking
+# pyrefly: ignore [missing-import]
+from packages.models import Packages
 
+razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+@login_required
 def booking_page(request):
   return render(request, "booking/booking_page.html")
 
-def payment_page(request, package_id: int):
-  package = PACKAGES.get(package_id)
-  if not package:
-    package = PACKAGES[1]
+@login_required
+def payment_page(request, package_id: int, start_date: str, persons: str):
+  package_obj = get_object_or_404(Packages, id=package_id)
+  
+  try:
+    persons_count = int(persons)
+  except ValueError:
+    persons_count = 1
+
+  base_fare = package_obj.starting_price * persons_count
   
   # Calculate taxes (e.g. 5% + ₹250 convenience fee)
-  taxes = int(package["price"] * 0.05 + 250)
-  total = package["price"] + taxes
+  taxes = int(base_fare * 0.05 + 250)
+  total = base_fare + taxes
+  
+  # Parse start_date and calculate end_date
+  try:
+    parsed_start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+  except ValueError:
+    parsed_start_date = datetime.now().date()
+  
+  end_date = parsed_start_date + timedelta(days=package_obj.total_days)
+
+  # Create a pending Booking
+  booking = Booking.objects.create(
+    user=request.user,
+    package=package_obj,
+    payment_status='pending',
+    status='pending',
+    amount=total,
+    total_cost=total,
+    number_of_persons=persons_count,
+    start_date=parsed_start_date,
+    end_date=end_date,
+  )
+
+  # Create Razorpay Order
+  razorpay_order = razorpay_client.order.create({
+    "amount": int(100), # Amount in paise
+    "currency": "INR",
+    "receipt": f"booking_{booking.id}",
+    "payment_capture": "1"
+  })
+  
+  # Store order_id in ticket_number temporarily to retrieve in verify
+  booking.ticket_number = razorpay_order['id']
+  booking.save()
+
+  image_obj = package_obj.images.first()
+  image_url = image_obj.image.url if image_obj and image_obj.image else ''
+  
+  package = {
+    "name": package_obj.main_title,
+    "price": base_fare,
+    "duration": f"{package_obj.total_days} Days, {package_obj.total_nights} Nights",
+    "image": image_url,
+  }
   
   return render(request, "booking/payment_page.html", {
     "package": package,
     "taxes": taxes,
     "total": total,
     "package_id": package_id,
+    "persons": persons_count,
+    "start_date": start_date,
+    "razorpay_order_id": razorpay_order['id'],
+    "razorpay_amount": int(100),
+    "razorpay_key_id": settings.RAZORPAY_KEY_ID,
+    "booking_id": booking.id,
   })
 
-def booking_success_page(request, booking_id: int, payment_id: int, transection_id: str, package_id: int):
-  package = PACKAGES.get(package_id)
-  if not package:
-    package = PACKAGES[1]
+@csrf_exempt
+def payment_verify(request):
+  if request.method == "POST":
+    razorpay_payment_id = request.POST.get('razorpay_payment_id', '')
+    razorpay_order_id = request.POST.get('razorpay_order_id', '')
+    razorpay_signature = request.POST.get('razorpay_signature', '')
+    booking_id = request.POST.get('booking_id', '')
+    
+    try:
+      # Verify signature
+      razorpay_client.utility.verify_payment_signature({
+        'razorpay_order_id': razorpay_order_id,
+        'razorpay_payment_id': razorpay_payment_id,
+        'razorpay_signature': razorpay_signature
+      })
+      
+      # Payment is verified successfully
+      booking = get_object_or_404(Booking, id=booking_id)
+      booking.payment_status = 'paid'
+      booking.status = 'confirmed'
+      booking.UTR_number = razorpay_payment_id
+      booking.save()
+      
+      return redirect('booking_success_page', booking_id=booking.id, payment_id=razorpay_payment_id, transection_id=razorpay_order_id, package_id=booking.package.id)
+      
+    except razorpay.errors.SignatureVerificationError:
+      return HttpResponseBadRequest("Payment verification failed")
+  return HttpResponseBadRequest("Invalid request method")
+
+
+@login_required
+def booking_success_page(request, booking_id: int, payment_id: str, transection_id: str, package_id: int):
+  package_obj = get_object_or_404(Packages, id=package_id)
+  booking_obj = get_object_or_404(Booking, id=booking_id)
+  
+  image_obj = package_obj.images.first()
+  image_url = image_obj.image.url if image_obj and image_obj.image else ''
+  
+  package = {
+    "name": package_obj.main_title,
+    "price": package_obj.starting_price,
+    "duration": f"{package_obj.total_days} Days, {package_obj.total_nights} Nights",
+    "image": image_url,
+  }
+
   return render(request, "booking/booking_success_page.html", {
+    "booking": booking_obj,
     "booking_id": booking_id,
     "payment_id": payment_id,
     "transection_id": transection_id,

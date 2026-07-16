@@ -1,6 +1,6 @@
 {% extends 'layout/index.html' %} {% load static %}
 
-{% block page_title %}Your Ticket is Ready{% endblock %}
+{% block page_title %}Your E-Ticket is Ready{% endblock %}
 
 {% block extra_cdn %}
 <style>
@@ -50,7 +50,6 @@
   
   <!-- Floating Confetti Decorative Elements -->
   <div class="absolute inset-0 overflow-hidden pointer-events-none no-print">
-    <!-- Confetti pieces matching the mockup's colors -->
     <div class="confetti-particle absolute top-[15%] left-[20%] w-3 h-3 bg-amber-500 rounded-sm opacity-60 rotate-12"></div>
     <div class="confetti-particle absolute top-[25%] right-[22%] w-2 h-4 bg-blue-500 rounded-sm opacity-40 -rotate-45"></div>
     <div class="confetti-particle absolute bottom-[25%] left-[25%] w-3 h-3 bg-emerald-500 rounded-full opacity-50 rotate-45"></div>
@@ -61,82 +60,112 @@
     <div class="confetti-particle absolute top-[10%] right-[15%] w-4 h-4 bg-amber-600 rounded-full opacity-50"></div>
   </div>
 
-  <div class="w-full max-w-xl mx-auto space-y-8 relative z-10 print-card">
+  <div class="w-full max-w-3xl mx-auto relative z-10 print-card space-y-6">
     
-    <!-- Top Avatar with Checkmark -->
-    <div class="relative w-44 h-44 sm:w-48 sm:h-48 mx-auto">
-      <div class="w-full h-full rounded-full border-4 border-white shadow-xl overflow-hidden bg-slate-200">
-        <img 
-          src="{% static 'images/booking_success_celebration.png' %}" 
-          alt="Booking celebration" 
-          class="w-full h-full object-cover"
-        />
+    <!-- Top Celebration Graphic -->
+    <div class="text-center no-print">
+      <div class="inline-flex items-center justify-center w-20 h-20 bg-emerald-100 rounded-full mb-4 shadow-sm border-4 border-white">
+        <i class="ri-check-double-line text-4xl text-emerald-600"></i>
       </div>
-      <!-- Checkmark Overlay -->
-      <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-14 h-14 bg-white rounded-full shadow-lg flex items-center justify-center border-4 border-white">
-        <div class="w-full h-full rounded-full bg-[#8c5a24] flex items-center justify-center text-white">
-          <i class="ri-check-line text-2xl font-bold"></i>
-        </div>
-      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Booking Confirmed!</h2>
+      <p class="text-slate-500 font-light mt-2 text-sm sm:text-base">We've received your payment and secured your spot.</p>
     </div>
 
-    <!-- Main Card Body -->
-    <div class="bg-white rounded-3xl border border-slate-100 shadow-2xl p-8 sm:p-10 pt-12 text-center space-y-8">
+    <!-- Main Ticket Card -->
+    <div class="bg-white rounded-[2rem] border border-slate-100 shadow-2xl overflow-hidden relative">
       
-      <!-- Congratulations Header -->
-      <div class="space-y-2">
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Congratulations!</h2>
-        <p class="text-slate-500 font-light text-sm sm:text-base">Your booking has been confirmed.</p>
-      </div>
+      <!-- Decorative cutouts for ticket look -->
+      <div class="absolute left-0 top-[60%] -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-slate-50 rounded-full border-r border-slate-100"></div>
+      <div class="absolute right-0 top-[60%] translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-slate-50 rounded-full border-l border-slate-100"></div>
 
-      <!-- Details Columns -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <!-- Booking ID Card -->
-        <div class="bg-slate-50 border border-slate-200/40 rounded-2xl p-5 text-left space-y-1">
-          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Booking ID</span>
-          <h4 class="text-lg font-bold text-slate-800 tracking-wider">
-            {% if booking_id %}TR{{ booking_id }}{% else %}TR1023{% endif %}
-          </h4>
-        </div>
-        <!-- Status Card -->
-        <div class="bg-slate-50 border border-slate-200/40 rounded-2xl p-5 text-left space-y-1">
-          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Status</span>
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-            <span class="text-base font-bold text-slate-800">Confirmed</span>
+      <!-- Ticket Header (Package & Dates) -->
+      <div class="p-8 pb-6 sm:px-10 border-b-2 border-dashed border-slate-200">
+        <div class="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+          <!-- Package Thumbnail -->
+          <div class="w-24 h-24 rounded-2xl overflow-hidden shadow-md flex-shrink-0 border-2 border-white">
+            <img src="{{ package.image }}" alt="{{ package.name }}" class="w-full h-full object-cover">
+          </div>
+          <!-- Package Title -->
+          <div class="flex-grow">
+            <span class="text-xs font-bold text-[#e29d4c] uppercase tracking-wider mb-1 block">{{ booking.package.location }}</span>
+            <h3 class="text-2xl font-bold text-slate-900 leading-tight mb-2">{{ package.name }}</h3>
+            <div class="flex flex-wrap items-center gap-4 text-sm text-slate-500 font-medium">
+              <span class="flex items-center gap-1"><i class="ri-calendar-2-line text-[#8c5a24]"></i> {{ booking.start_date|date:"d M Y" }}</span>
+              <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+              <span class="flex items-center gap-1"><i class="ri-time-line text-[#8c5a24]"></i> {{ package.duration }}</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Action Buttons -->
-      <div class="flex flex-col sm:flex-row gap-4 justify-center pt-2 no-print">
-        <!-- Download Ticket -->
-        <button 
-          onclick="window.print()" 
-          class="flex-1 bg-[#8c5a24] hover:bg-[#72491d] text-white text-sm font-bold py-3.5 px-6 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
-        >
-          <i class="ri-download-line text-lg"></i>
-          <span>Download Ticket</span>
-        </button>
-        <!-- Back to Home -->
-        <a 
-          href="{% url 'home' %}" 
-          class="flex-1 bg-white border border-slate-200 hover:border-slate-350 text-slate-700 hover:text-slate-900 text-sm font-bold py-3.5 px-6 rounded-xl transition-all flex items-center justify-center gap-2"
-        >
-          <i class="ri-home-line text-lg"></i>
-          <span>Back to Home</span>
-        </a>
+      <!-- Ticket Body (Passenger & Reference) -->
+      <div class="p-8 sm:px-10 grid grid-cols-1 sm:grid-cols-2 gap-8 bg-slate-50/30">
+        
+        <!-- Left: Passenger Info -->
+        <div class="space-y-6">
+          <div>
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Primary Traveler</span>
+            <p class="text-base font-bold text-slate-900">{{ booking.user.get_full_name|default:booking.user.username }}</p>
+            <p class="text-sm text-slate-500">{{ booking.user.email }}</p>
+          </div>
+          <div>
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Travel Party</span>
+            <p class="text-base font-bold text-slate-900">{{ booking.number_of_persons }} Adults</p>
+          </div>
+        </div>
+
+        <!-- Right: Reference Codes -->
+        <div class="space-y-6 sm:text-right">
+          <div>
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Booking Reference ID</span>
+            <p class="text-lg font-bold text-[#8c5a24] tracking-widest">TR-{{ booking.id }}</p>
+          </div>
+          <div>
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Transaction ID</span>
+            <p class="text-sm font-semibold text-slate-700 font-mono">{{ payment_id }}</p>
+          </div>
+          <div>
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Booking Status</span>
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-700 text-xs font-bold">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Confirmed
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <!-- Divider line -->
-      <hr class="border-slate-100 mt-2">
-
-      <!-- Disclaimer text -->
-      <p class="text-xs text-slate-400 italic font-light leading-normal pt-2">
-        A confirmation email has been sent to your registered address.
-      </p>
+      <!-- Ticket Footer (Total Price) -->
+      <div class="p-6 sm:px-10 bg-[#8c5a24]/5 border-t-2 border-dashed border-slate-200">
+        <div class="flex justify-between items-center">
+          <span class="text-sm font-bold text-slate-600 uppercase tracking-wider">Total Amount Paid</span>
+          <span class="text-2xl font-extrabold text-slate-900">₹{{ booking.total_cost }}</span>
+        </div>
+      </div>
 
     </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4 no-print">
+      <button 
+        onclick="window.print()" 
+        class="bg-[#8c5a24] hover:bg-[#72491d] text-white text-sm font-bold py-3.5 px-8 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer min-w-[200px]"
+      >
+        <i class="ri-printer-line text-lg"></i>
+        <span>Print E-Ticket</span>
+      </button>
+      <a 
+        href="{% url 'home' %}" 
+        class="bg-white border border-slate-200 hover:border-slate-350 hover:bg-slate-50 text-slate-700 hover:text-slate-900 text-sm font-bold py-3.5 px-8 rounded-xl transition-all flex items-center justify-center gap-2 min-w-[200px]"
+      >
+        <i class="ri-home-line text-lg"></i>
+        <span>Back to Home</span>
+      </a>
+    </div>
+
+    <!-- Email Note -->
+    <p class="text-center text-xs text-slate-400 italic font-light no-print pt-2">
+      A digital copy of this receipt has been emailed to your registered address.
+    </p>
 
   </div>
 </div>

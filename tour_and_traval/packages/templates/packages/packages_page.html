@@ -300,7 +300,7 @@ Packages {% endblock %} {% block main_content %}
         <!-- Button -->
         <div class="p-6 pt-4">
           <a
-            href="{% url 'payment_page' package.id %}"
+            href="{% url 'payment_page' package.id package.departure_date 1 %}"
             class="book-now-btn w-full bg-[#8c5a24] hover:bg-[#72491d] text-white text-sm font-semibold py-3 rounded-xl transition-all shadow-xs hover:shadow-md flex items-center justify-center gap-1.5 text-center"
           >
             Book Now <i class="ri-arrow-right-line"></i>
