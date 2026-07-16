@@ -191,97 +191,93 @@
         <!-- Bookings List -->
         <div class="space-y-6 pt-2">
           
-          <!-- Booking Item 1 -->
-          <div class="flex flex-col md:flex-row gap-6 p-5 bg-slate-50/50 border border-slate-100 rounded-2xl hover:shadow-md transition-all">
-            <!-- Image -->
-            <div class="w-full md:w-44 h-32 rounded-xl overflow-hidden flex-shrink-0 bg-slate-100">
-              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=300&q=80" alt="Goa beach" class="w-full h-full object-cover">
-            </div>
-            <!-- Info -->
-            <div class="flex-grow flex flex-col justify-between">
-              <div class="space-y-2">
-                <div class="flex flex-wrap items-center justify-between gap-2">
-                  <h4 class="text-lg font-bold text-slate-900">Goa Beach Tour</h4>
-                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                    Confirmed
-                  </span>
-                </div>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs text-slate-500 mt-2">
-                  <div>
-                    <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Booking ID</p>
-                    <p class="font-semibold text-slate-800 mt-0.5">#TR37969</p>
-                  </div>
-                  <div>
-                    <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Travel Date</p>
-                    <p class="font-semibold text-slate-800 mt-0.5">Oct 12, 2026</p>
-                  </div>
-                  <div>
-                    <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Travelers</p>
-                    <p class="font-semibold text-slate-800 mt-0.5">2 Adults</p>
-                  </div>
-                  <div>
-                    <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Price Paid</p>
-                    <p class="font-semibold text-slate-800 mt-0.5">₹16,000</p>
-                  </div>
-                </div>
+          {% if user_data.my_booking %}
+            {% for booking in user_data.my_booking %}
+            <!-- Booking Item -->
+            <div class="flex flex-col md:flex-row gap-6 p-5 bg-slate-50/50 border border-slate-100 rounded-2xl hover:shadow-md transition-all">
+              <!-- Image -->
+              <div class="w-full md:w-44 h-32 rounded-xl overflow-hidden flex-shrink-0 bg-slate-100">
+                {% if booking.package_image %}
+                <img src="{{ booking.package_image }}" alt="{{ booking.package }}" class="w-full h-full object-cover">
+                {% else %}
+                <div class="w-full h-full flex items-center justify-center text-slate-300"><i class="ri-image-line text-3xl"></i></div>
+                {% endif %}
               </div>
-              <div class="flex gap-3 justify-end mt-4">
-                <button type="button" onclick="window.print()" class="px-4 py-2 border border-slate-200 hover:border-slate-350 text-slate-705 hover:text-slate-900 rounded-lg text-xs font-semibold transition-colors cursor-pointer">
-                  Download Ticket
-                </button>
-                <a href="/packages/" class="px-4 py-2 bg-[#8c5a24] hover:bg-[#72491d] text-white rounded-lg text-xs font-semibold transition-colors text-center">
-                  View Details
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Booking Item 2 -->
-          <div class="flex flex-col md:flex-row gap-6 p-5 bg-slate-50/50 border border-slate-100 rounded-2xl hover:shadow-md transition-all">
-            <!-- Image -->
-            <div class="w-full md:w-44 h-32 rounded-xl overflow-hidden flex-shrink-0 bg-slate-100">
-              <img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=300&q=80" alt="Himachal hills" class="w-full h-full object-cover">
-            </div>
-            <!-- Info -->
-            <div class="flex-grow flex flex-col justify-between">
-              <div class="space-y-2">
-                <div class="flex flex-wrap items-center justify-between gap-2">
-                  <h4 class="text-lg font-bold text-slate-900">Misty Peaks Trek</h4>
-                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600">
-                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                    Pending Payment
-                  </span>
-                </div>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs text-slate-500 mt-2">
-                  <div>
-                    <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Booking ID</p>
-                    <p class="font-semibold text-slate-800 mt-0.5">#TR88128</p>
+              <!-- Info -->
+              <div class="flex-grow flex flex-col justify-between">
+                <div class="space-y-2">
+                  <div class="flex flex-wrap items-center justify-between gap-2">
+                    <h4 class="text-lg font-bold text-slate-900">{{ booking.package }}</h4>
+                    {% if booking.status == 'confirmed' %}
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                      Confirmed
+                    </span>
+                    {% elif booking.status == 'cancelled' %}
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-600">
+                      <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                      Cancelled
+                    </span>
+                    {% else %}
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600">
+                      <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                      {{ booking.status|title }}
+                    </span>
+                    {% endif %}
                   </div>
-                  <div>
-                    <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Travel Date</p>
-                    <p class="font-semibold text-slate-800 mt-0.5">Nov 05, 2026</p>
-                  </div>
-                  <div>
-                    <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Travelers</p>
-                    <p class="font-semibold text-slate-800 mt-0.5">3 Adults</p>
-                  </div>
-                  <div>
-                    <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Total Amount</p>
-                    <p class="font-semibold text-slate-800 mt-0.5">₹25,975</p>
+                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs text-slate-500 mt-2">
+                    <div>
+                      <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Booking ID</p>
+                      <p class="font-semibold text-slate-800 mt-0.5">#{{ booking.ticket_number|default:"Pending" }}</p>
+                    </div>
+                    <div>
+                      <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Travel Date</p>
+                      <p class="font-semibold text-slate-800 mt-0.5">{{ booking.start_date|date:"M d, Y" }}</p>
+                    </div>
+                    <div>
+                      <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Travelers</p>
+                      <p class="font-semibold text-slate-800 mt-0.5">{{ booking.number_of_persons }} Adults</p>
+                    </div>
+                    <div>
+                      <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">Total Amount</p>
+                      <p class="font-semibold text-slate-800 mt-0.5">₹{{ booking.total_cost }}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="flex gap-3 justify-end mt-4">
-                <button type="button" onclick="alert('Booking cancellation request sent.')" class="px-4 py-2 border border-rose-200 hover:bg-rose-50 text-rose-600 rounded-lg text-xs font-semibold transition-colors cursor-pointer">
-                  Cancel Booking
-                </button>
-                <a href="/booking/payment/2/" class="px-4 py-2 bg-[#8c5a24] hover:bg-[#72491d] text-white rounded-lg text-xs font-semibold transition-colors text-center">
-                  Pay Now
-                </a>
+                <div class="flex gap-3 justify-end mt-4">
+                  {% if booking.status == 'confirmed' %}
+                  <button type="button" onclick="window.print()" class="px-4 py-2 border border-slate-200 hover:border-slate-350 text-slate-705 hover:text-slate-900 rounded-lg text-xs font-semibold transition-colors cursor-pointer">
+                    Download Ticket
+                  </button>
+                  <a href="{% url 'packages_detail_page' booking.package_id %}" class="px-4 py-2 bg-[#8c5a24] hover:bg-[#72491d] text-white rounded-lg text-xs font-semibold transition-colors text-center">
+                    View Details
+                  </a>
+                  {% else %}
+                  <button type="button" onclick="alert('Booking cancellation request sent.')" class="px-4 py-2 border border-rose-200 hover:bg-rose-50 text-rose-600 rounded-lg text-xs font-semibold transition-colors cursor-pointer">
+                    Cancel Booking
+                  </button>
+                  {% if booking.payment_status != 'paid' %}
+                  <a href="/booking/payment/{{ booking.id }}/" class="px-4 py-2 bg-[#8c5a24] hover:bg-[#72491d] text-white rounded-lg text-xs font-semibold transition-colors text-center">
+                    Pay Now
+                  </a>
+                  {% endif %}
+                  {% endif %}
+                </div>
               </div>
             </div>
-          </div>
+            {% endfor %}
+          {% else %}
+            <div class="text-center py-12">
+              <div class="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="ri-calendar-close-line text-3xl"></i>
+              </div>
+              <h4 class="text-lg font-bold text-slate-900">No bookings yet</h4>
+              <p class="text-sm text-slate-500 mt-1">Looks like you haven't booked any tours yet.</p>
+              <a href="/packages/" class="inline-block mt-4 px-6 py-2 bg-[#8c5a24] hover:bg-[#72491d] text-white rounded-lg text-sm font-semibold transition-colors">
+                Explore Packages
+              </a>
+            </div>
+          {% endif %}
 
         </div>
       </div>

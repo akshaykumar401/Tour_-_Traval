@@ -60,9 +60,7 @@ def payment_page(request, package_id: int, start_date: str, persons: str):
     "payment_capture": "1"
   })
   
-  # Store order_id in ticket_number temporarily to retrieve in verify
-  booking.ticket_number = razorpay_order['id']
-  booking.save()
+  
 
   image_obj = package_obj.images.first()
   image_url = image_obj.image.url if image_obj and image_obj.image else ''
@@ -108,6 +106,7 @@ def payment_verify(request):
       booking.payment_status = 'paid'
       booking.status = 'confirmed'
       booking.UTR_number = razorpay_payment_id
+      booking.ticket_number = f"NEXT{booking.id}"
       booking.save()
       
       return redirect('booking_success_page', booking_id=booking.id, payment_id=razorpay_payment_id, transection_id=razorpay_order_id, package_id=booking.package.id)

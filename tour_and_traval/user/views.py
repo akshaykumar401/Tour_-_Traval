@@ -4,11 +4,35 @@ from django.contrib.auth import login
 from .models import User_Profile
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+# pyrefly: ignore [missing-import]
+from booking.models import Booking
 
 def user_data_dict(request):
   user = request.user
   user_profile_data = User_Profile.objects.get(user=user)
-  
+  # Filtring the booking as per start_date
+  user_bookings = Booking.objects.filter(user=user).order_by('start_date')
+  my_booking = []
+  for booking in user_bookings:
+    booking_dict = {
+      "id": booking.id,
+      "ticket_number": booking.ticket_number,
+      "package_image": booking.package.images.first().image.url if booking.package.images.exists() else None,
+      "package": booking.package.mini_title,
+      "number_of_persons": booking.number_of_persons,
+      "start_date": booking.start_date,
+      "total_cost": booking.total_cost,
+      "payment_status": booking.payment_status,
+      "status": booking.status,
+      "UTR_number": booking.UTR_number,
+      "amount": booking.amount,
+      "updated_at": booking.updated_at,
+      "created_at": booking.created_at,
+      "package_id": booking.package.id,
+    }
+    my_booking.append(booking_dict)
+
+
   # Formatting the User Data.
   return {
     'email': user.email,
@@ -18,6 +42,7 @@ def user_data_dict(request):
     'image': user_profile_data.image.url if user_profile_data.image else None,
     'username': user.username,
     'date_joined': user.date_joined,
+    "my_booking": my_booking,
   }
 
 # Create your views here.
