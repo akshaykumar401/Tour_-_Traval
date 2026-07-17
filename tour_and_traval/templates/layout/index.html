@@ -71,7 +71,6 @@
                   {{ user.profile.full_name|default:user.username }}
                 </span>
               </a>
-              <a href="{% url 'booking_page' %}" class="bg-[#8c5a24] hover:bg-[#72491d] text-white text-sm font-medium px-5 py-2.5 rounded transition-all duration-200 shadow-xs hover:shadow-md">Book Now</a>
             {% else %}
               <a href="{% url 'login' %}" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Login</a>
             {% endif %}
@@ -113,7 +112,6 @@
                 </div>
                 <span class="text-sm font-semibold text-slate-650">{{ user.profile.full_name|default:user.username }}</span>
               </a>
-              <a href="{% url 'booking_page' %}" class="bg-[#8c5a24] hover:bg-[#72491d] text-white text-base font-medium px-5 py-2.5 rounded transition-all duration-200 shadow-xs text-center">Book Now</a>
             {% else %}
               <a href="{% url 'login' %}" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Login</a>
             {% endif %}

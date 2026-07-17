@@ -15,10 +15,6 @@ from packages.models import Packages, PackagesDepartureDate
 razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
 @login_required
-def booking_page(request):
-  return render(request, "booking/booking_page.html")
-
-@login_required
 def payment_page(request, package_id: int, start_date: str, persons: str):
   package_obj = get_object_or_404(Packages, id=package_id)
   
