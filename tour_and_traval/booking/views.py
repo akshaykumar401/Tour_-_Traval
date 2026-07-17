@@ -6,9 +6,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseBadRequest
 from datetime import datetime, timedelta
 
+from django.contrib import messages
+
 from .models import Booking
 # pyrefly: ignore [missing-import]
-from packages.models import Packages
+from packages.models import Packages, PackagesDepartureDate
 
 razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
@@ -37,20 +39,51 @@ def payment_page(request, package_id: int, start_date: str, persons: str):
   except ValueError:
     parsed_start_date = datetime.now().date()
   
+  # Check seat availability before creating pending booking or razorpay order
+  departure = PackagesDepartureDate.objects.filter(
+    package=package_obj, 
+    departure_date=parsed_start_date
+  ).first()
+  
+  if not departure:
+    messages.error(request, "Invalid departure date selected.")
+    return redirect('packages_detail_page', packages_id=package_id)
+    
+  if departure.available_seats < persons_count:
+    messages.error(request, f"Sorry, only {departure.available_seats} seats are available for this date.")
+    return redirect('packages_detail_page', packages_id=package_id)
+  
   end_date = parsed_start_date + timedelta(days=package_obj.total_days)
 
-  # Create a pending Booking
-  booking = Booking.objects.create(
+  # Check if a pending booking already exists for these details
+  booking = Booking.objects.filter(
     user=request.user,
     package=package_obj,
     payment_status='pending',
     status='pending',
-    amount=total,
-    total_cost=total,
     number_of_persons=persons_count,
     start_date=parsed_start_date,
-    end_date=end_date,
-  )
+  ).first()
+
+  if booking:
+    # Update total cost and end date in case pricing or duration changed
+    booking.amount = total
+    booking.total_cost = total
+    booking.end_date = end_date
+    booking.save()
+  else:
+    # Create a pending Booking
+    booking = Booking.objects.create(
+      user=request.user,
+      package=package_obj,
+      payment_status='pending',
+      status='pending',
+      amount=total,
+      total_cost=total,
+      number_of_persons=persons_count,
+      start_date=parsed_start_date,
+      end_date=end_date,
+    )
 
   # Create Razorpay Order
   razorpay_order = razorpay_client.order.create({
@@ -103,18 +136,31 @@ def payment_verify(request):
       
       # Payment is verified successfully
       booking = get_object_or_404(Booking, id=booking_id)
-      booking.payment_status = 'paid'
-      booking.status = 'confirmed'
-      booking.UTR_number = razorpay_payment_id
-      booking.ticket_number = f"NEXT{booking.id}"
-      booking.save()
+      
+      if booking.payment_status != 'paid':
+        booking.payment_status = 'paid'
+        booking.status = 'confirmed'
+        booking.UTR_number = razorpay_payment_id
+        booking.ticket_number = f"NEXT{booking.id}"
+        booking.save()
+        
+        # Deduct available seats
+        departure = PackagesDepartureDate.objects.filter(
+          package=booking.package, 
+          departure_date=booking.start_date
+        ).first()
+        
+        if departure:
+          departure.available_seats -= booking.number_of_persons
+          if departure.available_seats < 0:
+            departure.available_seats = 0
+          departure.save()
       
       return redirect('booking_success_page', booking_id=booking.id, payment_id=razorpay_payment_id, transection_id=razorpay_order_id, package_id=booking.package.id)
       
     except razorpay.errors.SignatureVerificationError:
       return HttpResponseBadRequest("Payment verification failed")
   return HttpResponseBadRequest("Invalid request method")
-
 
 @login_required
 def booking_success_page(request, booking_id: int, payment_id: str, transection_id: str, package_id: int):
@@ -138,3 +184,12 @@ def booking_success_page(request, booking_id: int, payment_id: str, transection_
     "transection_id": transection_id,
     "package": package,
   })
+
+@login_required
+def cancel_pending_booking(request, booking_id: int):
+  booking_obj = get_object_or_404(Booking, id=booking_id)
+  booking_obj.payment_status = 'cancelled'
+  booking_obj.status = 'cancelled'
+  booking_obj.save()
+  return redirect('user_page')
+

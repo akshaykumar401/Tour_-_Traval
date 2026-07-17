@@ -229,11 +229,10 @@
                 >{{ date.departure_date|date:"M d, Y" }}</span
               >
               <span
-                class="text-xs {% if date.available_seats < 10 %}text-amber-700{% else %}text-emerald-600{% endif %} font-bold mt-0.5 font-inter"
+                class="inline-flex items-center gap-1.5 text-xs {% if date.available_seats < 10 %}text-rose-600{% else %}text-emerald-600{% endif %} font-bold mt-0.5 font-inter"
               >
-                {% if date.available_seats < 10 %}Only {{ date.available_seats
-                }} spots left!{% else %}{{ date.available_seats }} seats
-                available{% endif %}
+                <span class="w-1.5 h-1.5 rounded-full {% if date.available_seats < 10 %}bg-rose-500{% else %}bg-emerald-500{% endif %}"></span>
+                {% if date.available_seats < 10 %}Only {{ date.available_seats }} spots left!{% else %}{{ date.available_seats }} seats available{% endif %}
               </span>
             </div>
             <div

@@ -67,7 +67,7 @@ def user_page(request):
       user_profile.image = photo_form.cleaned_data['image']
       user_profile.save()
       messages.success(request, 'Profile photo updated successfully!')
-      return redirect('user_page')
+      return redirect('/user/?tab=profile')
   
   # Handle form submission for updating user profile
   elif request.method == 'POST':
@@ -78,7 +78,7 @@ def user_page(request):
       user_profile.address = profile_form.cleaned_data['address']
       user_profile.save()
       messages.success(request, 'Profile updated successfully!')
-      return redirect('user_page')
+      return redirect('/user/?tab=profile')
   
   # Get the formatted user data to pass to the template
   formatted_user_data = user_data_dict(request)

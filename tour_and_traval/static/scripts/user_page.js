@@ -30,8 +30,8 @@ function switchTab(tab) {
 document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   const tab = urlParams.get("tab");
-  if (tab === "bookings") {
-    switchTab("bookings");
+  if (tab === "profile") {
+    switchTab("profile");
   }
 });
 
@@ -47,4 +47,34 @@ function togglePasswordVisibility(id) {
     eye.classList.remove("ri-eye-off-line");
     eye.classList.add("ri-eye-line");
   }
+}
+
+function cancelBooking(bookingId, packageName) {
+  const modal = document.getElementById('cancel-booking-modal');
+  const content = document.getElementById('cancel-booking-content');
+  const packageNameSpan = document.getElementById('cancel-package-name');
+  const confirmBtn = document.getElementById('confirm-cancel-btn');
+  
+  packageNameSpan.textContent = packageName;
+  // Use the predefined url pattern format or manually construct it
+  confirmBtn.href = `/booking/cancel/${bookingId}/`;
+  
+  modal.classList.remove('hidden');
+  // Small delay for transition
+  setTimeout(() => {
+    content.classList.remove('scale-95', 'opacity-0');
+    content.classList.add('scale-100', 'opacity-100');
+  }, 10);
+}
+
+function closeCancelModal() {
+  const modal = document.getElementById('cancel-booking-modal');
+  const content = document.getElementById('cancel-booking-content');
+  
+  content.classList.remove('scale-100', 'opacity-100');
+  content.classList.add('scale-95', 'opacity-0');
+  
+  setTimeout(() => {
+    modal.classList.add('hidden');
+  }, 200);
 }

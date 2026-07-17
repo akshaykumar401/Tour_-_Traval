@@ -17,7 +17,7 @@
             type="button"
             onclick="switchTab('bookings')"
             id="tab-btn-bookings"
-            class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors text-left cursor-pointer"
+            class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-white bg-[#0f2942] transition-colors text-left cursor-pointer shadow-sm"
           >
             <i class="ri-compass-3-line text-lg"></i>
             <span>My Bookings</span>
@@ -27,7 +27,7 @@
             type="button"
             onclick="switchTab('profile')"
             id="tab-btn-profile"
-            class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-white bg-[#0f2942] transition-colors text-left cursor-pointer shadow-sm"
+            class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors text-left cursor-pointer"
           >
             <i class="ri-user-settings-line text-lg"></i>
             <span>Profile Settings</span>
@@ -51,7 +51,7 @@
     <div class="lg:col-span-9 space-y-6">
       
       <!-- Tab Content: Profile Settings -->
-      <div id="tab-content-profile" class="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden">
+      <div id="tab-content-profile" class="hidden bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden">
         <!-- Banner Header -->
         <div class="h-32 bg-[#05162b] relative"></div>
 
@@ -182,7 +182,7 @@
       </div>
 
       <!-- Tab Content: My Bookings -->
-      <div id="tab-content-bookings" class="hidden bg-white rounded-3xl border border-slate-100 shadow-xl p-6 sm:p-8 space-y-6">
+      <div id="tab-content-bookings" class="bg-white rounded-3xl border border-slate-100 shadow-xl p-6 sm:p-8 space-y-6">
         <div class="space-y-1">
           <h3 class="text-xl font-bold text-[#05162b]">My Bookings</h3>
           <p class="text-sm text-slate-500 font-light">Manage and view your upcoming and past travel bookings.</p>
@@ -246,18 +246,20 @@
                 </div>
                 <div class="flex gap-3 justify-end mt-4">
                   {% if booking.status == 'confirmed' %}
-                  <button type="button" onclick="window.print()" class="px-4 py-2 border border-slate-200 hover:border-slate-350 text-slate-705 hover:text-slate-900 rounded-lg text-xs font-semibold transition-colors cursor-pointer">
+                  <a href="{% url 'booking_success_page' booking.id booking.UTR_number|default:'NA' 'NA' booking.package_id %}" class="px-4 py-2 border border-slate-200 hover:border-slate-350 text-slate-705 hover:text-slate-900 rounded-lg text-xs font-semibold transition-colors cursor-pointer text-center inline-block">
                     Download Ticket
-                  </button>
+                  </a>
                   <a href="{% url 'packages_detail_page' booking.package_id %}" class="px-4 py-2 bg-[#8c5a24] hover:bg-[#72491d] text-white rounded-lg text-xs font-semibold transition-colors text-center">
                     View Details
                   </a>
                   {% else %}
-                  <button type="button" onclick="alert('Booking cancellation request sent.')" class="px-4 py-2 border border-rose-200 hover:bg-rose-50 text-rose-600 rounded-lg text-xs font-semibold transition-colors cursor-pointer">
+                  {% if booking.payment_status == 'pending' %}
+                  <button type="button" onclick="cancelBooking('{{ booking.id }}', '{{ booking.package }}')" class="px-4 py-2 border border-rose-200 hover:bg-rose-50 text-rose-600 rounded-lg text-xs font-semibold transition-colors cursor-pointer">
                     Cancel Booking
                   </button>
-                  {% if booking.payment_status != 'paid' %}
-                  <a href="/booking/payment/{{ booking.id }}/" class="px-4 py-2 bg-[#8c5a24] hover:bg-[#72491d] text-white rounded-lg text-xs font-semibold transition-colors text-center">
+                  {% endif %}
+                  {% if booking.payment_status == 'pending' and booking.status != 'cancelled' %}
+                  <a href="{% url 'payment_page' booking.package_id booking.start_date|date:'Y-m-d' booking.number_of_persons %}" class="px-4 py-2 bg-[#8c5a24] hover:bg-[#72491d] text-white rounded-lg text-xs font-semibold transition-colors text-center">
                     Pay Now
                   </a>
                   {% endif %}
@@ -283,7 +285,32 @@
       </div>
 
     </div>
+  </div>
+</div>
 
+<!-- Cancel Booking Confirmation Modal -->
+<div id="cancel-booking-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity cursor-pointer" onclick="closeCancelModal()"></div>
+  
+  <!-- Modal Content -->
+  <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-md p-6 sm:p-8 transform transition-all scale-95 opacity-0 duration-200" id="cancel-booking-content">
+    <div class="w-16 h-16 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+      <i class="ri-alert-line text-3xl"></i>
+    </div>
+    <h3 class="text-xl font-bold text-slate-900 text-center mb-2">Cancel Booking?</h3>
+    <p class="text-slate-500 text-center text-sm mb-8">
+      Are you sure you want to cancel your booking for <span id="cancel-package-name" class="font-bold text-slate-700"></span>? This action cannot be undone.
+    </p>
+    
+    <div class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4">
+      <button type="button" onclick="closeCancelModal()" class="w-full px-5 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 hover:text-slate-900 transition-colors cursor-pointer text-sm">
+        No, Keep it
+      </button>
+      <a id="confirm-cancel-btn" href="#" class="w-full px-5 py-3 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold transition-all shadow-md hover:shadow-lg cursor-pointer text-sm text-center flex items-center justify-center">
+        Yes, Cancel Booking
+      </a>
+    </div>
   </div>
 </div>
 {% endblock %}
