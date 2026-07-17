@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -30,6 +31,14 @@ urlpatterns = [
     path("booking/", include("booking.urls")),
     path("user/", include("user.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
+    # Request password reset (Enter email)
+    path('accounts/password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    # Email sent confirmation page
+    path('accounts/password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    # Link clicked from email (Enter new password)
+    path('accounts/reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    # Password successfully changed page
+    path('accounts/reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
     path("__reload__/", include("django_browser_reload.urls")),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

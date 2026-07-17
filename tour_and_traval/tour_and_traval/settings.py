@@ -35,6 +35,16 @@ DEBUG = os.getenv('DEBUG') == 'True'
 
 ALLOWED_HOSTS = []
 
+# Email Configuration (Gmail SMTP)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER') # your gmail
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD') # app password
+DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER')
+
 
 # Application definition
 
@@ -66,6 +76,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
+    "tour_and_traval.middleware.RedirectAuthenticatedUserMiddleware",
 ]
 
 ROOT_URLCONF = "tour_and_traval.urls"
