@@ -11,3 +11,10 @@ class Feedback(models.Model):
   def __str__(self):
     return f"{self.full_name} Rate {self.reating} Stars"
 
+class FutureUpdate(models.Model):
+  email = models.EmailField()
+  created_at = models.DateTimeField(auto_now_add=True)
+
+  def __str__(self):
+    return f"{self.email}"
+

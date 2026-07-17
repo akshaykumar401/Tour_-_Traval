@@ -333,23 +333,80 @@ Packages {% endblock %} {% block main_content %}
         for our newsletter to get exclusive deals and travel inspiration.
       </p>
 
-      <form class="flex flex-col sm:flex-row gap-3 mt-8">
-        <input
-          type="email"
-          placeholder="Enter your email"
-          required
-          class="bg-slate-900/40 border border-slate-700/60 rounded-xl text-white placeholder-slate-400 px-5 py-3 text-sm focus:outline-none focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] w-full sm:w-96"
-        />
+      {% if success %}
+      <div class="mt-8 flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-5 py-4 rounded-xl text-sm font-medium w-full sm:w-[480px]">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+        Successfully subscribed to exclusive deals! We'll be in touch.
+      </div>
+      {% else %}
+      <form id="newsletter-form" method="POST" class="flex flex-col sm:flex-row sm:items-start gap-3 mt-8">
+        {% csrf_token %}
+        <div class="w-full sm:w-96">
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+            class="bg-slate-900/40 border border-slate-700/60 rounded-xl text-white placeholder-slate-400 px-5 py-3 text-sm focus:outline-none focus:border-[#8c5a24] focus:ring-1 focus:ring-[#8c5a24] w-full"
+          />
+          {% if form.email.errors %}
+          <p class="text-red-400 text-xs mt-1 ml-1">{{ form.email.errors.0 }}</p>
+          {% endif %}
+        </div>
         <button
           type="submit"
-          class="bg-[#8c5a24] hover:bg-[#72491d] text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all hover:shadow-lg shrink-0"
+          class="bg-[#8c5a24] hover:bg-[#72491d] text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all hover:shadow-lg shrink-0 h-[46px]"
         >
           Subscribe Now
         </button>
       </form>
+      {% endif %}
     </div>
   </div>
 </div>
 {% endblock %} {% block script %}
 <script src="{% static 'scripts/packages_page.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('newsletter-form');
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerText;
+        submitBtn.innerText = 'Submitting...';
+        submitBtn.disabled = true;
+
+        try {
+          const response = await fetch(window.location.href, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest',
+            }
+          });
+          
+          if (response.ok) {
+            form.outerHTML = `
+              <div class="mt-8 flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-5 py-4 rounded-xl text-sm font-medium w-full sm:w-[480px]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                Successfully subscribed to exclusive deals! We'll be in touch.
+              </div>
+            `;
+          } else {
+            // Revert on error or let standard submission happen if JS can't parse error
+            form.submit();
+          }
+        } catch (error) {
+          form.submit();
+        }
+      });
+    }
+  });
+</script>
 {% endblock %}

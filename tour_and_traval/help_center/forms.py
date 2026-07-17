@@ -1,5 +1,5 @@
 from django import forms
-from .models import Feedback
+from .models import Feedback, FutureUpdate
 
 class FeedbackForm(forms.ModelForm):
   class Meta:
@@ -8,3 +8,8 @@ class FeedbackForm(forms.ModelForm):
 
 class AIAgentForm(forms.Form):
   query = forms.CharField(max_length=500, strip=True)
+
+class FutureUpdateForm(forms.ModelForm):
+  class Meta:
+    model = FutureUpdate
+    fields = ['email']
