@@ -33,7 +33,7 @@ RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Email Configuration (Gmail SMTP)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -45,9 +45,11 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER') # your gmail
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD') # app password
 DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER')
 
+# Increase max upload size to support large base64 images in Quill JS
+DATA_UPLOAD_MAX_MEMORY_SIZE = 26214400 # 25 MB
+
 
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -152,7 +154,7 @@ STATICFILES_DIRS = [
 ]
 
 TAILWIND_APP_NAME = 'theme' # This is the name of the app that will be used to generate the tailwind files
-INTERNAL_IPS = ['127.0.0.1']
+INTERNAL_IPS = ['0.0.0.0']
 
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/packages/'

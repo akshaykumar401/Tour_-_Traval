@@ -18,3 +18,9 @@ class FutureUpdate(models.Model):
   def __str__(self):
     return f"{self.email}"
 
+
+class SendEmailToAll(models.Model):
+  class Meta:
+    managed = False
+    verbose_name = "Send Email To All"
+    verbose_name_plural = "Send Email To All"

@@ -1,0 +1,87 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+  {{ media }}
+{% endblock %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/send_mail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  <form method="post" id="send_mail_form">
+    {% csrf_token %}
+    
+    <div class="mail-card">
+      <div class="mail-header">
+        <h2>
+          <svg xmlns="http://www.w3.org/2000/0.svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; color: var(--primary, #4f46e5);"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/></svg>
+          Compose Broadcast Email
+        </h2>
+        {% if future_updates %}
+          <span class="badge">{{ future_updates|length }} Subscribers</span>
+        {% endif %}
+      </div>
+      
+      <div class="mail-body">
+        <fieldset class="module aligned">
+          <div class="form-row">
+            <label class="required" for="id_subject">Subject line</label>
+            <input
+              type="text"
+              name="subject"
+              class="vTextField"
+              maxlength="200"
+              required
+              id="id_subject"
+              placeholder="e.g. Exciting New Tour Packages Available!"
+            />
+          </div>
+          <div class="form-row">
+            <label class="required" for="id_message">Email body</label>
+            <textarea
+              name="message"
+              id="id_message"
+              required
+              placeholder="Paste your raw HTML template or text message here..."
+            ></textarea>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="submit-row">
+        <input type="submit" value="Send to All Subscribers" class="default" name="_save" />
+      </div>
+    </div>
+
+    <div class="recipients-card">
+      <div class="recipients-header">
+        <h3>Recipient Directory</h3>
+      </div>
+      
+      {% if future_updates %}
+        <ul class="recipients-list">
+          {% for update in future_updates %}
+          <li class="recipient-badge">
+            <svg xmlns="http://www.w3.org/2000/0.svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            {{ update.email }}
+          </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="empty-state">
+          <svg xmlns="http://www.w3.org/2000/0.svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+          <p>No subscribers found in the database.</p>
+        </div>
+      {% endif %}
+    </div>
+
+  </form>
+</div>
+
+{% endblock %}

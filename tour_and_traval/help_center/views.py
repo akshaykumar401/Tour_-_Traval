@@ -60,7 +60,7 @@ def review_page(request):
     average_rating = average_rating + review.reating
   average_rating_rounded = round(average_rating / len(all_reviews)) if all_reviews else 0
   
-  if request.method == 'POST':
+  if request.method == 'POST' and request.user.is_authenticated:
     form = FeedbackForm(request.POST)
     if form.is_valid():
       form.save()
