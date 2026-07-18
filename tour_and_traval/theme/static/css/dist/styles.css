@@ -1525,6 +1525,9 @@
   .bg-slate-400 {
     background-color: var(--color-slate-400);
   }
+  .bg-slate-800 {
+    background-color: var(--color-slate-800);
+  }
   .bg-slate-800\/10 {
     background-color: color-mix(in srgb, oklch(27.9% 0.041 260.031) 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1767,6 +1770,9 @@
   }
   .pt-8 {
     padding-top: calc(var(--spacing) * 8);
+  }
+  .pt-10 {
+    padding-top: calc(var(--spacing) * 10);
   }
   .pr-3\.5 {
     padding-right: calc(var(--spacing) * 3.5);

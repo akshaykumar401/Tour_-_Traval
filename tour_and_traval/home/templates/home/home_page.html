@@ -281,35 +281,79 @@
     <span class="text-xs font-bold tracking-widest text-[#8c5a24] uppercase block mb-2">Traveler Reviews</span>
     <h2 class="text-3xl font-bold text-white tracking-tight mb-16">What Explorers Say</h2>
 
-    <!-- Testimonial card -->
-    <div class="space-y-8">
-      <p class="text-lg sm:text-2xl font-light text-slate-100 leading-relaxed italic max-w-2xl mx-auto">
-        "The attention to detail was beyond my expectations. From the moment we landed in Crete, everything was handled
-        with surgical precision."
-      </p>
+    {% if feedback_data %}
+    <div class="relative overflow-hidden" id="testimonial-slider">
+      <div class="flex transition-transform duration-500 ease-in-out" id="testimonial-track">
+        {% for feedback in feedback_data %}
+        <!-- Testimonial card -->
+        <div class="w-full flex-shrink-0 space-y-8 px-4">
+          <p class="text-lg sm:text-2xl font-light text-slate-100 leading-relaxed italic max-w-2xl mx-auto">
+            "{{ feedback.message }}"
+          </p>
 
-      <!-- Reviewer Profile -->
-      <div class="flex items-center justify-center gap-4">
-        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80"
-          alt="Mark Thompson" class="h-12 w-12 rounded-full object-cover border-2 border-[#8c5a24]/40" />
-        <div class="text-left">
-          <h4 class="text-sm font-semibold text-white">Mark Thompson</h4>
-          <p class="text-xs text-slate-400 font-light">Elite Member</p>
+          <!-- Reviewer Profile -->
+          <div class="flex items-center justify-center gap-4">
+            <div class="h-12 w-12 rounded-full bg-slate-800 flex items-center justify-center text-xl font-bold border-2 border-[#8c5a24]/40 uppercase text-white shadow-lg">
+              {{ feedback.full_name|slice:":1" }}
+            </div>
+            <div class="text-left">
+              <h4 class="text-sm font-semibold text-white">{{ feedback.full_name }}</h4>
+              <p class="text-xs text-slate-400 font-light flex items-center gap-0.5">
+                {% for i in "12345" %}
+                  <i class="ri-star-fill {% if forloop.counter <= feedback.reating %}text-amber-500{% else %}text-slate-600{% endif %}"></i>
+                {% endfor %}
+              </p>
+            </div>
+          </div>
         </div>
+        {% endfor %}
       </div>
 
       <!-- Controls -->
-      <div class="flex justify-center gap-4 pt-6">
-        <button
-          class="h-10 w-10 rounded-full border border-slate-700 hover:border-white text-slate-400 hover:text-white flex items-center justify-center transition-all">
+      {% if feedback_data|length > 1 %}
+      <div class="flex justify-center gap-4 pt-10">
+        <button id="prev-testimonial"
+          class="h-10 w-10 rounded-full border border-slate-700 hover:border-white text-slate-400 hover:text-white flex items-center justify-center transition-all z-10 cursor-pointer">
           <i class="ri-arrow-left-s-line text-lg"></i>
         </button>
-        <button
-          class="h-10 w-10 rounded-full border border-slate-700 hover:border-white text-slate-400 hover:text-white flex items-center justify-center transition-all">
+        <button id="next-testimonial"
+          class="h-10 w-10 rounded-full border border-slate-700 hover:border-white text-slate-400 hover:text-white flex items-center justify-center transition-all z-10 cursor-pointer">
           <i class="ri-arrow-right-s-line text-lg"></i>
         </button>
       </div>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          const track = document.getElementById('testimonial-track');
+          const prevBtn = document.getElementById('prev-testimonial');
+          const nextBtn = document.getElementById('next-testimonial');
+          
+          if (!track || !prevBtn || !nextBtn) return;
+          
+          const slides = track.children;
+          let currentIndex = 0;
+
+          function updateSlider() {
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+          }
+
+          prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateSlider();
+          });
+
+          nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlider();
+          });
+        });
+      </script>
+      {% endif %}
     </div>
+    {% else %}
+    <div class="text-slate-400 font-light italic">
+      No reviews yet. Be the first to share your experience!
+    </div>
+    {% endif %}
   </div>
 </section>
 

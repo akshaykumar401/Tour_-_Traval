@@ -3,12 +3,16 @@ from django.shortcuts import render
 from packages.views import packages_page_data_inJSON
 # pyrefly: ignore [missing-import]
 from gallery.models import Gallery
+# pyrefly: ignore [missing-import]
+from help_center.models import Feedback
 
 import random
 
 # Create your views here.
 def home(request):
     packages_data = packages_page_data_inJSON(request)[:3] # [:3] -> Slice the top 3 data
+    # getting those feedback which has 5 stars and only 5 feedbacks
+    feedback_data = Feedback.objects.filter(reating=5)[:5]
     
     # Getting random 4 Images from Gallery (avoiding redundant places)
     all_galleries = list(Gallery.objects.all())
@@ -26,4 +30,5 @@ def home(request):
     return render(request, "home/home_page.html", {
         'package_data': packages_data,
         'gallery_data': gallery_data,
+        'feedback_data': feedback_data
     })
