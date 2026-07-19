@@ -228,6 +228,7 @@ Packages {% endblock %} {% block main_content %}
   </div>
 
   <!-- Tour Packages Grid -->
+  {% if package_data %}
   <div
     id="packages-grid"
     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-8 mb-8"
@@ -309,6 +310,16 @@ Packages {% endblock %} {% block main_content %}
       </div>
     {% endfor %}
   </div>
+  {% else %}
+  <div class="py-16 text-center max-w-lg mx-auto">
+    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
+        <i class="ri-search-line text-2xl text-slate-400"></i>
+    </div>
+    <h3 class="text-xl font-bold text-slate-900">No packages found</h3>
+    <p class="text-slate-500 mt-2">Try adjusting your search criteria or explore our other destinations.</p>
+    <a href="{% url 'packages_page' %}" class="inline-block mt-6 px-6 py-2.5 bg-[#8c5a24] text-white rounded-xl text-sm font-semibold hover:bg-[#72491d] transition-all shadow-sm">Clear Search</a>
+  </div>
+  {% endif %}
 
   <!-- Custom Newsletter / CTA Section -->
   <div

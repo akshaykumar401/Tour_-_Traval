@@ -11,6 +11,15 @@ import os
 # Create your views here.
 def packages_page_data_inJSON(request):
   packages = Packages.objects.prefetch_related('images').all()
+  
+  location = request.GET.get('location')
+  date = request.GET.get('date')
+
+  if location:
+    packages = packages.filter(location__icontains=location)
+  if date:
+    packages = packages.filter(departure_dates__departure_date=date).distinct()
+
   data = []
   for p in packages:
     image_obj = p.images.first()

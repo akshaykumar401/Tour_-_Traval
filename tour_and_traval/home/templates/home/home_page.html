@@ -18,13 +18,14 @@
 
       <!-- Search Booking Widget -->
       <div class="pt-6">
-        <form
+        <form method="POST"
           class="bg-white/95 backdrop-blur-md p-4 sm:p-5 rounded-2xl shadow-xl border border-white/20 text-slate-800 flex flex-col md:flex-row gap-4 items-stretch max-w-3xl">
+          {% csrf_token %}
           <!-- Field 1: Destination -->
           <div
             class="flex-grow flex items-center space-x-3 bg-slate-50 px-4 py-3 rounded-xl border border-slate-100 focus-within:ring-2 focus-within:ring-[#8c5a24] focus-within:border-transparent transition-all">
             <i class="ri-map-pin-line text-lg text-slate-400 shrink-0"></i>
-            <input type="text" placeholder="Where to next?"
+            <input type="text" name="location" required placeholder="Where to next?"
               class="w-full bg-transparent border-none outline-none text-sm font-medium placeholder-slate-400 focus:ring-0 p-0" />
           </div>
 
@@ -32,7 +33,7 @@
           <div
             class="flex-grow flex items-center space-x-3 bg-slate-50 px-4 py-3 rounded-xl border border-slate-100 focus-within:ring-2 focus-within:ring-[#8c5a24] focus-within:border-transparent transition-all">
             <i class="ri-calendar-line text-lg text-slate-400 shrink-0"></i>
-            <input type="text" placeholder="When are you travel?"
+            <input type="text" name="date" required placeholder="When are you travel?"
               class="w-full bg-transparent border-none outline-none text-sm font-medium placeholder-slate-400 focus:ring-0 p-0"
               onfocus="(this.type='date')" onblur="(this.type='text')" />
           </div>
@@ -276,12 +277,12 @@
 </section>
 
 <!-- Review / Testimonial Slider Section -->
+{% if feedback_data %}
 <section class="py-20 bg-[#071626] text-white">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
     <span class="text-xs font-bold tracking-widest text-[#8c5a24] uppercase block mb-2">Traveler Reviews</span>
     <h2 class="text-3xl font-bold text-white tracking-tight mb-16">What Explorers Say</h2>
 
-    {% if feedback_data %}
     <div class="relative overflow-hidden" id="testimonial-slider">
       <div class="flex transition-transform duration-500 ease-in-out" id="testimonial-track">
         {% for feedback in feedback_data %}
@@ -349,13 +350,9 @@
       </script>
       {% endif %}
     </div>
-    {% else %}
-    <div class="text-slate-400 font-light italic">
-      No reviews yet. Be the first to share your experience!
-    </div>
-    {% endif %}
   </div>
 </section>
+{% endif %}
 
 <!-- Call to Action Section -->
 <section class="py-24 bg-white text-center">
