@@ -15,9 +15,7 @@ import os
 from dotenv import load_dotenv
 import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api	
+import cloudinary	
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -48,7 +46,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER') # your gmail
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD') # app password
-DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER')
+DEFAULT_FROM_EMAIL = f'NextStop <{os.getenv("EMAIL_HOST_USER")}>'
 
 # Increase max upload size to support large base64 images in Quill JS
 DATA_UPLOAD_MAX_MEMORY_SIZE = 26214400 # 25 MB

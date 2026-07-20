@@ -1,4 +1,3 @@
-from django.contrib.auth import base_user
 import razorpay
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
@@ -18,7 +17,7 @@ from packages.models import Packages, PackagesDepartureDate
 razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
 def send_ticket_on_mail(booking):
-  user_name = booking.user.profile.full_name if hasattr(booking.user, 'profile') and booking.user.profile.full_name else booking.user.username
+  user_name = booking.user.profile.full_name
   user_email = booking.user.email
   
   template = f"""
@@ -695,4 +694,3 @@ def cancel_pending_booking(request, booking_id: int):
   booking_obj.status = 'cancelled'
   booking_obj.save()
   return redirect('user_page')
-

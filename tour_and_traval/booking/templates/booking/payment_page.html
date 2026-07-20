@@ -192,9 +192,9 @@
       "key": "{{ razorpay_key_id }}",
       "amount": "{{ razorpay_amount }}",
       "currency": "INR",
-      "name": "Tour & Travel",
+      "name": "NextStop",
       "description": "Booking for {{ package.name }}",
-      "image": "{{ package.image }}",
+      "image": "https://res.cloudinary.com/dh7degaxv/image/upload/v1784562392/LOGO_xlej7q.png",
       "order_id": "{{ razorpay_order_id }}",
       "handler": function (response){
         document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
