@@ -16,7 +16,7 @@ class GalleryAdmin(admin.ModelAdmin):
     if obj.image:
       return format_html(
         '<img src="{}" style="width: 50px; height: 35px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd;" />',
-        obj.image.url
+        obj.image
       )
     return "No Image"
 
@@ -25,7 +25,7 @@ class GalleryAdmin(admin.ModelAdmin):
     if obj.image:
       return format_html(
         '<img src="{}" style="max-width: 300px; max-height: 200px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;" />',
-        obj.image.url
+        obj.image
       )
     return "No Image"
 

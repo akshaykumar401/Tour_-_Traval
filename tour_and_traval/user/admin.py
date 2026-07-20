@@ -31,7 +31,7 @@ class User_ProfileAdmin(admin.ModelAdmin):
     if obj.image:
       return format_html(
         '<img src="{}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 1px solid #ddd;" />',
-        obj.image.url
+        obj.image
       )
     return "No Image"
 
@@ -40,6 +40,6 @@ class User_ProfileAdmin(admin.ModelAdmin):
     if obj.image:
       return format_html(
         '<img src="{}" style="max-width: 150px; max-height: 150px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;" />',
-        obj.image.url
+        obj.image
       )
     return "No Image"

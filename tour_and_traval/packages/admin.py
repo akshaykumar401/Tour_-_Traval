@@ -27,7 +27,7 @@ class PackagesImageInline(admin.TabularInline):
     if obj and obj.image:
       return format_html(
         '<img src="{}" alt="Package image" width="90" height="60">',
-        obj.image.url,
+        obj.image,
       )
     return "—"
 
@@ -153,12 +153,12 @@ class PackagesImageAdmin(admin.ModelAdmin):
     if obj.image:
       return format_html(
         '<img src="{}" alt="Package image" width="90" height="60">',
-        obj.image.url,
+        obj.image,
       )
     return "—"
 
   @admin.display(description="Image preview")
   def image_preview(self, obj):
     if obj and obj.image:
-      return format_html('<img src="{}" alt="Package image" width="420">', obj.image.url)
+      return format_html('<img src="{}" alt="Package image" width="420">', obj.image)
     return "—"

@@ -105,8 +105,8 @@
         <div class="space-y-6">
           <div>
             <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Primary Traveler</span>
-            <p class="text-base font-bold text-slate-900">{{ booking.user.get_full_name|default:booking.user.username }}</p>
-            <p class="text-sm text-slate-500">{{ booking.user.email }}</p>
+            <p class="text-base font-bold text-slate-900">{{ user.profile.full_name|default:user.username }}</p>
+            <p class="text-sm text-slate-500">{{ user.email }}</p>
           </div>
           <div>
             <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Travel Party</span>

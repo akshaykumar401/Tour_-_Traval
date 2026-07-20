@@ -1,3 +1,4 @@
+from django.contrib.auth import base_user
 import razorpay
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
@@ -17,7 +18,7 @@ from packages.models import Packages, PackagesDepartureDate
 razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
 def send_ticket_on_mail(booking):
-  user_name = booking.user.get_full_name() or booking.user.username
+  user_name = booking.user.profile.full_name if hasattr(booking.user, 'profile') and booking.user.profile.full_name else booking.user.username
   user_email = booking.user.email
   
   template = f"""
@@ -595,7 +596,7 @@ def payment_page(request, package_id: int, start_date: str, persons: str):
   
 
   image_obj = package_obj.images.first()
-  image_url = image_obj.image.url if image_obj and image_obj.image else ''
+  image_url = str(image_obj.image) if image_obj and image_obj.image and str(image_obj.image).startswith('http') else (image_obj.image.url if image_obj and image_obj.image else '')
   
   package = {
     "name": package_obj.main_title,
@@ -670,7 +671,7 @@ def booking_success_page(request, booking_id: int, payment_id: str, transection_
   booking_obj = get_object_or_404(Booking, id=booking_id)
   
   image_obj = package_obj.images.first()
-  image_url = image_obj.image.url if image_obj and image_obj.image else ''
+  image_url = str(image_obj.image) if image_obj and image_obj.image and str(image_obj.image).startswith('http') else (image_obj.image.url if image_obj and image_obj.image else '')
   
   package = {
     "name": package_obj.main_title,

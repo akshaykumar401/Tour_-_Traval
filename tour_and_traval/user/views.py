@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 # pyrefly: ignore [missing-import]
 from booking.models import Booking
+import cloudinary
+import cloudinary.uploader
 
 def user_data_dict(request):
   user = request.user
@@ -17,7 +19,7 @@ def user_data_dict(request):
     booking_dict = {
       "id": booking.id,
       "ticket_number": booking.ticket_number,
-      "package_image": booking.package.images.first().image.url if booking.package.images.exists() else None,
+      "package_image": booking.package.images.first().image if booking.package.images.exists() else None,
       "package": booking.package.mini_title,
       "number_of_persons": booking.number_of_persons,
       "start_date": booking.start_date,
@@ -39,7 +41,7 @@ def user_data_dict(request):
     'full_name': user_profile_data.full_name,
     'phone': user_profile_data.phone,
     'address': user_profile_data.address,
-    'image': user_profile_data.image.url if user_profile_data.image else None,
+    'image': str(user_profile_data.image) if user_profile_data.image and str(user_profile_data.image).startswith('http') else (user_profile_data.image.url if user_profile_data.image else None),
     'username': user.username,
     'date_joined': user.date_joined,
     "my_booking": my_booking,
@@ -64,7 +66,25 @@ def user_page(request):
   if request.method == 'POST' and 'image' in request.FILES:
     photo_form = UpdateUserProfilePhotoForm(request.POST, request.FILES)
     if photo_form.is_valid():
-      user_profile.image = photo_form.cleaned_data['image']
+      # Delete old image from cloudinary if it's a cloudinary URL
+      if user_profile.image and str(user_profile.image).startswith('http'):
+        try:
+          old_url = str(user_profile.image)
+          parts = old_url.split('/upload/')
+          if len(parts) > 1:
+            path = parts[1]
+            if path.startswith('v') and '/' in path:
+              first_slash = path.find('/')
+              if path[1:first_slash].isdigit():
+                path = path[first_slash+1:]
+            public_id = path.rsplit('.', 1)[0]
+            cloudinary.uploader.destroy(public_id)
+        except Exception as e:
+          print(f"Error deleting old profile photo from Cloudinary: {e}")
+
+      # upload the image to cloudinary directly from request.FILES
+      upload_result = cloudinary.uploader.upload(request.FILES['image'], folder='profile_pics')
+      user_profile.image = upload_result.get('secure_url')
       user_profile.save()
       messages.success(request, 'Profile photo updated successfully!')
       return redirect('/user/?tab=profile')

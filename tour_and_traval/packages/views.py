@@ -23,7 +23,7 @@ def packages_page_data_inJSON(request):
   data = []
   for p in packages:
     image_obj = p.images.first()
-    image_url = image_obj.image.url if image_obj and image_obj.image else None
+    image_url = str(image_obj.image) if image_obj and image_obj.image and str(image_obj.image).startswith('http') else (image_obj.image.url if image_obj and image_obj.image else None)
     data.append({
       'id': p.id,
       'tag_line': p.tag_line,
@@ -45,7 +45,7 @@ def packages_page_data_inJSON(request):
 def package_detail_data_inJSON(request, package_id):
   package = Packages.objects.prefetch_related('images', 'features', 'itineraries', 'departure_dates').get(id=package_id)
   
-  images = [img.image.url for img in package.images.all() if img.image]
+  images = [str(img.image) if img.image and str(img.image).startswith('http') else img.image.url for img in package.images.all() if img.image]
   features = [{'id': f.id, 'feature': f.feature} for f in package.features.all()]
   itineraries = [{'id': i.id, 'day_number': i.day_number, 'title': i.title, 'description': i.description} for i in package.itineraries.all()]
   departure_dates = [{'id': d.id, 'departure_date': d.departure_date, 'total_seats': d.total_seats, 'available_seats': d.available_seats} for d in package.departure_dates.all()]
