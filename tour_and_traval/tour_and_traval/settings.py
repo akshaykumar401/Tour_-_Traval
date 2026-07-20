@@ -36,7 +36,7 @@ RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.onrender.com']
 
 # Email Configuration (Gmail SMTP)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -82,9 +82,13 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
     "tour_and_traval.middleware.RedirectAuthenticatedUserMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = "tour_and_traval.urls"
+
+# Optimizes and compresses your CSS/JS files
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 TEMPLATES = [
     {
