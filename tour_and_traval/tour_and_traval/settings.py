@@ -36,7 +36,7 @@ RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.onrender.com', 'https://nextstop-7slu.onrender.com', 'nextstop-7slu.onrender.com']
 
 # Email Configuration (Gmail SMTP)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -84,6 +84,13 @@ MIDDLEWARE = [
     "tour_and_traval.middleware.RedirectAuthenticatedUserMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://nextstop-7slu.onrender.com",
+]
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ROOT_URLCONF = "tour_and_traval.urls"
 

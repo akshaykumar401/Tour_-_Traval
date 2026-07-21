@@ -397,6 +397,7 @@ Packages {% endblock %} {% block main_content %}
             body: formData,
             headers: {
               'X-Requested-With': 'XMLHttpRequest',
+              'X-CSRFToken': formData.get('csrfmiddlewaretoken')
             }
           });
           
