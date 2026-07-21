@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 import cloudinary	
 
@@ -54,9 +53,10 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 26214400 # 25 MB
 
 # Application definition
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
+    'django_mongodb_backend',
+    "tour_and_traval.apps.MongoAdminConfig",
+    "tour_and_traval.apps.MongoAuthConfig",
+    "tour_and_traval.apps.MongoContentTypesConfig",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
@@ -120,20 +120,18 @@ WSGI_APPLICATION = "tour_and_traval.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASE_URL = os.getenv('DATABASE_URL')
-# Fail immediately with a clear explanation if the variable is missing
-if not DATABASE_URL:
-    raise ImproperlyConfigured(
-        "DATABASE_URL environment variable is missing! "
-        "Please set it in your terminal before running commands."
-    )
-
+DEFAULT_AUTO_FIELD = 'django_mongodb_backend.fields.ObjectIdAutoField'
+MIGRATION_MODULES = {
+    'admin': 'mongo_migrations.admin',
+    'auth': 'mongo_migrations.auth',
+    'contenttypes': 'mongo_migrations.contenttypes',
+}
 DATABASES = {
-    'default': dj_database_url.config(
-        default=DATABASE_URL,
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django_mongodb_backend',
+        'NAME': 'NextStopDB',
+        'HOST': os.getenv('DATABASE_URL'), # Use your local instance or MongoDB Atlas URI
+    }
 }
 
 

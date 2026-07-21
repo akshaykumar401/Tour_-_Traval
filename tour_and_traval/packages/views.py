@@ -42,8 +42,8 @@ def packages_page_data_inJSON(request):
     })
   return data
 
-def package_detail_data_inJSON(request, package_id):
-  package = Packages.objects.prefetch_related('images', 'features', 'itineraries', 'departure_dates').get(id=package_id)
+def package_detail_data_inJSON(request, slug):
+  package = Packages.objects.prefetch_related('images', 'features', 'itineraries', 'departure_dates').get(id=slug)
   
   images = [str(img.image) if img.image and str(img.image).startswith('http') else img.image.url for img in package.images.all() if img.image]
   features = [{'id': f.id, 'feature': f.feature} for f in package.features.all()]
@@ -219,8 +219,8 @@ def packages_page(request):
     'form': form
   })
 
-def packages_detail_page(request, packages_id):
-  data = package_detail_data_inJSON(request, packages_id)
+def packages_detail_page(request, slug):
+  data = package_detail_data_inJSON(request, slug)
   return render(request, 'packages/packages_detail_page.html', {
     'packages_data': data,
   })

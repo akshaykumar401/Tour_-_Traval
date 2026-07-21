@@ -11,10 +11,11 @@ cloudinary==1.45.0
 cookiecutter==2.7.1
 cryptography==49.0.0
 distro==1.9.0
-dj-database-url==3.1.2
 django==6.0.7
 django-browser-reload==1.21.0
+django-mongodb-backend==6.0.4
 django-tailwind==4.5.0
+dnspython==2.8.0
 google-auth==2.56.0
 google-genai==2.11.0
 h11==0.16.0
@@ -27,13 +28,13 @@ markupsafe==3.0.3
 mdurl==0.1.2
 pillow==12.3.0
 pip==25.1.1
-psycopg2-binary==2.9.12
 pyasn1==0.6.4
 pyasn1-modules==0.4.2
 pycparser==3.0
 pydantic==2.13.4
 pydantic-core==2.46.4
 pygments==2.20.0
+pymongo==4.17.0
 pytailwindcss==0.3.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.2.2
@@ -52,4 +53,4 @@ typing-inspection==0.4.2
 tzdata==2026.2
 urllib3==2.7.0
 websockets==16.1
-whitenoise>=6.0.0
+whitenoise==6.12.0

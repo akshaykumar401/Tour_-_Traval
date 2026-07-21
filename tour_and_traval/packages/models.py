@@ -70,7 +70,7 @@ class PackagesImage(models.Model):
         pass
     
     if self.image and not str(self.image).startswith('http'):
-      upload_result = cloudinary.uploader.upload(self.image, folder='packages_images')
+      upload_result = cloudinary.uploader.upload(self.image.file, folder='packages_images')
       self.image = upload_result.get('secure_url')
 
     super().save(*args, **kwargs)

@@ -8,7 +8,7 @@ A modern tour and travel platform for discovering memorable trips and booking yo
 
 [![Django](https://img.shields.io/badge/Django-6.0-092E20?logo=django&logoColor=white)](https://www.djangoproject.com/)
 [![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![Razorpay](https://img.shields.io/badge/Razorpay-Payments-0C2451)](https://razorpay.com/)
 
 </div>
@@ -33,7 +33,7 @@ A modern tour and travel platform for discovering memorable trips and booking yo
 | Technology | Purpose |
 | --- | --- |
 | **Python & Django** | Web application framework |
-| **PostgreSQL** | Application database |
+| **MongoDB** | Application database |
 | **Tailwind CSS** | Responsive user interface |
 | **Razorpay** | Secure payment processing |
 | **Cloudinary** | Cloud image storage and delivery |
@@ -68,7 +68,7 @@ Create `tour_and_traval/.env` by copying `tour_and_traval/.env.sample`, then add
 SECRET_KEY=your-secret-key
 DEBUG=True
 GEMINI_API_KEY=your-gemini-api-key
-DATABASE_URL=your-postgresql-connection-url
+DATABASE_URL=your-mongodb-connection-url
 RAZORPAY_KEY_ID=your-razorpay-key-id
 RAZORPAY_KEY_SECRET=your-razorpay-key-secret
 EMAIL_HOST_USER=your-email-address

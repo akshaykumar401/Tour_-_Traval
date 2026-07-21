@@ -518,8 +518,8 @@ def send_ticket_on_mail(booking):
 
 
 @login_required
-def payment_page(request, package_id: int, start_date: str, persons: str):
-  package_obj = get_object_or_404(Packages, id=package_id)
+def payment_page(request, slug: str, start_date: str, persons: str):
+  package_obj = get_object_or_404(Packages, id=slug)
   
   try:
     persons_count = int(persons)
@@ -546,11 +546,11 @@ def payment_page(request, package_id: int, start_date: str, persons: str):
   
   if not departure:
     messages.error(request, "Invalid departure date selected.")
-    return redirect('packages_detail_page', packages_id=package_id)
+    return redirect('packages_detail_page', slug=slug)
     
   if departure.available_seats < persons_count:
     messages.error(request, f"Sorry, only {departure.available_seats} seats are available for this date.")
-    return redirect('packages_detail_page', packages_id=package_id)
+    return redirect('packages_detail_page', slug=slug)
   
   end_date = parsed_start_date + timedelta(days=package_obj.total_days)
 
@@ -608,7 +608,7 @@ def payment_page(request, package_id: int, start_date: str, persons: str):
     "package": package,
     "taxes": taxes,
     "total": total,
-    "package_id": package_id,
+    "package_id": slug,
     "persons": persons_count,
     "start_date": start_date,
     "razorpay_order_id": razorpay_order['id'],
@@ -665,7 +665,7 @@ def payment_verify(request):
   return HttpResponseBadRequest("Invalid request method")
 
 @login_required
-def booking_success_page(request, booking_id: int, payment_id: str, transection_id: str, package_id: int):
+def booking_success_page(request, booking_id: str, payment_id: str, transection_id: str, package_id: str):
   package_obj = get_object_or_404(Packages, id=package_id)
   booking_obj = get_object_or_404(Booking, id=booking_id)
   
@@ -688,7 +688,7 @@ def booking_success_page(request, booking_id: int, payment_id: str, transection_
   })
 
 @login_required
-def cancel_pending_booking(request, booking_id: int):
+def cancel_pending_booking(request, booking_id: str):
   booking_obj = get_object_or_404(Booking, id=booking_id)
   booking_obj.payment_status = 'cancelled'
   booking_obj.status = 'cancelled'
