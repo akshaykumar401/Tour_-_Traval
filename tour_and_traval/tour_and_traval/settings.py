@@ -46,7 +46,7 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = True if EMAIL_PORT == 465 else False  # Use SSL for port 465, otherwise use TLS
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER') # your gmail
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD') # app password
-DEFAULT_FROM_EMAIL = f'NextStop <{os.getenv("EMAIL_HOST_USER")}>'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Increase max upload size to support large base64 images in Quill JS
 DATA_UPLOAD_MAX_MEMORY_SIZE = 26214400 # 25 MB
