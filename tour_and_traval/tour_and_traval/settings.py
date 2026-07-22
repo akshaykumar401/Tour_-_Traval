@@ -41,7 +41,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.onrender.com', 'https://nextstop-7s
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+EMAIL_PORT = os.getenv('EMAIL_PORT', 587)  # Default to 587 if not set in .env
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER') # your gmail
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD') # app password
