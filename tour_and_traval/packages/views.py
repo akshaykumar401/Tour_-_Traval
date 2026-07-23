@@ -71,7 +71,6 @@ def package_detail_data_inJSON(request, slug):
 
 def send_future_request_success_mail(request, email):
   subject = 'Future Package Notification'
-  to_email = email
   domain = request.get_host()
   base_url = f"https://{domain}"
   html_message=f"""
@@ -181,11 +180,14 @@ def send_future_request_success_mail(request, email):
   </div>
       """,
   
-  response = requests.post('https://mail-six-ruddy.vercel.app/send-mail', data={
+  print(f"Sending email to: {email} with subject: {subject}")
+  
+  response = requests.post('https://mail-six-ruddy.vercel.app/send-mail', json={
     'recipients': email, 
     'body': html_message,
     'subject': subject,
   })
+  print(response)
   print(f"Printing the response status code: {response.status_code}") 
   return 'hello'
 
