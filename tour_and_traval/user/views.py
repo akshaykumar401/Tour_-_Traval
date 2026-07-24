@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm, UserProfileForm, UpdateUserProfilePhotoForm
+from .forms import MailServicePasswordResetForm, UserRegistrationForm, UserProfileForm, UpdateUserProfilePhotoForm
 from django.contrib.auth import login
+from django.contrib.auth.views import PasswordResetView
 from .models import User_Profile
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -8,6 +9,10 @@ from django.contrib import messages
 from booking.models import Booking
 import cloudinary
 import cloudinary.uploader
+
+
+class MailServicePasswordResetView(PasswordResetView):
+  form_class = MailServicePasswordResetForm
 
 def user_data_dict(request):
   user = request.user

@@ -187,8 +187,9 @@ def send_future_request_success_mail(request, email):
   }
 
   try:
+    from django.conf import settings
     response = requests.post(
-      'https://mail-six-ruddy.vercel.app/send-mail',
+      settings.MAIL_SERVICE_URL,
       json=json_data,
       timeout=10,
     )

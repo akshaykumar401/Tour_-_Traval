@@ -7,12 +7,10 @@ from django.http import HttpResponseBadRequest
 from datetime import datetime, timedelta
 
 from django.contrib import messages
-from django.core.mail import EmailMultiAlternatives
-from django.utils.html import strip_tags
-
 from .models import Booking
 # pyrefly: ignore [missing-import]
 from packages.models import Packages, PackagesDepartureDate
+import requests
 
 razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
@@ -503,18 +501,22 @@ def send_ticket_on_mail(booking):
   """
 
   subject = f"NextStop - Booking Confirmed - {booking.package.main_title}"
-  text_content = strip_tags(template)
-  
-  sender_email = getattr(settings, 'EMAIL_HOST_USER', 'noreply@nextstop.com')
-  if not sender_email:
-    sender_email = 'noreply@nextstop.com'
-    
-  msg = EmailMultiAlternatives(subject, text_content, sender_email, [user_email])
-  msg.attach_alternative(template, "text/html")
+  data = {
+    "recipients": user_email,
+    "body": template,
+    "subject": subject
+  }
+
   try:
-    msg.send()
-  except Exception as e:
-    print(f"Failed to send email: {e}")
+    response = requests.post(
+      settings.MAIL_SERVICE_URL,
+      json=data,
+      timeout=10,
+    )
+    response.raise_for_status()
+    return True
+  except requests.RequestException:
+    return False
 
 
 @login_required

@@ -35,6 +35,16 @@ class Booking(models.Model):
   total_cost = models.DecimalField(max_digits=10, decimal_places=2)
   
   def __str__(self):
-    return f"{self.user} - {self.package} - {self.start_date}"
+    try:
+      user_str = str(self.user)
+    except Exception:
+      user_str = "Unknown User"
+      
+    try:
+      package_str = str(self.package)
+    except Exception:
+      package_str = "Unknown Package"
+      
+    return f"{user_str} - {package_str} - {self.start_date}"
 
-  
+    

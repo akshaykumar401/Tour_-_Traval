@@ -1,9 +1,13 @@
 from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib import admin, messages
-from django.core.mail import send_mail
-from django.conf import settings
+import requests
+
 from .models import FutureUpdate
+
+
+from django.conf import settings
+MAIL_SERVICE_URL = settings.MAIL_SERVICE_URL
 
 class SendMailAdminView(View):
   template_name = "admin/send_mail.html"
@@ -35,19 +39,29 @@ class SendMailAdminView(View):
     recipient_list = [update.email for update in future_updates]
     
     if recipient_list:
-        try:
-            plain_message = "<p>This email contains rich HTML content. Please view it in an HTML-compatible email client.</p>"
-            send_mail(
-                subject,
-                plain_message,
-                settings.DEFAULT_FROM_EMAIL,
-                recipient_list,
-                fail_silently=False,
-                html_message=message,
-            )
-            messages.success(request, f'Successfully sent email to {len(recipient_list)} subscribers.')
-        except Exception as e:
-            messages.error(request, f'Error sending email: {str(e)}')
+        sent_count = 0
+        failed_count = 0
+
+        for recipient in recipient_list:
+            try:
+                response = requests.post(
+                    MAIL_SERVICE_URL,
+                    json={
+                        'recipients': recipient,
+                        'subject': subject,
+                        'body': message,
+                    },
+                    timeout=10,
+                )
+                response.raise_for_status()
+                sent_count += 1
+            except requests.RequestException:
+                failed_count += 1
+
+        if sent_count:
+            messages.success(request, f'Successfully sent email to {sent_count} subscribers.')
+        if failed_count:
+            messages.error(request, f'Unable to send email to {failed_count} subscribers.')
     else:
         messages.warning(request, "No subscribers found to send email to.")
         

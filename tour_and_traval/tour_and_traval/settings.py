@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-from django.core.exceptions import ImproperlyConfigured
+
 import cloudinary	
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -32,21 +32,15 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID')
 RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET')
 
+# Mail Service URL
+MAIL_SERVICE_URL = f'{os.getenv('MAIL_SERVICE_URL')}/send-mail'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG') == 'True'
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.onrender.com', 'https://nextstop-7slu.onrender.com', 'nextstop-7slu.onrender.com']
 
-# Email Configuration (Gmail SMTP)
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = os.getenv('EMAIL_PORT', 587)  # Default to 587 if not set in .env
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER') # your gmail
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD') # app password
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Increase max upload size to support large base64 images in Quill JS
 DATA_UPLOAD_MAX_MEMORY_SIZE = 26214400 # 25 MB

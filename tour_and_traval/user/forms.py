@@ -1,7 +1,43 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordResetForm
 from django.contrib.auth.models import User
+from django.template import loader
+import logging
+import requests
+
 from .models import User_Profile
+
+
+from django.conf import settings
+logger = logging.getLogger(__name__)
+MAIL_SERVICE_URL = settings.MAIL_SERVICE_URL
+
+class MailServicePasswordResetForm(PasswordResetForm):
+  def send_mail(
+    self,
+    subject_template_name,
+    email_template_name,
+    context,
+    from_email,
+    to_email,
+    html_email_template_name=None,
+  ):
+    subject = ''.join(loader.render_to_string(subject_template_name, context).splitlines())
+    body = loader.render_to_string(email_template_name, context)
+
+    try:
+      response = requests.post(
+        MAIL_SERVICE_URL,
+        json={
+          'recipients': to_email,
+          'subject': subject,
+          'body': body,
+        },
+        timeout=10,
+      )
+      response.raise_for_status()
+    except requests.RequestException:
+      logger.exception('Failed to send password reset email to %s', context['user'].pk)
 
 
 # For Authintication Form
@@ -26,6 +62,5 @@ class UserProfileForm(forms.Form):
 
 class UpdateUserProfilePhotoForm(forms.Form):
   image = forms.ImageField(required=True, label='Profile Photo')
-
 
 
