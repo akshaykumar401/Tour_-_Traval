@@ -39,6 +39,9 @@ def send_mail():
   body = email_data.get('body')
   subject = email_data.get('subject')
   
+  print(recipients, body, subject)
+  print(type(recipients), type(body), type(subject))
+  
   # Validating the input data
   if not body or not subject or not recipients:
     return jsonify({
@@ -65,6 +68,7 @@ def send_mail():
       'status': 200
     }), 200
   except Exception as e:
+    print(e)
     return jsonify({
       'error': str(e),
       'data': None,

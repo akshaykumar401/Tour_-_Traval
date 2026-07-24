@@ -178,45 +178,59 @@ def send_future_request_success_mail(request, email):
       </tr>
     </table>
   </div>
-      """,
+      """
   
-  print(f"Sending email to: {email} with subject: {subject}")
-  
-  response = requests.post('https://mail-six-ruddy.vercel.app/send-mail', json={
-    'recipients': email, 
-    'body': html_message,
+  json_data = {
+    'recipients': email,
     'subject': subject,
-  })
-  print(response)
-  print(f"Printing the response status code: {response.status_code}") 
-  return 'hello'
+    'body': html_message
+  }
+
+  try:
+    response = requests.post(
+      'https://mail-six-ruddy.vercel.app/send-mail',
+      json=json_data,
+      timeout=10,
+    )
+    return response.ok
+  except requests.RequestException:
+    return False
 
 def packages_page(request):
   data = packages_page_data_inJSON(request)
   is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
+  form = FutureUpdateForm()
+  success = False
 
-  if request.method == 'POST' and not FutureUpdate.objects.filter(email=request.POST['email']).exists():
+  if request.method == 'POST':
     form = FutureUpdateForm(request.POST)
     if form.is_valid():
-      form.save()
-      send_future_request_success_mail(request, form.cleaned_data['email'])
-      
-      if is_ajax:
-        return JsonResponse({'success': True})
-        
-      return render(request, 'packages/packages_page.html', {
-        'form': form,
-        'package_data': packages_page_data_inJSON(request),
-        'success': True,
-      })
-    else:
-      if is_ajax:
-        return JsonResponse({'success': False, 'errors': form.errors}, status=400)
-  else:
-    form = FutureUpdateForm()
+      email = form.cleaned_data['email']
+      if FutureUpdate.objects.filter(email=email).exists():
+        form.add_error('email', 'This email is already subscribed.')
+      elif send_future_request_success_mail(request, email):
+        form.save()
+        success = True
+        if is_ajax:
+          return JsonResponse({'success': True})
+      else:
+        form.add_error(None, 'Unable to send the confirmation email. Please try again.')
+        if is_ajax:
+          return JsonResponse(
+            {'success': False, 'errors': form.errors.get_json_data()},
+            status=502,
+          )
+
+    if is_ajax:
+      return JsonResponse(
+        {'success': False, 'errors': form.errors.get_json_data()},
+        status=400,
+      )
+
   return render(request, 'packages/packages_page.html', {
-    'package_data': data, 
-    'form': form
+    'package_data': data,
+    'form': form,
+    'success': success,
   })
 
 def packages_detail_page(request, slug):
@@ -224,4 +238,3 @@ def packages_detail_page(request, slug):
   return render(request, 'packages/packages_detail_page.html', {
     'packages_data': data,
   })
-
