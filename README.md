@@ -71,8 +71,7 @@ GEMINI_API_KEY=your-gemini-api-key
 DATABASE_URL=your-mongodb-connection-url
 RAZORPAY_KEY_ID=your-razorpay-key-id
 RAZORPAY_KEY_SECRET=your-razorpay-key-secret
-EMAIL_HOST_USER=your-email-address
-EMAIL_HOST_PASSWORD=your-email-app-password
+MAIL_SERVICE_URL=your-mail-service-url
 CLOUDINARY_CLOUD_NAME=your-cloudinary-cloud-name
 CLOUDINARY_API_KEY=your-cloudinary-api-key
 CLOUDINARY_API_SECRET=your-cloudinary-api-secret
@@ -87,6 +86,33 @@ python manage.py runserver
 ```
 
 Visit **http://127.0.0.1:8000/** in your browser. 🎉
+
+### 6. Setup and run Mail Service (Required for emails)
+
+The project uses a separate microservice for sending emails. Open a new terminal and run:
+
+```bash
+cd Mail_service
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Create `Mail_service/.env` by copying `Mail_service/.env.sample` and add your email credentials:
+
+```env
+EMAIL_USER=your-email-address
+EMAIL_PASS=your-email-app-password
+PORT=8080
+```
+
+Run the mail service:
+
+```bash
+python wsgi.py
+```
+
+The mail service will run on **http://127.0.0.1:8080/**.
 
 ## 🗺️ Main routes
 
